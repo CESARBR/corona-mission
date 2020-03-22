@@ -41,9 +41,38 @@
 
     <ion-row>
       <ion-col>
-        <ion-button type="submit" class="login-button" size="large" color="login" expand="block">Confirmar</ion-button>
+        <ion-button type="submit" class="login-button" size="large" color="login" expand="block" (click)="addItem()">Confirmar</ion-button>
       </ion-col>
     </ion-row>
+    <ion-item>
+      <ion-label position="fixed">Name</ion-label>
+      <ion-input [(ngModel)]="newItem.name"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="fixed">Emails</ion-label>
+      <ion-input [(ngModel)]="newItem.email"></ion-input>
+    </ion-item>    
+
+    <ion-list-header>
+      <ion-label>My items</ion-label>
+    </ion-list-header>
+
+    <ion-item-sliding *ngFor="let item of items">
+      <ion-item>
+        <ion-label text-wrap>
+          <h3> {{ item.title }} </h3>
+          <ion-text color="secondary">
+            <p> {{ item.name }}</p>
+          </ion-text>
+          <ion-text color="secondary">
+            <p> {{ item.email }}</p>
+          </ion-text>
+          <p> {{ item.modified | date:'short' }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-item-sliding>
+
   </form>
 
   <ion-grid>
