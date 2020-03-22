@@ -74,4 +74,8 @@ export class StorageService {
     });  
   }
 
+  deleteAll(){
+    this.storage.clear();
+  }
+
 }

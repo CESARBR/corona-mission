@@ -26,8 +26,10 @@
     "@ionic-native/status-bar": "^5.0.0",
     "@ionic/angular": "^5.0.0",
     "@ionic/storage": "^2.2.0",
+    "@types/crypto-js": "^3.1.43",
     "cordova-plugin-aes256-encryption": "^2.0.0",
     "core-js": "^2.5.4",
+    "crypto-js": "^4.0.0",
     "rxjs": "~6.5.1",
     "tslib": "^1.9.0",
     "zone.js": "~0.9.1"
