@@ -1,0 +1,57 @@
+.corona-mission-login {
+    padding-top: 2vh;
+    width: 60vw !important;
+    align-items: center;
+}
+
+.logo-inline {
+    padding-top: 8vh;
+    padding-bottom: 4vh;
+    width: 60vw !important;
+    align-items: center;
+}
+
+.enter-text {
+    color: var(--ion-login-text-color);
+    font-size: 4vw;
+    margin-top: 15vh;
+}
+
+ion-content {
+    text-align: center;
+    --overflow: hidden !important;
+    ion-fab-button {
+        width: 25vw !important;
+        height: 25vw !important;
+        color: white;
+        ion-icon {
+            width: 15vw !important;
+            height: 15vw !important;
+            color: #393939;
+        }
+
+    }
+}
+.scroll-y, .inner-scroll { display: none; }
+
+.info-text {
+    padding-left: 15vw;
+    padding-right: 15vw;
+    font-size: 5vw;
+    color: #E8E8E8;
+}
+
+ion-fab{
+    padding-top: 6vh;
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.add-contact-text {
+    padding-top: 24vh;
+    font-size: 5vw;
+    color: #E8E8E8;
+    font-weight: 700;
+}

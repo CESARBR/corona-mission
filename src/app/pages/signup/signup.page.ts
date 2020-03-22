@@ -45,7 +45,6 @@ export class SignupPage implements OnInit {
   }
 
   submitForm() {
-
     this.isSubmitted = true;
     if (!this.ionicForm.valid) {
       console.log('Please provide all the required values!')
