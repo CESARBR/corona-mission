@@ -8,17 +8,18 @@ import { StorageService, Item } from '../../services/storage.service';
   templateUrl: './login-email.page.html',
   styleUrls: ['./login-email.page.scss'],
 })
+
 export class LoginEmailPage implements OnInit {
   ionicForm: FormGroup;
   isSubmitted = false;
 
   items: Item[] = [];
-  newItem: Item = <Item>{};
+  newItem: Item = <Item>{}; 
 
   constructor(public formBuilder: FormBuilder, private navCtrl: NavController,
-    private storageService: StorageService, private plt:Platform, private toastController: ToastController) { 
+    private storageService: StorageService, private plt:Platform) { 
       this.plt.ready().then(() => {
-        this.loadItems();
+        this.loadItems();        
       });
   }
 
@@ -37,14 +38,13 @@ export class LoginEmailPage implements OnInit {
 
     this.isSubmitted = true;
     if (!this.ionicForm.valid) {
-      console.log('Please provide all the required values!')
+      console.log('Please provide all the required values!');
       return false;
     } else {
       this.navCtrl.setDirection('forward');
-      this.navCtrl.navigateForward('/home');
-      console.log(this.ionicForm.value)
+      this.navCtrl.navigateForward('/home');      
     }
-  }
+  }  
 
   //READ ITEMS
   loadItems(){
@@ -52,16 +52,18 @@ export class LoginEmailPage implements OnInit {
       this.items = items;
       console.log(this.items);
     });
-  }
+  } 
 
-  addItem() {
-    this.newItem.modified = Date.now();
+  addUser() {        
     this.newItem.id = Date.now();
-
+    this.newItem.created = Date.now();
+    this.newItem.email = this.ionicForm.value.email;    
+    
     this.storageService.addItem(this.newItem).then(item => {
       this.newItem = <Item>{};
       console.log('Items added');
       this.loadItems();
+      console.log(this.loadItems());
     });
   }
 
