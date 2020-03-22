@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { NavController } from '@ionic/angular';
+import { NavController, Platform, ToastController } from '@ionic/angular';
+import { StorageService, Item } from '../../services/storage.service';
 
 @Component({
   selector: 'app-login-email',
@@ -11,7 +12,15 @@ export class LoginEmailPage implements OnInit {
   ionicForm: FormGroup;
   isSubmitted = false;
 
-  constructor(public formBuilder: FormBuilder, private navCtrl: NavController) { }
+  items: Item[] = [];
+  newItem: Item = <Item>{};
+
+  constructor(public formBuilder: FormBuilder, private navCtrl: NavController,
+    private storageService: StorageService, private plt:Platform, private toastController: ToastController) { 
+      this.plt.ready().then(() => {
+        this.loadItems();
+      });
+  }
 
   ngOnInit() {
     this.ionicForm = this.formBuilder.group({
@@ -35,6 +44,25 @@ export class LoginEmailPage implements OnInit {
       this.navCtrl.navigateForward('/home');
       console.log(this.ionicForm.value)
     }
+  }
+
+  //READ ITEMS
+  loadItems(){
+    this.storageService.getItems().then(items => {
+      this.items = items;
+      console.log(this.items);
+    });
+  }
+
+  addItem() {
+    this.newItem.modified = Date.now();
+    this.newItem.id = Date.now();
+
+    this.storageService.addItem(this.newItem).then(item => {
+      this.newItem = <Item>{};
+      console.log('Items added');
+      this.loadItems();
+    });
   }
 
 }
