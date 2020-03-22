@@ -1,0 +1,86 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="login-email"></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <img class="corona-mission-login" src="../../../assets/img/corona_mission_login.png" alt="">
+
+  <p class="enter-text">Adicionar Cadastro</p>
+
+  <form class="signup-form" [formGroup]="ionicForm" (ngSubmit)="submitForm()">
+    <ion-item lines="full">
+      <ion-label position="floating">Nome Completo</ion-label>
+      <ion-input formControlName="name" type="text" required="true" inputmode="text" autofocus="true" autocomplete="on" required></ion-input>
+    </ion-item>
+    <span class="error ion-padding" *ngIf="isSubmitted && errorControl.name.errors?.required">
+      Informe seu nome.
+    </span>
+    <span class="error ion-padding" *ngIf="isSubmitted && errorControl.name.errors?.minlength">
+      Seu nome deve conter no mínimo 6 dígitos.
+    </span>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Email</ion-label>
+      <ion-input formControlName="email" required="true" type="email" inputmode="email" autofocus="true" autocomplete="on" required></ion-input>
+    </ion-item>
+    <span class="error ion-padding" *ngIf="isSubmitted && errorControl.email.errors?.required">
+      Informe seu email.
+    </span>
+    <span class="error ion-padding" *ngIf="isSubmitted && errorControl.email.errors?.pattern">
+      Informe um email válido.
+    </span>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Data de Nascimento</ion-label>
+      <ion-datetime (ionChange)="getDate($event)" formControlName="dob" [value]="defaultDate"></ion-datetime>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Senha</ion-label>
+      <ion-input formControlName="password" required="true" type="password" inputmode="password" required></ion-input>
+    </ion-item>
+    <span class="error ion-padding" *ngIf="isSubmitted && errorControl.password.errors?.required">
+      Informe uma senha.
+    </span>
+    <span class="error ion-padding" *ngIf="isSubmitted && errorControl.password.errors?.minlength">
+      Sua senha deve ter ao menos 6 dígitos.
+    </span>
+    <span class="error ion-padding" *ngIf="isSubmitted && errorControl.password.errors?.maxlength">
+      Sua senha deve ter no máximo 30 dígitos.
+    </span>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Repetir Senha</ion-label>
+      <ion-input formControlName="passwordConfirmation" required="true" type="password" inputmode="password" required></ion-input>
+    </ion-item>
+    <span class="error ion-padding" *ngIf="isSubmitted && errorControl.password.errors?.required">
+      Informe uma senha.
+    </span>
+    <span class="error ion-padding" *ngIf="isSubmitted && errorControl.password.errors?.minlength">
+      Sua senha deve ter ao menos 6 dígitos.
+    </span>
+    <span class="error ion-padding" *ngIf="isSubmitted && errorControl.password.errors?.maxlength">
+      Sua senha deve ter no máximo 30 dígitos.
+    </span>
+    <span class="error ion-padding" *ngIf="isSubmitted && !ionicForm.get('passwordConfirmation').errors && ionicForm.hasError('passwordNotMatch')">
+      As senhas digitadas diferem.
+    </span>
+
+    <ion-row>
+      <ion-col>
+        <ion-button type="submit" class="login-button" size="large" color="login" expand="block">Cadastrar</ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+  
+
+</ion-content>
+
