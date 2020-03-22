@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { NavController, Platform, ToastController } from '@ionic/angular';
 import { StorageService, Item } from '../../services/storage.service';
+import * as CryptoJS from 'crypto-js';
 
 @Component({
   selector: 'app-login-email',
@@ -18,8 +19,8 @@ export class LoginEmailPage implements OnInit {
 
   constructor(public formBuilder: FormBuilder, private navCtrl: NavController,
     private storageService: StorageService, private plt:Platform) { 
-      this.plt.ready().then(() => {
-        this.loadItems();        
+      this.plt.ready().then(() => {             
+        this.loadItems();      
       });
   }
 
@@ -59,6 +60,9 @@ export class LoginEmailPage implements OnInit {
     this.newItem.created = Date.now();
     this.newItem.email = this.ionicForm.value.email;    
     
+    var hashPassword = CryptoJS.SHA256(this.ionicForm.value.password).toString();    
+    this.newItem.password = hashPassword;
+
     this.storageService.addItem(this.newItem).then(item => {
       this.newItem = <Item>{};
       console.log('Items added');
