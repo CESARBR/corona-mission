@@ -1,0 +1,35 @@
+.corona-mission-login {
+    padding-top: 2vh;
+    width: 60vw !important;
+    align-items: center;
+}
+
+.corona-icon-login {
+    padding-top: 10vh;
+    width: 60vw !important;
+    align-items: center;
+}
+
+.enter-text {
+    color: var(--ion-login-text-color);
+    font-size: 4vw;
+    margin-top: 10vh;
+}
+
+ion-content {
+    text-align: center;
+    --overflow: hidden !important;
+}
+.scroll-y, .inner-scroll { display: none; }
+
+.login-button {
+    margin-left: 7vw;
+    margin-right: 7vw;
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+    text-transform: none;
+
+    ion-icon {
+        padding-right: 10px;
+    }
+}
