@@ -1,7 +1,8 @@
 {
   "name": "corona-mission",
   "integrations": {
-    "capacitor": {}
+    "capacitor": {},
+    "cordova": {}
   },
   "type": "angular",
   "id": "9e58b8a4"

@@ -5,7 +5,8 @@ export interface Item {
   id: number,
   name: string,
   email: string,
-  modified: number
+  password: string,
+  created: number
 }
 
 const ITEMS_KEY = 'my-items';
