@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 // import { CallNumber } from '@ionic-native/call-number/ngx';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-details',
@@ -13,11 +14,11 @@ export class DetailsPage implements OnInit {
   person: any;
   challenges: any;
   SampleJson: any;
-  constructor(private route: ActivatedRoute) { 
+  persons: any;
+  constructor(private route: ActivatedRoute, private storage: Storage) { 
     
   }
 
-  
   ngOnInit() {
     this.SampleJson = [
       {
@@ -238,26 +239,29 @@ export class DetailsPage implements OnInit {
         "status": "ellipse-outline"
       }
   ];
-    this.challenges = [this.SampleJson[Math.floor((Math.random() * this.SampleJson.length) + 0)],
-      this.SampleJson[Math.floor((Math.random() * this.SampleJson.length) + 0)],
-      this.SampleJson[Math.floor((Math.random() * this.SampleJson.length) + 0)]];
-    console.log(this.challenges)
-    console.log(this.SampleJson);
+    this.person = null;
     if (this.route.snapshot.data['special']) {
       this.data = this.route.snapshot.data['special'];
-      this.person =
-        {
-          id: 12,
-          name: "João da Silva",
-          relationship: "Pai",
-          mission: "Realizar primeira missão",
-          mission_color: "dark",
-          mission_label_color: "dark",
-          avatar: "../../assets/img/person_icon.png",
-          phone: "15981272667",
-          missions: 25
-        };
-
+      console.log("id é " + this.data)
+      this.storage.get('persons').then((val) => {
+        console.log('val is', val);
+        this.persons = val;
+        if (val === null) {
+          console.log(null)
+        } else {
+          console.log("not null")
+          for (let i = 0; i < this.persons.length; i++) {
+            if (this.persons[i].id == this.data) {
+              this.person = this.persons[i];
+            }
+          }
+          this.challenges = [this.SampleJson[Math.floor((Math.random() * this.SampleJson.length) + 0)],
+          this.SampleJson[Math.floor((Math.random() * this.SampleJson.length) + 0)],
+          this.SampleJson[Math.floor((Math.random() * this.SampleJson.length) + 0)]];
+          this.person.challenges = this.challenges;
+          console.log(this.person.challenges)
+        }
+      });
     }
   }
 
@@ -265,6 +269,48 @@ export class DetailsPage implements OnInit {
     return [this.SampleJson[Math.floor((Math.random() * this.SampleJson.length) + 0)],
     this.SampleJson[Math.floor((Math.random() * this.SampleJson.length) + 0)],
     this.SampleJson[Math.floor((Math.random() * this.SampleJson.length) + 0)]];
+  }
+
+  shuffle(array) {
+    let currentIndex = array.length, temporaryValue, randomIndex;
+  
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+  
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+  
+      // And swap it with the current element.
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+  
+    return array;
+  }
+
+  moreChallenges() {
+    let count = 3
+    let j = 0;
+    while (j < count) {
+      let newChallenge = this.SampleJson[Math.floor((Math.random() * this.SampleJson.length) + 0)];
+      let notFound = true;
+      for (let i = 0; i < this.person.challenges.length; i++) {
+        if (this.person.challenges[i].id == newChallenge.id) {
+          notFound = false;
+        }
+      }
+      if (notFound) {
+        this.person.challenges.push(newChallenge);
+        j++;
+      }
+      if (this.person.challenges.length === this.SampleJson.length) {
+        break;
+      }
+    }
+    this.person.challenges = this.shuffle(this.person.challenges);
+    console.log(this.person.challenges.length)
   }
 
   
