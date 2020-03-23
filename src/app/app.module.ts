@@ -15,7 +15,10 @@ import { IonicStorageModule } from '@ionic/storage';
   declarations: [AppComponent],
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,
-  IonicStorageModule.forRoot()
+  IonicStorageModule.forRoot({
+    name: '__db_corona_mission',
+    driverOrder: ['localstorage']
+  })
   ],
   providers: [
     StatusBar,
