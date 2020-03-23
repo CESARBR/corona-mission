@@ -11,9 +11,10 @@
 }
 
 .enter-text {
-    color: var(--ion-login-text-color);
     font-size: 4vw;
-    margin-top: 15vh;
+    margin-top: 10vh;
+    font-weight: 700;
+    padding-bottom: 4vh;
 }
 
 ion-content {
@@ -47,6 +48,6 @@ ion-content {
 }
 
 .login-links {
-    color: var(--ion-login-text-color);
     font-size: 3vw;
+    color: var(--ion-text-color);
 }

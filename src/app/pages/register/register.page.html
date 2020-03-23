@@ -1,5 +1,8 @@
 <ion-header class="ion-no-border">
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="home"></ion-back-button>
+    </ion-buttons>
     <ion-buttons slot="end">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
@@ -7,13 +10,26 @@
 </ion-header>
 
 <ion-content>
-  <img class="corona-mission-login" src="../../assets/img/corona_mission_login.png" alt="">
-  <ion-card>
+  <img class="corona-mission-login" src="../../../assets/img/corona-mission-inline.svg" alt="">
+  <ion-card color="medium">
     <ion-card-header>
       <ion-card-title>Criar contato</ion-card-title>
-      <ion-card-subtitle>Informações pessoais do amigo ou familiar</ion-card-subtitle>
+      <ion-card-subtitle>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="8">
+              Informações pessoais do amigo ou familiar
+            </ion-col>
+            <ion-col size="4">
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        
+      </ion-card-subtitle>
       
     </ion-card-header>
+
+    <hr color="light">
   
     <ion-card-content>
       <form class="login-form" [formGroup]="ionicForm" (ngSubmit)="submitForm()">
@@ -58,7 +74,7 @@
     
         <ion-row>
           <ion-col>
-            <ion-button type="submit" class="login-button" size="large" color="login" expand="block">Confirmar</ion-button>
+            <ion-button type="submit" class="login-button" size="large" color="dark" expand="block">Confirmar</ion-button>
           </ion-col>
         </ion-row>
       </form>

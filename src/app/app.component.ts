@@ -37,11 +37,6 @@ export class AppComponent {
         icon  : "home"
       },
       {
-        title : "Configurações",
-        url   : "/settings",
-        icon  : "settings-outline"
-      },
-      {
         title : "Sobre",
         url   : "/about",
         icon  : "information-circle-outline"
