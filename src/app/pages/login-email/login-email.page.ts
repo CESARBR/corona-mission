@@ -19,8 +19,9 @@ export class LoginEmailPage implements OnInit {
 
   constructor(public formBuilder: FormBuilder, private navCtrl: NavController,
     private storageService: StorageService, private plt:Platform) { 
-      this.plt.ready().then(() => {             
-        this.loadItems();      
+      this.plt.ready().then(() => {        
+        this.loadItems();
+        console.log(this.items);
       });
   }
 
@@ -59,13 +60,13 @@ export class LoginEmailPage implements OnInit {
     this.newItem.created = Date.now();
     this.newItem.email = this.ionicForm.value.email;    
     
-    var hashPassword = CryptoJS.SHA256(this.ionicForm.value.password).toString();    
-    this.newItem.password = hashPassword;
+    var hashPassword = CryptoJS.SHA256(this.ionicForm.value.password).toString();        
+    this.newItem.password = hashPassword;   
 
     this.storageService.addItem(this.newItem).then(item => {
-      this.newItem = <Item>{};      
-      this.loadItems();      
+      this.newItem = <Item>{};            
     });
+    console.log(this.items);
   }
 
 }
