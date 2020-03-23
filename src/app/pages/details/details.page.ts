@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import SampleJson from '../../../assets/challenges.json';
 // import { CallNumber } from '@ionic-native/call-number/ngx';
 
 @Component({
@@ -11,9 +12,18 @@ export class DetailsPage implements OnInit {
 
   data: any;
   person: any;
-  constructor(private route: ActivatedRoute) { }
+  challenges: any;
+  constructor(private route: ActivatedRoute) { 
+    
+  }
 
+  
   ngOnInit() {
+    this.challenges = [SampleJson[Math.floor((Math.random() * SampleJson.length) + 0)],
+      SampleJson[Math.floor((Math.random() * SampleJson.length) + 0)],
+      SampleJson[Math.floor((Math.random() * SampleJson.length) + 0)]];
+    console.log(this.challenges)
+    console.log(SampleJson);
     if (this.route.snapshot.data['special']) {
       this.data = this.route.snapshot.data['special'];
       this.person =
@@ -28,8 +38,17 @@ export class DetailsPage implements OnInit {
           phone: "15981272667",
           missions: 25
         };
+
     }
   }
+
+  getThreeChallenges() {
+    return [SampleJson[Math.floor((Math.random() * SampleJson.length) + 0)],
+      SampleJson[Math.floor((Math.random() * SampleJson.length) + 0)],
+      SampleJson[Math.floor((Math.random() * SampleJson.length) + 0)]];
+  }
+
+  
 
   call() {
     console.log("TODO");
@@ -41,5 +60,14 @@ export class DetailsPage implements OnInit {
   updatePerson() {
     console.log("TODO");
   }
+
+  changeStatus(challenge) {
+    if (challenge.status == "checkmark-outline") {
+      challenge.status = "ellipse-outline";
+    } else {
+      challenge.status = "checkmark-outline";
+    }
+  }
+
 
 }

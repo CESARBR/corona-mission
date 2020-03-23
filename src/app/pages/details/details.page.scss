@@ -59,6 +59,48 @@ ion-chip {
 hr {
     margin-left: 8vw;
     margin-right: 8vw;
-    color: black;
+    color: rgb(109, 109, 109);
     border: 2px blac solid;
+}
+
+.suggestion-text {
+    font-weight: 700;
+    font-size: 4vw;
+    color: var(--ion-text-color);
+}
+
+.challenge-card {
+    margin-left: 6vw;
+    margin-right: 6vw;
+    margin-top: 0vh;
+    .challenge-icon {
+        font-size: 10vw;
+        border: 2px solid var(--ion-text-color);;
+        border-radius: 20vw !important;
+        padding: 6px;
+        margin-top: 25%;
+        background-color: var(--ion-color-primary);
+    }
+    .card-title {
+        font-weight: 700;
+        font-size: 3vw;
+        text-align: left;
+        padding-left: 2vw;
+    }
+    .card-description {
+        padding-left: 2vw;
+        text-align: left;
+    }
+    .status-icon {
+        font-size: 6vw;
+        border: 2px solid var(--ion-text-color);;
+        border-radius: 20vw !important;
+    }
+    .checked {
+        font-size: 6vw;
+        background-color: var(--ion-color-primary);
+        color: white;
+        border: 2px solid var(--ion-text-color);;
+        border-radius: 20vw !important;
+    }
 }
