@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { DataService } from '../services/data.service';
+import { StorageService } from '../services/storage.service';
 
 @Component({
   selector: 'app-home',
@@ -12,30 +13,37 @@ export class HomePage implements OnInit {
 
   registeredUsers = [];
 
-  constructor(private navCtrl: NavController, private dataService: DataService) { }
+  constructor(private navCtrl: NavController, private dataService: DataService, 
+    private storageService: StorageService) { 
+    }
 
-  ngOnInit() {
-    this.registeredUsers = [
-      {
-        id: 12,
-        name: "João da Silva",
-        relationship: "Pai",
-        mission: "Realizar primeira missão",
-        mission_color: "dark",
-        mission_label_color: "dark",
-        avatar: "../../assets/img/person_icon.png"
-      },
-      {
-        id: 12,
-        name: "João da Silva",
-        relationship: "Pai",
-        mission: "Realizar primeira missão",
-        mission_color: "dark",
-        mission_label_color: "dark",
-        avatar: "../../assets/img/person_icon.png"
-      }
-    ]
-  }
+    ionViewWillEnter() {
+      this.loadPersons();
+    }
+
+    ngOnInit () {}
+
+    loadPersons(){
+        this.storageService.getPersons().then((persons) => {
+    
+          if (!persons || persons.length == 0) {
+            return;
+          }
+    
+          this.registeredUsers = persons.map(person => {
+    
+            return {
+              id: person.id,
+              name: person.name,
+              relationship: person.relationship,
+              mission: "Realizar primeira missão",
+              mission_color: "dark",
+              mission_label_color: "dark",
+              avatar: "../../assets/img/person_icon.png"
+            }
+          });
+        });
+    } 
 
   openDetail(id) {
     console.log("Opening ... " + id)

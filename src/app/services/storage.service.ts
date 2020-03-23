@@ -89,11 +89,11 @@ export class StorageService {
   }
 
   //Create person
-  addPerson(person : Person) : Promise<any> {    
+  addPerson(person : Person) : Promise<any> {   
     return this.storage.get(PERSON_KEY).then((persons: Person[]) => {
       if(persons){        
         persons.push(person);        
-        return this.storage.set(PERSON_KEY, [persons]);
+        return this.storage.set(PERSON_KEY, persons);
       } else {
         return this.storage.set(PERSON_KEY, [person]);
       }
