@@ -50,8 +50,7 @@ export class LoginEmailPage implements OnInit {
   //READ ITEMS
   loadItems(){
     this.storageService.getItems().then(items => {
-      this.items = items;
-      console.log(this.items);
+      this.items = items;      
     });
   } 
 
@@ -64,10 +63,8 @@ export class LoginEmailPage implements OnInit {
     this.newItem.password = hashPassword;
 
     this.storageService.addItem(this.newItem).then(item => {
-      this.newItem = <Item>{};
-      console.log('Items added');
-      this.loadItems();
-      console.log(this.loadItems());
+      this.newItem = <Item>{};      
+      this.loadItems();      
     });
   }
 
