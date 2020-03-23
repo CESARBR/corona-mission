@@ -8,9 +8,9 @@
 
 <ion-content>
 
-  <img class="corona-mission-login" src="../../../assets/img/corona_mission_login.png" alt="">
+  <img class="corona-mission-login" src="../../../assets/img/corona-mission-inline.svg" alt="">
 
-  <p class="enter-text">Adicionar Cadastro</p>
+  <p class="enter-text">Cadastrar</p>
 
   <form class="signup-form" [formGroup]="ionicForm" (ngSubmit)="submitForm()">
     <ion-item lines="full">
@@ -68,10 +68,22 @@
 
     <ion-row>
       <ion-col>
-        <ion-button type="submit" class="login-button" size="large" color="login" expand="block">Cadastrar</ion-button>
+        <ion-button type="submit" class="login-button" size="large" color="dark" expand="block">Cadastrar</ion-button>
       </ion-col>
     </ion-row>
   </form>
+
+
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <a class="login-links" [routerLink]="'/login-email'" routerDirection="forward" >já tenho uma conta</a>
+      </ion-col>
+      <ion-col>
+        <a class="login-links" [href]="'#'" routerDirection="forward" >recuperar senha</a>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
   
 
 </ion-content>
