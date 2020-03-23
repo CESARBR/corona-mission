@@ -16,10 +16,6 @@ const routes: Routes = [
     loadChildren: () => import('./pages/about/about.module').then( m => m.AboutPageModule)
   },
   {
-    path: 'login-email',
-    loadChildren: () => import('./pages/login-email/login-email.module').then( m => m.LoginEmailPageModule)
-  },
-  {
     path: 'details/:id',
     resolve: {
       special: DataResolverService

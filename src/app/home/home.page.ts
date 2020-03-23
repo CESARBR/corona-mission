@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { DataService } from '../services/data.service';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-home',
@@ -12,29 +13,19 @@ export class HomePage implements OnInit {
 
   registeredUsers = [];
 
-  constructor(private navCtrl: NavController, private dataService: DataService) { }
+  constructor(private navCtrl: NavController, private dataService: DataService, private storage: Storage) { }
 
   ngOnInit() {
-    this.registeredUsers = [
-      {
-        id: 12,
-        name: "João da Silva",
-        relationship: "Pai",
-        mission: "Realizar primeira missão",
-        mission_color: "dark",
-        mission_label_color: "dark",
-        avatar: "../../assets/img/person_icon.png"
-      },
-      {
-        id: 12,
-        name: "João da Silva",
-        relationship: "Pai",
-        mission: "Realizar primeira missão",
-        mission_color: "dark",
-        mission_label_color: "dark",
-        avatar: "../../assets/img/person_icon.png"
+    this.storage.get('persons').then((val) => {
+      console.log('persons is', val);
+      this.registeredUsers = val;
+      if (val === null) {
+        this.hasRegistered = false;
+      } else {
+        this.hasRegistered = true;
       }
-    ]
+    });
+    
   }
 
   openDetail(id) {
