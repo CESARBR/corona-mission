@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { NavController } from '@ionic/angular';
+import { BrMaskDirective, BrMaskModel } from 'br-mask';
 
 @Component({
   selector: 'app-home',
@@ -7,9 +9,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomePage implements OnInit {
 
-  constructor() { }
+  constructor(private navCtrl: NavController, public brMask: BrMaskDirective) { }
 
   ngOnInit() {
+  }
+
+  addPerson() {
+    this.navCtrl.setDirection('forward');
+    this.navCtrl.navigateForward('/home/register');
   }
 
 }

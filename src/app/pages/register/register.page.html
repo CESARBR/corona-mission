@@ -1,0 +1,68 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <img class="corona-mission-login" src="../../assets/img/corona_mission_login.png" alt="">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Criar contato</ion-card-title>
+      <ion-card-subtitle>Informações pessoais do amigo ou familiar</ion-card-subtitle>
+      
+    </ion-card-header>
+  
+    <ion-card-content>
+      <form class="login-form" [formGroup]="ionicForm" (ngSubmit)="submitForm()">
+        <ion-item lines="full">
+          <ion-label position="floating">Nome ou apelido</ion-label>
+          <ion-input formControlName="name" required="true" type="text" inputmode="text" autofocus="true" required></ion-input>
+        </ion-item>
+        <span class="error ion-padding" *ngIf="isSubmitted && errorControl.name.errors?.required">
+          Informe um nome ou apelido.
+        </span>
+        <ion-item lines="full">
+          <ion-label position="floating">Idade</ion-label>
+          <ion-input formControlName="age" required="true" type="number" inputmode="number" required></ion-input>
+        </ion-item>
+        <span class="error ion-padding" *ngIf="isSubmitted && errorControl.age.errors?.required">
+          Informe a idade.
+        </span>
+        <ion-item lines="full">
+          <ion-label position="floating">Número de telefone</ion-label>
+          <ion-input formControlName="phone" required="true" type="tel" inputmode="tel" [brmasker]="{phone: true}" required></ion-input>
+        </ion-item>
+        <span class="error ion-padding" *ngIf="isSubmitted && errorControl.phone.errors?.required">
+          Informe o telefone.
+        </span>
+
+        <ion-item>
+          <ion-label position="floating">Parentesco</ion-label>
+          <ion-select formControlName="relationship" placeholder="Selecione" okText="Selecionar" cancelText="Cancelar">
+            <ion-select-option value="mother">Mãe</ion-select-option>
+            <ion-select-option value="father">Pai</ion-select-option>
+            <ion-select-option value="aunt">Tia</ion-select-option>
+            <ion-select-option value="uncle">Tio</ion-select-option>
+            <ion-select-option value="grandm">Avó</ion-select-option>
+            <ion-select-option value="grandf">Avô</ion-select-option>
+            <ion-select-option value="friendm">Amiga</ion-select-option>
+            <ion-select-option value="friendf">Amigo</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <span class="error ion-padding" *ngIf="isSubmitted && errorControl.relationship.errors?.required">
+          Selecione o parentesco.
+        </span>
+    
+        <ion-row>
+          <ion-col>
+            <ion-button type="submit" class="login-button" size="large" color="login" expand="block">Confirmar</ion-button>
+          </ion-col>
+        </ion-row>
+      </form>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>
