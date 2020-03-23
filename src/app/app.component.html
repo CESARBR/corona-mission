@@ -1,18 +1,18 @@
 <ion-app>
   <ion-menu side="start" menuId="first" contentId="content1">
     <ion-header>
-      <ion-toolbar>
+      <ion-toolbar color="medium">
         <ion-title>Menu</ion-title>
       </ion-toolbar>
     </ion-header>
-    <ion-content>
-      <ion-list *ngFor="let pages of navigate">
-      <ion-menu-toggle auto-hide="true">
-        <ion-item [routerLink]="pages.url" routerDirection="forward">
-            <ion-icon [name]="pages.icon" slot="start"></ion-icon>
-               {{pages.title}} 
-        </ion-item>
-      </ion-menu-toggle>
+    <ion-content class="custom-menu">
+      <ion-list >
+        <ion-menu-toggle auto-hide="true">
+          <ion-item *ngFor="let pages of navigate" [routerLink]="pages.url" routerDirection="forward">
+              <ion-icon [name]="pages.icon" slot="start"></ion-icon>
+                {{pages.title}} 
+          </ion-item>
+        </ion-menu-toggle>
       </ion-list>
     </ion-content>
   </ion-menu>
