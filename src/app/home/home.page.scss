@@ -20,17 +20,6 @@
 ion-content {
     text-align: center;
     --overflow: hidden !important;
-    ion-fab-button {
-        width: 25vw !important;
-        height: 25vw !important;
-        color: white;
-        ion-icon {
-            width: 15vw !important;
-            height: 15vw !important;
-            color: #393939;
-        }
-
-    }
 }
 .scroll-y, .inner-scroll { display: none; }
 
@@ -41,17 +30,74 @@ ion-content {
     color: #E8E8E8;
 }
 
-ion-fab{
-    padding-top: 6vh;
-    display: flex;
-    width: 100%;
-    flex-direction: row;
-    justify-content: center;
-}
-
 .add-contact-text {
     padding-top: 24vh;
     font-size: 5vw;
     color: #E8E8E8;
     font-weight: 700;
+}
+
+ion-avatar {
+    width: 18vw !important;
+    height: 18vw !important;
+    border: 20px;
+    img {
+        border: 6px solid #A7A7A7;
+        padding: 3px;
+    }
+}
+
+ion-chip {
+    ion-label {
+        font-size: 3vw;
+    }
+}
+
+.name {
+    font-weight: 700;
+    font-size: 3.6vw;
+    color: var(--ion-text-color);
+}
+
+.relationship {
+    font-size: 3vw;
+    color: var(--ion-text-color);
+}
+
+ion-card {
+    margin-left: 6vw;
+    margin-right: 6vw;
+    margin-top: 2vh;
+}
+
+.has-not-registered {
+    ion-fab-button {
+        width: 25vw !important;
+        height: 25vw !important;
+        color: white;
+        ion-icon {
+            width: 15vw !important;
+            height: 15vw !important;
+            color: #393939;
+        }
+    }
+    ion-fab{
+        padding-top: 6vh;
+        display: flex;
+        width: 100%;
+        flex-direction: row;
+        justify-content: center;
+    }
+}
+
+.has-registered {
+    ion-fab-button {
+        width: 15vw !important;
+        height: 15vw !important;
+        ion-icon {
+            width: 10vw !important;
+            height: 10vw !important;
+        }
+    }
+    
 }

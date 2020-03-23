@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { DataResolverService } from './resolver/data-resolver.service';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
@@ -17,6 +18,13 @@ const routes: Routes = [
   {
     path: 'login-email',
     loadChildren: () => import('./pages/login-email/login-email.module').then( m => m.LoginEmailPageModule)
+  },
+  {
+    path: 'details/:id',
+    resolve: {
+      special: DataResolverService
+    },
+    loadChildren: () => import('./pages/details/details.module').then( m => m.DetailsPageModule)
   }
   // ,
   // {
