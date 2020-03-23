@@ -15,6 +15,7 @@
   "dependencies": {
     "@angular/common": "~8.2.14",
     "@angular/core": "~8.2.14",
+    "@angular/fire": "^5.4.2",
     "@angular/forms": "~8.2.14",
     "@angular/platform-browser": "~8.2.14",
     "@angular/platform-browser-dynamic": "~8.2.14",
@@ -29,12 +30,13 @@
     "@ionic/storage": "^2.2.0",
     "@types/crypto-js": "^3.1.43",
     "br-mask": "0.0.8",
+    "call-number": "^1.0.1",
     "cordova-android": "8.1.0",
     "cordova-plugin-aes256-encryption": "^2.0.0",
     "cordova-sqlite-storage": "^5.0.0",
-    "call-number": "^1.0.1",
     "core-js": "^2.5.4",
     "crypto-js": "^4.0.0",
+    "firebase": "^7.12.0",
     "rxjs": "~6.5.1",
     "tslib": "^1.9.0",
     "zone.js": "~0.9.1"

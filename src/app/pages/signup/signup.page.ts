@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { NavController } from '@ionic/angular';
+import { DatabaseServices } from '../../Firebase Services/firebase.Database'
+import { AngularFirestore } from '@angular/fire/firestore';
+
 
 
 @Component({
@@ -20,7 +23,7 @@ export class SignupPage implements OnInit {
       email: ['', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$')]],
       name: ['', [Validators.required, Validators.minLength(6)]],
       passwordConfirmation: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(30)]]
-    }, { 
+    }, {
       validators: this.password.bind(this)
     });
   }
@@ -30,17 +33,19 @@ export class SignupPage implements OnInit {
     const { value: passwordConfirmation } = formGroup.get('passwordConfirmation');
     return password === passwordConfirmation ? null : { passwordNotMatch: true };
   }
-  
+
   get errorControl() {
     return this.ionicForm.controls;
   }
 
   submitForm() {
+    var databaseCtrl = new DatabaseServices();
     this.isSubmitted = true;
     if (!this.ionicForm.valid) {
       console.log('Please provide all the required values!')
       return false;
     } else {
+      databaseCtrl.saveUser(this.ionicForm.value);
       this.navCtrl.setDirection('forward');
       this.navCtrl.navigateForward('/home');
       console.log(this.ionicForm.value)
