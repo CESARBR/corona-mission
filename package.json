@@ -29,6 +29,7 @@
     "@types/crypto-js": "^3.1.43",
     "cordova-android": "8.1.0",
     "cordova-plugin-aes256-encryption": "^2.0.0",
+    "br-mask": "0.0.8",
     "core-js": "^2.5.4",
     "crypto-js": "^4.0.0",
     "rxjs": "~6.5.1",

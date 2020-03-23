@@ -11,10 +11,9 @@
 }
 
 .enter-text {
+    color: var(--ion-login-text-color);
     font-size: 4vw;
-    margin-top: 10vh;
-    font-weight: 700;
-    padding-bottom: 4vh;
+    margin-top: 4vh;
 }
 
 ion-content {
@@ -34,7 +33,7 @@ ion-content {
     }
 }
 
-.signup-form {
+.login-form {
     margin-left: 7vw;
     margin-right: 7vw;
 
@@ -48,6 +47,19 @@ ion-content {
 }
 
 .login-links {
+    color: var(--ion-login-text-color);
     font-size: 3vw;
-    color: var(--ion-text-color);
+}
+
+hr {
+    margin-left: 7vw;
+    margin-right: 7vw;
+}
+
+ion-card-subtitle {
+    color: var(--ion-color-primary) !important;
+    font-size: 2.8vh;
+    font-weight: 600;
+    text-align: start;
+    padding-left: 7vw;
 }

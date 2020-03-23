@@ -3,19 +3,14 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="login"></ion-back-button>
     </ion-buttons>
-    <ion-buttons slot="end">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
 
-  <img class="corona-mission-login" src="../../../assets/img/corona_mission_login.png" alt="">
+  <img class="corona-mission-login" src="../../../assets/img/corona-mission-inline.svg" alt="">
 
-  <img class="corona-icon-login" src="../../../assets/img/corona_icon_login.png" alt="">
-
-  <p class="enter-text">Entrar com e-mail:</p>
+  <p class="enter-text">Login</p>
 
   <form class="login-form" [formGroup]="ionicForm" (ngSubmit)="submitForm()">
     <ion-item lines="full">
@@ -41,9 +36,9 @@
 
     <ion-row>
       <ion-col>
-        <ion-button type="submit" class="login-button" size="large" color="login" expand="block" (click)="addUser()">Confirmar</ion-button>
+        <ion-button type="submit" class="login-button" size="large" color="dark" expand="block">Confirmar</ion-button>
       </ion-col>
-    </ion-row>             
+    </ion-row>
   </form>
 
   <ion-grid>
