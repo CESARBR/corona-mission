@@ -8,21 +8,66 @@
 
 <ion-content>
   <img class="corona-mission-login" src="../../../assets/img/corona-mission-inline.svg" alt="">
-  <img class="logo-inline" src="../../assets/img/logo_inline.png" alt="">
+  <div class="has-not-registered" *ngIf="!hasRegistered">
+    <img class="logo-inline" src="../../assets/img/logo_inline.png" alt="">
 
-  <p class="info-text">
-    Cadastre o perfil de parentes e amigos para se sentirem acolhidos em momentos difíceis, em meio a crise do Coronavirus.
-  </p>
+    <p class="info-text">
+      Cadastre o perfil de parentes e amigos para se sentirem acolhidos em momentos difíceis, em meio a crise do Coronavirus.
+    </p>
 
-  <!-- fab placed to the (vertical) center and start -->
-  <ion-fab center center>
-    <ion-fab-button color="light" center (click)="addPerson()">
-      <ion-icon name="add"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
+    <!-- fab placed to the (vertical) center and start -->
+    <ion-fab center center>
+      <ion-fab-button color="light" center (click)="addPerson()">
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
 
-  <p class="add-contact-text">
-    Adicione um contato
-  </p>
+    <p class="add-contact-text">
+      Adicione um contato
+    </p>
+
+  </div>
+
+  <div class="has-registered" *ngIf="hasRegistered">
+    <ion-card *ngFor="let person of registeredUsers" color="medium" (click)="openDetail(person.id)">
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="3">
+              <ion-avatar class="avatar">
+                <img [src]="person.avatar">
+              </ion-avatar>
+            </ion-col>
+            <ion-col size="8">
+              <ion-grid>
+                <ion-row>
+                  <p class="name">{{person.name}}</p>
+                </ion-row>
+                <ion-row>
+                  <p class="relationship">{{person.relationship}}</p>
+                </ion-row>
+                <ion-row>
+                  <ion-chip [color]="person.mission_color">
+                    <ion-label [color]="person.mission_label_color">{{person.mission}}</ion-label>
+                  </ion-chip>
+                </ion-row>
+              </ion-grid>
+              
+            </ion-col>
+            <ion-col size="1">
+              <ion-icon color="dark" size="large" name="chevron-forward-outline"></ion-icon>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button color="dark" (click)="addPerson()">
+        <ion-icon name="add" color="light"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+
+  </div>
     
 </ion-content>

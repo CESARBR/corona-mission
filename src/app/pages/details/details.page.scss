@@ -1,0 +1,64 @@
+.corona-mission-blue {
+    width: 45vw;
+}
+
+ion-content {
+    text-align: center;
+}
+
+ion-avatar {
+    width: 18vw !important;
+    height: 18vw !important;
+    border: 20px;
+    img {
+        border: 6px solid #A7A7A7;
+        padding: 3px;
+    }
+}
+
+ion-chip {
+    ion-label {
+        font-size: 3vw;
+    }
+}
+
+.name {
+    font-weight: 700;
+    font-size: 3.6vw;
+    color: var(--ion-text-color);
+}
+
+.relationship {
+    font-size: 3vw;
+    color: var(--ion-text-color);
+}
+
+.person-info {
+    margin-left: 8vw;
+    margin-right: 8vw;
+    ion-icon {
+        font-size: 10vw;
+        border: 2px solid var(--ion-text-color);;
+        border-radius: 2vw !important;
+        padding: 6px;
+        margin-top: 25%;
+    }
+    p {
+        margin: 4px;
+        span {
+            color: var(--ion-color-primary);
+        }
+    }
+    ion-button {
+        text-transform: none;
+    }
+    .ion-text-start {
+        font-size: 3.6vw;
+    }
+}
+hr {
+    margin-left: 8vw;
+    margin-right: 8vw;
+    color: black;
+    border: 2px blac solid;
+}

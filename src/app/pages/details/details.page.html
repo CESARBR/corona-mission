@@ -1,0 +1,49 @@
+<ion-header class="ion-no-border" color="medium">
+  <ion-toolbar color="medium">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="home"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="medium">
+  <img class="corona-mission-blue" src="../../../assets/img/coronamission-blue.svg" alt="">
+
+  <div>
+    <ion-grid class="person-info">
+      <ion-row center center>
+        <ion-col size="3">
+          <ion-avatar class="avatar">
+            <img [src]="person.avatar">
+          </ion-avatar>
+        </ion-col>
+        <ion-col size="7">
+          <ion-grid>
+            <ion-row>
+              <p class="name">{{person.name}}</p>
+            </ion-row>
+            <ion-row>
+              <p class="relationship">{{person.relationship}}</p>
+            </ion-row>
+            <ion-row>
+              <ion-button color="dark" fill="outline" (click)="updatePerson()">Editar informações</ion-button>
+            </ion-row>
+          </ion-grid>
+          
+        </ion-col>
+        <ion-col size="2" center center>
+          <ion-icon color="primary" name="call" (click)="call()"></ion-icon>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="ion-text-start">
+          <p>Total de missões realizadas: <span>{{person.missions}}</span></p>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <hr color="light">
+  </div>
+
+  
+
+</ion-content>

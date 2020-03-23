@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
+import { DataService } from '../services/data.service';
 
 @Component({
   selector: 'app-home',
@@ -7,15 +8,46 @@ import { NavController } from '@ionic/angular';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
+  hasRegistered = true;
 
-  constructor(private navCtrl: NavController) { }
+  registeredUsers = [];
+
+  constructor(private navCtrl: NavController, private dataService: DataService) { }
 
   ngOnInit() {
+    this.registeredUsers = [
+      {
+        id: 12,
+        name: "João da Silva",
+        relationship: "Pai",
+        mission: "Realizar primeira missão",
+        mission_color: "dark",
+        mission_label_color: "dark",
+        avatar: "../../assets/img/person_icon.png"
+      },
+      {
+        id: 12,
+        name: "João da Silva",
+        relationship: "Pai",
+        mission: "Realizar primeira missão",
+        mission_color: "dark",
+        mission_label_color: "dark",
+        avatar: "../../assets/img/person_icon.png"
+      }
+    ]
+  }
+
+  openDetail(id) {
+    console.log("Opening ... " + id)
+    this.dataService.setData(id, id);
+    let str = 'details/' + id;
+    this.navCtrl.setDirection('forward');
+    this.navCtrl.navigateForward(str);
   }
 
   addPerson() {
     this.navCtrl.setDirection('forward');
-    this.navCtrl.navigateForward('/home/register');
+    this.navCtrl.navigateForward('/home/register', );
   }
 
 }
