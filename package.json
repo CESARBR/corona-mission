@@ -27,9 +27,10 @@
     "@ionic/angular": "^5.0.0",
     "@ionic/storage": "^2.2.0",
     "@types/crypto-js": "^3.1.43",
+    "br-mask": "0.0.8",
     "cordova-android": "8.1.0",
     "cordova-plugin-aes256-encryption": "^2.0.0",
-    "br-mask": "0.0.8",
+    "cordova-sqlite-storage": "^5.0.0",
     "core-js": "^2.5.4",
     "crypto-js": "^4.0.0",
     "rxjs": "~6.5.1",
@@ -81,7 +82,8 @@
       "cordova-plugin-ionic-webview": {
         "ANDROID_SUPPORT_ANNOTATIONS_VERSION": "27.+"
       },
-      "cordova-plugin-ionic-keyboard": {}
+      "cordova-plugin-ionic-keyboard": {},
+      "cordova-sqlite-storage": {}
     },
     "platforms": [
       "android"
