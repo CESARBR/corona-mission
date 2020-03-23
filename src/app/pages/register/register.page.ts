@@ -19,7 +19,6 @@ export class RegisterPage implements OnInit {
     private storageService: StorageService, private plt:Platform) { 
     this.plt.ready().then(() => {        
       this.loadPersons();
-      this.storageService.deleteAll();
     });
 }
 
@@ -62,6 +61,7 @@ export class RegisterPage implements OnInit {
     this.newPerson.phone = this.ionicForm.value.phone;
     this.newPerson.relationship = this.ionicForm.value.relationship;
 
+    
     this.storageService.addPerson(this.newPerson).then(person => {
       this.newPerson = <Person>{};
     });
