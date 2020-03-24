@@ -20,11 +20,23 @@ export class HomePage implements OnInit {
     private storageService: StorageService) { 
   }
 
-  async ionViewWillEnter() {
-    const databaseCtrl = new DatabaseServices();
-    const authCtrl = new AuthServices();
-    const userItens = await databaseCtrl.readItemByKey('/users/'+authCtrl.getCurrentUserId(),'');
-    this.loadPersons();
+  ionViewWillEnter() {
+
+    const ds = new DatabaseServices();
+
+    const a = ds.readItemByKey('/users/zg1EvNi9Z4VYoWXWcw6Xu5L8GrC2/velhos', '').then((res) => {
+
+      this.hasRegistered = Boolean(res && res.val());
+
+      if (this.hasRegistered) {
+        this.registeredUsers = Object.values(res.val());
+      }
+      //this.loadPersons();
+      console.log("teste");
+      console.log(res.val());
+    });
+
+
   }
 
   ngOnInit() { 
