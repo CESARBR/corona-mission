@@ -11,6 +11,51 @@ export class DatabaseServices {
 
 
 
-    //TODO: CRUD FROM ENTITIES APP
+    createItem(path: string, item) {
+        var modelReference = firebase.database().ref(path);
+
+        modelReference.push(item);
+
+    }
+
+    createManyItem(path: string, item: Array<any>) {
+        item.forEach(value => {
+            this.createItem(path, value);
+        });
+    }
+
+    readItemByKey(path, key) {
+        var response;
+        var modelReference = firebase.database().ref(path + (key ? '/' + key : ''));
+        modelReference.once('value').then(snapshot => {
+            if (snapshot.val())
+                response = snapshot.val();
+            else response = '';
+        });
+
+        return response;
+
+    }
+
+    readItemByAtribute() {
+
+    }
+
+    updateItemByKey() {
+
+    }
+
+    updateItemByAtribute() {
+
+    }
+
+    deleteItemByKey() {
+
+    }
+
+    deleteItemByAtribute() {
+
+    }
+
 
 }
