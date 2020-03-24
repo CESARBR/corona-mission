@@ -26,22 +26,9 @@ export class RegisterPage implements OnInit {
 }
 
   ionViewWillLeave() {
-    this.storage.ready().then(() => {
-      this.storage.get('persons').then((val) => {
-        console.log('persons is 2 ', val);
-        this.people = val;
-        this.storage.set('persons', this.people).then(() => {
-          console.log("now really leaving")
-        });
-      });
-    });
   }
 
   ngOnInit() {
-    this.storage.get('persons').then((val) => {
-      console.log('persons is', val);
-      this.people = val;
-    });
 
     this.ionicForm = this.formBuilder.group({
       name: ['', [Validators.required]],
@@ -59,32 +46,11 @@ export class RegisterPage implements OnInit {
 
     this.isSubmitted = true;
     if (!this.ionicForm.valid) {
-      console.log('Please provide all the required values!')
+      console.log('Please provide all the required values!');
       return false;
     } else {
-      let newPerson = {
-        id: Date.now(),
-        name: this.ionicForm.value.name,
-        age: this.ionicForm.value.age,
-        phone: this.ionicForm.value.phone,
-        relationship: this.ionicForm.value.relationship,
-        mission: "Clique para realizar missões!",
-        mission_color: "dark",
-        mission_label_color: "dark",
-        avatar: "../../assets/img/person_icon.png"
-      }
 
-      if (this.people === undefined || this.people === null) {
-        this.people = [newPerson]
-      } else {
-        this.people.push(newPerson)
-      }
-      this.storage.set('persons', this.people).then(() => {
-        this.ionicForm.reset()
-        this.navCtrl.setDirection('forward');
-        this.navCtrl.navigateForward('/home');
-      });
-      
+      this.addUser();
     }
   }
 
@@ -96,18 +62,21 @@ export class RegisterPage implements OnInit {
   } 
 
   addUser() {        
-    this.newPerson.id = Date.now();
     this.newPerson.name = this.ionicForm.value.name;
     this.newPerson.age = this.ionicForm.value.age;
     this.newPerson.phone = this.ionicForm.value.phone;
     this.newPerson.relationship = this.ionicForm.value.relationship;
+    this.newPerson.mission = "Clique para realizar missões!";
+    this.newPerson.mission_color = "dark";
+    this.newPerson.mission_label_color = "dark";
+    this.newPerson.avatar = "../../assets/img/person_icon.png";
 
-    
-    this.storageService.addPerson(this.newPerson).then(person => {
+    this.storageService.addPerson(this.newPerson).then(() => {
+      this.ionicForm.reset();
       this.newPerson = <Person>{};
+      this.navCtrl.setDirection('forward');
+      this.navCtrl.navigateForward('/home');
     });
-    this.loadPersons();
-    console.log(this.persons);
   }
 
 }
