@@ -58,14 +58,14 @@
         <ion-item>
           <ion-label position="floating">Parentesco</ion-label>
           <ion-select formControlName="relationship" placeholder="Selecione" okText="Selecionar" cancelText="Cancelar">
-            <ion-select-option value="mother">Mãe</ion-select-option>
-            <ion-select-option value="father">Pai</ion-select-option>
-            <ion-select-option value="aunt">Tia</ion-select-option>
-            <ion-select-option value="uncle">Tio</ion-select-option>
-            <ion-select-option value="grandm">Avó</ion-select-option>
-            <ion-select-option value="grandf">Avô</ion-select-option>
-            <ion-select-option value="friendm">Amiga</ion-select-option>
-            <ion-select-option value="friendf">Amigo</ion-select-option>
+            <ion-select-option value="Mãe">Mãe</ion-select-option>
+            <ion-select-option value="Pai">Pai</ion-select-option>
+            <ion-select-option value="Tia">Tia</ion-select-option>
+            <ion-select-option value="Tio">Tio</ion-select-option>
+            <ion-select-option value="Avó">Avó</ion-select-option>
+            <ion-select-option value="Avô">Avô</ion-select-option>
+            <ion-select-option value="Amiga">Amiga</ion-select-option>
+            <ion-select-option value="Amigo">Amigo</ion-select-option>
           </ion-select>
         </ion-item>
         <span class="error ion-padding" *ngIf="isSubmitted && errorControl.relationship.errors?.required">

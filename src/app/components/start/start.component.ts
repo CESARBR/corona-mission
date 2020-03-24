@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { NavController } from '@ionic/angular';
+import { Storage } from '@ionic/storage';
+import { StorageService } from 'src/app/services/storage.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -8,12 +11,13 @@ import { Router } from '@angular/router';
 })
 export class StartComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor(private navCtrl: NavController, private storage: StorageService) { }
 
   ngOnInit() {}
 
   navigateToLoginPage() {
-    this.router.navigate(['home']);
+    this.storage.markSeenSlides().then(() => {
+      this.navCtrl.navigateForward('/login-email');
+    });
   }
-
 }

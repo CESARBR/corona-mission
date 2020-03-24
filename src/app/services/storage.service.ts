@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
+import { v4 as uuidv4 } from 'uuid';
 
 export interface Item {
   id: number,
@@ -10,16 +11,21 @@ export interface Item {
 }
 
 export interface Person {
-  id: number,
+  id: string,
   name: string,
   relationship: string,
   age: number,
   phone: string,
-  avatar: string
+  avatar: string,
+  mission: string,
+  mission_color: string,
+  mission_label_color: string
 }
 
 const ITEMS_KEY = 'my-items';
 const PERSON_KEY = 'my-persons';
+const SEEN_SLIDES_KEY = 'seenSlides';
+const LOGGED_USER_KEY = 'logged-user';
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +33,15 @@ const PERSON_KEY = 'my-persons';
 export class StorageService {
 
   constructor(private storage : Storage) { }
+
+
+  isSeenSlides (): Promise<boolean> {
+    return this.storage.get(SEEN_SLIDES_KEY);
+  }
+
+  markSeenSlides (): Promise<any> {
+    return this.storage.set(SEEN_SLIDES_KEY, true);
+  }
 
   //Create user
   addItem(item : Item) : Promise<any> {    
@@ -43,6 +58,12 @@ export class StorageService {
   //Read users
   getItems() : Promise<Item[]>{
     return this.storage.get(ITEMS_KEY);
+  }
+
+  getItemById(id: number): Promise<Item> {
+    return this.getItems().then((itens) => {
+      return itens.filter(p => p.id = id)[0];
+    });
   }
 
   //Update user
@@ -90,6 +111,7 @@ export class StorageService {
 
   //Create person
   addPerson(person : Person) : Promise<any> {   
+    person.id = uuidv4();
     return this.storage.get(PERSON_KEY).then((persons: Person[]) => {
       if(persons){        
         persons.push(person);        
@@ -103,6 +125,16 @@ export class StorageService {
   //Read persons
   getPersons(): Promise<Person[]>{
     return this.storage.get(PERSON_KEY);
+  }
+
+  getPersonById(id: string): Promise<Person> {
+    return this.getPersons().then((persons) => {
+      return persons.filter(p => p.id = id)[0];
+    });
+  }
+
+  setPersons(persons: Person[]): Promise<Person[]>{
+    return this.storage.set(PERSON_KEY, persons);
   }
 
     //Update person
@@ -122,5 +154,13 @@ export class StorageService {
         }  
         return this.storage.set(ITEMS_KEY, newPersons);
       });
+    }
+
+    addLoggedUser (item: Item): Promise<any> {
+      return this.storage.set(LOGGED_USER_KEY, item);
+    }
+
+    removeLoggedUser (): Promise<any> {
+      return this.storage.remove(LOGGED_USER_KEY);
     }
 }
