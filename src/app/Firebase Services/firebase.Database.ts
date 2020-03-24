@@ -24,17 +24,9 @@ export class DatabaseServices {
         });
     }
 
-    readItemByKey(path, key) {
-        var response;
-        var modelReference = firebase.database().ref(path + (key ? '/' + key : ''));
-        modelReference.once('value').then(snapshot => {
-            if (snapshot.val())
-                response = snapshot.val();
-            else response = '';
-        });
-
-        return response;
-
+    readItemByKey(path, key?): Promise<any> {
+        const modelReference = firebase.database().ref(path + (key ? '/' + key : ''));
+        return modelReference.once("value");
     }
 
     readItemByAtribute() {

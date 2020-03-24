@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { DataService } from '../services/data.service';
 import { StorageService } from '../services/storage.service';
+import { DatabaseServices } from '../Firebase Services/firebase.Database';
 
 @Component({
   selector: 'app-home',
@@ -18,7 +19,22 @@ export class HomePage implements OnInit {
   }
 
   ionViewWillEnter() {
-    this.loadPersons();
+
+    const ds = new DatabaseServices();
+
+    const a = ds.readItemByKey('/users/zg1EvNi9Z4VYoWXWcw6Xu5L8GrC2/velhos', '').then((res) => {
+
+      this.hasRegistered = Boolean(res && res.val());
+
+      if (this.hasRegistered) {
+        this.registeredUsers = Object.values(res.val());
+      }
+      //this.loadPersons();
+      console.log("teste");
+      console.log(res.val());
+    });
+
+
   }
 
   ngOnInit() { 
