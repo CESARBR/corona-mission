@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { NavController } from '@ionic/angular';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-index',
@@ -7,9 +9,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class IndexPage implements OnInit {
 
-  constructor() { }
+  constructor(private storage: Storage, private navCtrl: NavController) { }
 
   ngOnInit() {
+    this.storage.ready().then(() => {
+      this.storage.get('seenSlides').then((val) => {
+        if (val) {
+          this.navCtrl.setDirection('forward');
+          this.navCtrl.navigateForward('/home');
+        }
+      });
+    });
   }
 
 }

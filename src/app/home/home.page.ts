@@ -14,18 +14,22 @@ export class HomePage implements OnInit {
   registeredUsers = [];
 
   constructor(private navCtrl: NavController, private dataService: DataService, private storage: Storage) { }
+  
+  ionViewWillEnter() {
+    this.ngOnInit()
+  }
 
   ngOnInit() {
-    this.storage.get('persons').then((val) => {
-      console.log('persons is', val);
-      this.registeredUsers = val;
-      if (val === null) {
-        this.hasRegistered = false;
-      } else {
-        this.hasRegistered = true;
-      }
+    this.storage.ready().then(() => {
+      this.storage.get('persons').then((val) => {
+        this.registeredUsers = val;
+        if (val === null || val.length === 0) {
+          this.hasRegistered = false;
+        } else {
+          this.hasRegistered = true;
+        }
+      });
     });
-    
   }
 
   openDetail(id) {
@@ -37,8 +41,19 @@ export class HomePage implements OnInit {
   }
 
   addPerson() {
-    this.navCtrl.setDirection('forward');
-    this.navCtrl.navigateForward('/home/register', );
+    let people;
+    this.storage.ready().then(() => {
+      this.storage.get('persons').then((val) => {
+        console.log('persons is 2 ', val);
+        people = val;
+        this.storage.set('persons', people).then(() => {
+          console.log("now really leaving")
+          this.navCtrl.setDirection('forward');
+          this.navCtrl.navigateForward('/home/register', );
+        });
+      });
+    });
+    
   }
 
 }
