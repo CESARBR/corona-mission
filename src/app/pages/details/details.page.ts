@@ -18,6 +18,9 @@ export class DetailsPage implements OnInit {
   challenges: any;
   SampleJson: any;
   persons: any;
+
+  countMissions: number;
+
   constructor(private route: ActivatedRoute, private storage: StorageService, private navCtrl: NavController) { 
     
   }
@@ -362,6 +365,9 @@ export class DetailsPage implements OnInit {
         this.persons[i] = this.person;
       }
     }
+
+    this.countMissions = this.person.challenges.filter(c => c.status === "checkmark-outline").length;
+
     this.storage.setPersons(this.persons);
   }
 }
