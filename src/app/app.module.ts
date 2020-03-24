@@ -10,6 +10,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { IonicStorageModule } from '@ionic/storage';
+import { environment } from 'src/environments/environment';
+
+import * as firebase from 'firebase/app';
+import { DatabaseServices } from './Firebase-Services/firebase.Database';
+import { AuthFirebaseService } from './Firebase-Services/firebase.Auth';
+firebase.initializeApp(environment.firebase);
 
 @NgModule({
   declarations: [AppComponent],
@@ -23,7 +29,8 @@ import { IonicStorageModule } from '@ionic/storage';
   providers: [
     StatusBar,
     SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    DatabaseServices, AuthFirebaseService
   ],
   bootstrap: [AppComponent]
 })
