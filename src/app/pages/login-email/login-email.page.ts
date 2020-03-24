@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { NavController, Platform, ToastController } from '@ionic/angular';
 import { StorageService, Item } from '../../services/storage.service';
-import { AuthServices } from '../../Firebase Services/firabase.Auth'
+import { AuthServices } from '../../Firebase-Services/firebase.Auth'
 
 @Component({
   selector: 'app-login-email',
