@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { NavController } from '@ionic/angular';
-import { auth } from '../../Firebase-Services/firebase.Services'
 import * as CryptoJS from 'crypto-js';
+import { AuthFirebaseService } from 'src/app/Firebase-Services/firebase.Auth';
 
 
 @Component({
@@ -14,7 +14,8 @@ export class SignupPage implements OnInit {
   ionicForm: FormGroup;
   isSubmitted = false;
 
-  constructor(public formBuilder: FormBuilder, private navCtrl: NavController) { }
+  constructor(public formBuilder: FormBuilder, private navCtrl: NavController,
+    private authFirebaseService: AuthFirebaseService) { }
 
   ngOnInit() {
     this.ionicForm = this.formBuilder.group({
@@ -44,7 +45,7 @@ export class SignupPage implements OnInit {
       return false;
     } else {
       
-      auth.doRegister(this.ionicForm.value);
+      this.authFirebaseService.doRegister(this.ionicForm.value);
       this.navCtrl.setDirection('forward');
       this.navCtrl.navigateForward('/home');
       console.log(this.ionicForm.value)

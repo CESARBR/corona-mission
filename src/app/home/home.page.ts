@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { DataService } from '../services/data.service';
-import { StorageService } from '../services/storage.service';
-import {database,auth} from '../Firebase-Services/firebase.Services'
+import { AuthFirebaseService } from '../Firebase-Services/firebase.Auth';
+import { DatabaseServices } from '../Firebase-Services/firebase.Database';
 
 
 
@@ -16,41 +16,28 @@ export class HomePage implements OnInit {
 
   registeredUsers = [];
 
-  constructor(private navCtrl: NavController, private dataService: DataService, 
-    private storageService: StorageService) { 
+  constructor(private navCtrl: NavController, private dataService: DataService,
+    private authFirebaseService: AuthFirebaseService, private databaseFirebaseService: DatabaseServices) { 
   }
 
   ionViewWillEnter() {
 
-    
-    const a = database.readItemByKey('/users/'+auth.getCurrentUserId()+'/velhos', '').then((res) => {
-
-      this.hasRegistered = Boolean(res && res.val());
-
-      if (this.hasRegistered) {
-        this.registeredUsers = Object.values(res.val());
-      }
-      //this.loadPersons();
-      console.log("teste");
-      console.log(res.val());
-    });
-
-
+    this.loadPersons();
   }
 
   ngOnInit() { 
   }
 
   loadPersons(){
+    this.databaseFirebaseService
+    .readItemByKey('/users/'+this.authFirebaseService.getCurrentUserId()+'/contacts', '').then((res) => {
 
-      this.storageService.getPersons().then((persons) => {
-  
-        this.hasRegistered = Boolean(persons && persons.length > 0);
+      this.hasRegistered = Boolean(res && res.val());
 
-        if (this.hasRegistered) {
-          this.registeredUsers = persons;
-        }
-      });
+      if (this.hasRegistered) {
+        this.registeredUsers = Object.values(res.val());
+      }
+    });
   } 
 
   openDetail(id) {
@@ -64,6 +51,10 @@ export class HomePage implements OnInit {
   addPerson() {
     this.navCtrl.setDirection('forward');
     this.navCtrl.navigateForward('/home/register', );
+  }
+
+  logout () {
+    this.authFirebaseService.doSignOutEmail();
   }
 
 }

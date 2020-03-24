@@ -1,10 +1,13 @@
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
+import { Injectable } from '@angular/core';
+import { Route } from '@angular/compiler/src/core';
+import { Router } from '@angular/router';
+import { NavController } from '@ionic/angular';
 
-
-
-export class AuthServices {
-    constructor() { }
+@Injectable()
+export class AuthFirebaseService {
+    constructor(private nvc: NavController) { }
 
     doLoginEmail(email, password) {
         return new Promise<any>((resolve, reject) => {
@@ -21,8 +24,9 @@ export class AuthServices {
     }
 
     doSignOutEmail() {
-        firebase.auth().signOut().then(function () {
+        firebase.auth().signOut().then(() => {
             console.log('signout successuful');
+            this.nvc.navigateRoot('/login-email');
         }).catch(function (error) {
             console.log('signout failed');
         });
@@ -80,8 +84,11 @@ export class AuthServices {
         })
     }
 
-    getCurrentUserId()
-    {
-        return firebase.auth().currentUser.uid;
+    getCurrentUserId() {
+
+        if (firebase.auth() && firebase.auth().currentUser) {
+
+            return firebase.auth().currentUser.uid;
+        }
     }
 }
