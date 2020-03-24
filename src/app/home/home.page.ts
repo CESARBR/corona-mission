@@ -35,7 +35,7 @@ export class HomePage implements OnInit {
       this.hasRegistered = Boolean(res && res.val());
 
       if (this.hasRegistered) {
-        this.registeredUsers = Object.values(res.val());
+        this.registeredUsers = res.val();
       }
     });
   } 
