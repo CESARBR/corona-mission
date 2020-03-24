@@ -22,7 +22,7 @@ const routes: Routes = [
   {
     path: 'details/:id',
     resolve: {
-      special: DataResolverService
+      idContact: DataResolverService
     },
     loadChildren: () => import('./pages/details/details.module').then( m => m.DetailsPageModule)
   },
