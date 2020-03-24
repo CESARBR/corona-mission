@@ -24,38 +24,37 @@ export class DatabaseServices {
         });
     }
 
-    readItemByKey(path, key) {
+    readItemByKey(path: string, key: string) {
         var response;
         var modelReference = firebase.database().ref(path + (key ? '/' + key : ''));
-        modelReference.once('value').then(snapshot => {
+        modelReference.once('value',snapshot => {
             if (snapshot.val())
                 response = snapshot.val();
             else response = '';
         });
-
         return response;
 
     }
 
-    readItemByAtribute() {
+    //readItemByAtribute(path:string, atribute:string ) {
 
-    }
+    // }
 
-    updateItemByKey() {
+    // updateItemByKey() {
 
-    }
+    // }
 
-    updateItemByAtribute() {
+    // updateItemByAtribute() {
 
-    }
+    // }
 
-    deleteItemByKey() {
+    // deleteItemByKey() {
 
-    }
+    // }
 
-    deleteItemByAtribute() {
+    // deleteItemByAtribute() {
 
-    }
+    // }
 
 
 }
