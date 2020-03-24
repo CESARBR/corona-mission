@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { DataService } from '../services/data.service';
 import { StorageService } from '../services/storage.service';
-import {DatabaseServices} from '../Firebase-Services/firebase.Database'
-import {AuthServices} from '../Firebase-Services/firebase.Auth'
+import {database,auth} from '../Firebase-Services/firebase.Services'
+
 
 
 @Component({
@@ -22,9 +22,8 @@ export class HomePage implements OnInit {
 
   ionViewWillEnter() {
 
-    const ds = new DatabaseServices();
-
-    const a = ds.readItemByKey('/users/zg1EvNi9Z4VYoWXWcw6Xu5L8GrC2/velhos', '').then((res) => {
+    
+    const a = database.readItemByKey('/users/'+auth.getCurrentUserId()+'/velhos', '').then((res) => {
 
       this.hasRegistered = Boolean(res && res.val());
 

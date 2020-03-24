@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { NavController, Platform, ToastController } from '@ionic/angular';
 import { StorageService, Item } from '../../services/storage.service';
-import { AuthServices } from '../../Firebase-Services/firebase.Auth'
+import { auth } from '../../Firebase-Services/firebase.Services'
 import { Router } from '@angular/router';
 
 @Component({
@@ -34,18 +34,17 @@ export class LoginEmailPage implements OnInit {
   }
 
   submitForm() {
-    let authCtrl = new AuthServices();
+
     this.isSubmitted = true;
     if (!this.ionicForm.valid) {
-      console.log('Please provide all the required values!');
+      console.log('Please provide all the required values!');s
       return false;
     } else {
-      
-      this.router.navigateByUrl('/home');
-      // authCtrl.doLoginEmail(this.ionicForm.value.email,this.ionicForm.value.password).then((res) => {
 
-      //   console.log(res);
-      // });
+      auth.doLoginEmail(this.ionicForm.value.email, this.ionicForm.value.password).then((res) => {
+        console.log(res);
+        this.router.navigateByUrl('/home');
+      });
     }
   }
 

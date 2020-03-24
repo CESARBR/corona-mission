@@ -1,8 +1,7 @@
-import { environment } from 'src/environments/environment';
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
 
-firebase.initializeApp(environment.firebase);
+
 
 export class AuthServices {
     constructor() { }
