@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
+import { v4 as uuidv4 } from 'uuid';
 
 export interface Item {
   id: number,
@@ -10,12 +11,15 @@ export interface Item {
 }
 
 export interface Person {
-  id: number,
+  id: string,
   name: string,
   relationship: string,
   age: number,
   phone: string,
-  avatar: string
+  avatar: string,
+  mission: string,
+  mission_color: string,
+  mission_label_color: string
 }
 
 const ITEMS_KEY = 'my-items';
@@ -101,6 +105,7 @@ export class StorageService {
 
   //Create person
   addPerson(person : Person) : Promise<any> {   
+    person.id = uuidv4();
     return this.storage.get(PERSON_KEY).then((persons: Person[]) => {
       if(persons){        
         persons.push(person);        
