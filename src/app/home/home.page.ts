@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { DataService } from '../services/data.service';
 import { StorageService } from '../services/storage.service';
-import {database,auth} from '../Firebase-Services/firebase.Services'
+import {database, auth} from '../Firebase-Services/firebase.Services'
 
 
 
@@ -23,7 +23,7 @@ export class HomePage implements OnInit {
   ionViewWillEnter() {
 
     
-    const a = database.readItemByKey('/users/'+auth.getCurrentUserId()+'/velhos', '').then((res) => {
+    const a = database.readItemByKey('/users/'+auth.getCurrentUserId()+'/contacts', '').then((res) => {
 
       this.hasRegistered = Boolean(res && res.val());
 

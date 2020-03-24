@@ -37,7 +37,7 @@ export class LoginEmailPage implements OnInit {
 
     this.isSubmitted = true;
     if (!this.ionicForm.valid) {
-      console.log('Please provide all the required values!');s
+      console.log('Please provide all the required values!');
       return false;
     } else {
 
