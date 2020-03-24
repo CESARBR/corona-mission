@@ -13,6 +13,9 @@ import { StorageService } from 'src/app/services/storage.service';
 })
 export class DetailsPage implements OnInit {
 
+  private readonly STATUS_UNCHECK = "ellipse-outline";
+  private readonly STATUS_CHECK = "checkmark-outline";
+
   data: any;
   person: any;
   challenges: any;
@@ -269,8 +272,10 @@ export class DetailsPage implements OnInit {
             this.storage.setPersons(this.persons);
           }
         }
+        this.updateCountMissions();
       });
     }
+
   }
 
   getThreeChallenges() {
@@ -352,11 +357,11 @@ export class DetailsPage implements OnInit {
   changeStatus(challenge) {
     for (let i = 0; i < this.person.challenges.length; i++) {
       if (this.person.challenges[i].id === challenge.id) {
-        if (challenge.status == "checkmark-outline") {
-          this.person.challenges[i].status = "ellipse-outline";
+        if (challenge.status == this.STATUS_CHECK) {
+          this.person.challenges[i].status = this.STATUS_UNCHECK;
 
         } else {
-          this.person.challenges[i].status = "checkmark-outline";
+          this.person.challenges[i].status = this.STATUS_CHECK;
         }
       }
     }
@@ -366,8 +371,12 @@ export class DetailsPage implements OnInit {
       }
     }
 
-    this.countMissions = this.person.challenges.filter(c => c.status === "checkmark-outline").length;
+    this.updateCountMissions();
 
     this.storage.setPersons(this.persons);
+  }
+
+  private updateCountMissions() {
+    this.countMissions = this.person.challenges.filter(c => c.status === this.STATUS_CHECK).length;
   }
 }
