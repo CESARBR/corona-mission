@@ -34,26 +34,26 @@
   </div>
 
   <div class="has-registered" *ngIf="hasRegistered">
-    <ion-card *ngFor="let person of registeredUsers" color="medium" (click)="openDetail(person.id)">
+    <ion-card *ngFor="let person of registeredUsers | keyvalue" color="medium" (click)="openDetail(person.key)">
       <ion-card-content>
         <ion-grid>
           <ion-row>
             <ion-col size="3">
               <ion-avatar class="avatar">
-                <img [src]="person.avatar">
+                <img [src]="person.value.avatar">
               </ion-avatar>
             </ion-col>
             <ion-col size="8">
               <ion-grid>
                 <ion-row>
-                  <p class="name">{{person.name}}</p>
+                  <p class="name">{{person.value.name}}</p>
                 </ion-row>
                 <ion-row>
-                  <p class="relationship">{{person.relationship}}</p>
+                  <p class="relationship">{{person.value.relationship}}</p>
                 </ion-row>
                 <ion-row>
-                  <ion-chip [color]="person.mission_color">
-                    <ion-label [color]="person.mission_label_color">{{person.mission}}</ion-label>
+                  <ion-chip [color]="person.value.mission_color">
+                    <ion-label [color]="person.value.mission_label_color">{{person.value.mission}}</ion-label>
                   </ion-chip>
                 </ion-row>
               </ion-grid>
