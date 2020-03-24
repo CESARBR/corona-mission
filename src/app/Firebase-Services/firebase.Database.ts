@@ -1,14 +1,14 @@
 import * as firebase from 'firebase/app';
 import 'firebase/database';
+import { Injectable } from '@angular/core';
 
 
 
+@Injectable()
 export class DatabaseServices {
     constructor(
 
     ) { }
-
-
 
     createItem(path: string, item) {
         var modelReference = firebase.database().ref(path);

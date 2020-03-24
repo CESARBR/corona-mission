@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { NavController, Platform, ToastController } from '@ionic/angular';
 import { StorageService, Item } from '../../services/storage.service';
-import { auth } from '../../Firebase-Services/firebase.Services'
 import { Router } from '@angular/router';
+import { AuthFirebaseService } from 'src/app/Firebase-Services/firebase.Auth';
 
 @Component({
   selector: 'app-login-email',
@@ -19,7 +19,7 @@ export class LoginEmailPage implements OnInit {
   newItem: Item = <Item>{};
 
   constructor(public formBuilder: FormBuilder, private navCtrl: NavController,
-    private storageService: StorageService, private router: Router) {
+    private authFirebaseService: AuthFirebaseService, private router: Router) {
   }
 
   ngOnInit() {
@@ -37,22 +37,14 @@ export class LoginEmailPage implements OnInit {
 
     this.isSubmitted = true;
     if (!this.ionicForm.valid) {
-      console.log('Please provide all the required values!');s
+      console.log('Please provide all the required values!');
       return false;
     } else {
 
-      auth.doLoginEmail(this.ionicForm.value.email, this.ionicForm.value.password).then((res) => {
-        console.log(res);
+      this.authFirebaseService.doLoginEmail(this.ionicForm.value.email, this.ionicForm.value.password).then((res) => {
         this.router.navigateByUrl('/home');
       });
     }
-  }
-
-  //READ ITEMS
-  loadItems() {
-    this.storageService.getItems().then(items => {
-      this.items = items;
-    });
   }
 
   // addUser() {        
