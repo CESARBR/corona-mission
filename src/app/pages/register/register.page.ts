@@ -3,7 +3,9 @@ import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { NavController, Platform } from '@ionic/angular';
 import { StorageService, Person } from '../../services/storage.service';
 import { Storage } from '@ionic/storage';
-import {database, auth} from '../../Firebase-Services/firebase.Services'
+import { DatabaseServices } from '../../Firebase-Services/firebase.Database';
+import { AuthFirebaseService } from '../../Firebase-Services/firebase.Auth';
+//import { database, auth } from '../../Firebase-Services/firebase.Services'
 
 @Component({
   selector: 'app-register',
@@ -15,16 +17,13 @@ export class RegisterPage implements OnInit {
   isSubmitted = false;
 
   persons: Person[] = [];
-  newPerson: Person = <Person>{};  
+  newPerson: Person = <Person>{};
 
   people: any
 
   constructor(public formBuilder: FormBuilder, private navCtrl: NavController,
-    private storageService: StorageService, private plt:Platform, private storage: Storage) { 
-    this.plt.ready().then(() => {        
-      this.loadPersons();
-    });
-}
+    private storageService: StorageService, private database : DatabaseServices, private auth : AuthFirebaseService) {
+  }
 
   ionViewWillLeave() {
   }
@@ -56,13 +55,13 @@ export class RegisterPage implements OnInit {
   }
 
   //READ ITEMS
-  loadPersons(){
+  loadPersons() {
     this.storageService.getPersons().then(persons => {
-      this.persons = persons;      
+      this.persons = persons;
     });
-  } 
+  }
 
-  addUser() {        
+  addUser() {
     this.newPerson.name = this.ionicForm.value.name;
     this.newPerson.age = this.ionicForm.value.age;
     this.newPerson.phone = this.ionicForm.value.phone;
@@ -72,14 +71,12 @@ export class RegisterPage implements OnInit {
     this.newPerson.mission_label_color = "dark";
     this.newPerson.avatar = "../../assets/img/person_icon.png";
 
-    const key = database.createItem('/users/'+auth.getCurrentUserId()+'/contacts',this.newPerson);
-    console.log(key)
-    this.storageService.addPerson(this.newPerson).then(() => {
-      this.ionicForm.reset();
-      this.newPerson = <Person>{};
-      this.navCtrl.setDirection('forward');
-      this.navCtrl.navigateForward('/home');
-    });
+    const key = this.database.createItem('/users/' + this.auth.getCurrentUserId() + '/contacts', this.newPerson);
+    console.log(key);
+
+    this.navCtrl.setDirection('forward');
+    this.navCtrl.navigateForward('/home');
   }
+
 
 }
