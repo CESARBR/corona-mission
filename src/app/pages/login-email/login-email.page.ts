@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { NavController, Platform, ToastController } from '@ionic/angular';
 import { StorageService, Item } from '../../services/storage.service';
 import { AuthServices } from '../../Firebase Services/firabase.Auth'
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-email',
@@ -18,11 +19,7 @@ export class LoginEmailPage implements OnInit {
   newItem: Item = <Item>{};
 
   constructor(public formBuilder: FormBuilder, private navCtrl: NavController,
-    private storageService: StorageService, private plt: Platform) {
-    this.plt.ready().then(() => {
-      this.loadItems();
-      console.log(this.items);
-    });
+    private storageService: StorageService, private router: Router) {
   }
 
   ngOnInit() {
@@ -44,9 +41,11 @@ export class LoginEmailPage implements OnInit {
       return false;
     } else {
       
-      authCtrl.doLoginEmail(this.ionicForm.value.email,this.ionicForm.value.password);
-      this.navCtrl.setDirection('forward');
-      this.navCtrl.navigateForward('/home');
+      this.router.navigateByUrl('/home');
+      // authCtrl.doLoginEmail(this.ionicForm.value.email,this.ionicForm.value.password).then((res) => {
+
+      //   console.log(res);
+      // });
     }
   }
 
