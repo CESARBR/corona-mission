@@ -40,12 +40,7 @@ export class AppComponent {
         title : "Sobre",
         url   : "/about",
         icon  : "information-circle-outline"
-      },
-      {
-        title : "Sair",
-        url   : "/logout",
-        icon  : "exit-outline"
-      },
+      }
     ]
   }
 }

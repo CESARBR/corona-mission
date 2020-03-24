@@ -15,35 +15,25 @@ export class HomePage implements OnInit {
 
   constructor(private navCtrl: NavController, private dataService: DataService, 
     private storageService: StorageService) { 
-    }
+  }
 
-    ionViewWillEnter() {
-      this.loadPersons();
-    }
+  ionViewWillEnter() {
+    this.loadPersons();
+  }
 
-    ngOnInit () {}
+  ngOnInit() { 
+  }
 
-    loadPersons(){
-        this.storageService.getPersons().then((persons) => {
-    
-          if (!persons || persons.length == 0) {
-            return;
-          }
-    
-          this.registeredUsers = persons.map(person => {
-    
-            return {
-              id: person.id,
-              name: person.name,
-              relationship: person.relationship,
-              mission: "Realizar primeira missão",
-              mission_color: "dark",
-              mission_label_color: "dark",
-              avatar: "../../assets/img/person_icon.png"
-            }
-          });
-        });
-    } 
+  loadPersons(){
+      this.storageService.getPersons().then((persons) => {
+  
+        this.hasRegistered = Boolean(persons && persons.length > 0);
+
+        if (this.hasRegistered) {
+          this.registeredUsers = persons;
+        }
+      });
+  } 
 
   openDetail(id) {
     console.log("Opening ... " + id)

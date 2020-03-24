@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 // import { CallNumber } from '@ionic-native/call-number/ngx';
+import { Storage } from '@ionic/storage';
+import { NavController } from '@ionic/angular';
+import { ThrowStmt } from '@angular/compiler';
+import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
   selector: 'app-details',
@@ -9,15 +13,21 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class DetailsPage implements OnInit {
 
+  private readonly STATUS_UNCHECK = "ellipse-outline";
+  private readonly STATUS_CHECK = "checkmark-outline";
+
   data: any;
   person: any;
   challenges: any;
   SampleJson: any;
-  constructor(private route: ActivatedRoute) { 
+  persons: any;
+
+  countMissions: number;
+
+  constructor(private route: ActivatedRoute, private storage: StorageService, private navCtrl: NavController) { 
     
   }
 
-  
   ngOnInit() {
     this.SampleJson = [
       {
@@ -238,33 +248,88 @@ export class DetailsPage implements OnInit {
         "status": "ellipse-outline"
       }
   ];
-    this.challenges = [this.SampleJson[Math.floor((Math.random() * this.SampleJson.length) + 0)],
-      this.SampleJson[Math.floor((Math.random() * this.SampleJson.length) + 0)],
-      this.SampleJson[Math.floor((Math.random() * this.SampleJson.length) + 0)]];
-    console.log(this.challenges)
-    console.log(this.SampleJson);
+    this.person = null;
     if (this.route.snapshot.data['special']) {
       this.data = this.route.snapshot.data['special'];
-      this.person =
-        {
-          id: 12,
-          name: "João da Silva",
-          relationship: "Pai",
-          mission: "Realizar primeira missão",
-          mission_color: "dark",
-          mission_label_color: "dark",
-          avatar: "../../assets/img/person_icon.png",
-          phone: "15981272667",
-          missions: 25
-        };
-
+      this.storage.getPersons().then((val) => {
+        this.persons = val;
+        if (val === null) {
+        } else {
+          let index = 0;
+          for (let i = 0; i < this.persons.length; i++) {
+            if (this.persons[i].id == this.data) {
+              this.person = this.persons[i];
+              index = i;
+            }
+          }
+         
+          if (this.person.challenges === undefined || this.person.challenges === null) {
+            this.challenges = [this.SampleJson[Math.floor((Math.random() * this.SampleJson.length) + 0)],
+            this.SampleJson[Math.floor((Math.random() * this.SampleJson.length) + 0)],
+            this.SampleJson[Math.floor((Math.random() * this.SampleJson.length) + 0)]];
+            this.person.challenges = this.challenges;
+            this.persons[index] = this.person;
+            this.storage.setPersons(this.persons);
+          }
+        }
+        this.updateCountMissions();
+      });
     }
+
   }
 
   getThreeChallenges() {
     return [this.SampleJson[Math.floor((Math.random() * this.SampleJson.length) + 0)],
     this.SampleJson[Math.floor((Math.random() * this.SampleJson.length) + 0)],
     this.SampleJson[Math.floor((Math.random() * this.SampleJson.length) + 0)]];
+  }
+
+  shuffle(array) {
+    let currentIndex = array.length, temporaryValue, randomIndex;
+  
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+  
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+  
+      // And swap it with the current element.
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+  
+    return array;
+  }
+
+  moreChallenges() {
+    let count = 3
+    let j = 0;
+    while (j < count) {
+      let newChallenge = this.SampleJson[Math.floor((Math.random() * this.SampleJson.length) + 0)];
+      let notFound = true;
+      for (let i = 0; i < this.person.challenges.length; i++) {
+        if (this.person.challenges[i].id == newChallenge.id) {
+          notFound = false;
+        }
+      }
+      if (notFound) {
+        this.person.challenges.push(newChallenge);
+        j++;
+      }
+      if (this.person.challenges.length === this.SampleJson.length) {
+        break;
+      }
+    }
+    this.person.challenges = this.shuffle(this.person.challenges);
+    for (let i = 0; i < this.persons.length; i++) {
+      if (this.persons[i].id == this.person.id) {
+        this.persons[i] = this.person;
+        this.storage.setPersons(this.persons);
+      }
+    }
+    
   }
 
   
@@ -276,17 +341,42 @@ export class DetailsPage implements OnInit {
     // .catch(err => console.log('Error launching dialer', err));
   }
 
-  updatePerson() {
-    console.log("TODO");
+  updatePerson(id) {
+    for (let i = 0; i < this.persons.length; i++) {
+      if (this.persons[i].id == id) {
+        console.log("found id " + i)
+        this.persons.splice(i, 1);
+      }
+    }
+    this.storage.setPersons(this.persons);
+
+    this.navCtrl.setDirection("back");
+    this.navCtrl.navigateForward('home');
   }
 
   changeStatus(challenge) {
-    if (challenge.status == "checkmark-outline") {
-      challenge.status = "ellipse-outline";
-    } else {
-      challenge.status = "checkmark-outline";
+    for (let i = 0; i < this.person.challenges.length; i++) {
+      if (this.person.challenges[i].id === challenge.id) {
+        if (challenge.status == this.STATUS_CHECK) {
+          this.person.challenges[i].status = this.STATUS_UNCHECK;
+
+        } else {
+          this.person.challenges[i].status = this.STATUS_CHECK;
+        }
+      }
     }
+    for (let i = 0; i < this.persons.length; i++) {
+      if (this.persons[i].id == this.person.id) {
+        this.persons[i] = this.person;
+      }
+    }
+
+    this.updateCountMissions();
+
+    this.storage.setPersons(this.persons);
   }
 
-
+  private updateCountMissions() {
+    this.countMissions = this.person.challenges.filter(c => c.status === this.STATUS_CHECK).length;
+  }
 }

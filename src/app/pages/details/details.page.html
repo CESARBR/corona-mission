@@ -10,7 +10,7 @@
   <img class="corona-mission-blue" src="../../../assets/img/coronamission-blue.svg" alt="">
 
   <div>
-    <ion-grid class="person-info">
+    <ion-grid class="person-info" *ngIf="person !== null">
       <ion-row center center>
         <ion-col size="3">
           <ion-avatar class="avatar">
@@ -26,7 +26,7 @@
               <p class="relationship">{{person.relationship}}</p>
             </ion-row>
             <ion-row>
-              <ion-button color="dark" fill="outline" (click)="updatePerson()">Editar informações</ion-button>
+              <ion-button color="dark" fill="outline" (click)="updatePerson(person.id)">Remover</ion-button>
             </ion-row>
           </ion-grid>
           
@@ -37,7 +37,7 @@
       </ion-row>
       <ion-row>
         <ion-col class="ion-text-start">
-          <p>Total de missões realizadas: <span>{{person.missions}}</span></p>
+          <p>Total de missões realizadas: <span>{{countMissions}}</span></p>
         </ion-col>
       </ion-row>
     </ion-grid>
@@ -46,29 +46,37 @@
 
     
     
-    <ion-card class="challenge-card" *ngFor="let challenge of challenges" color="light">
-      <ion-card-content>
-        <ion-grid>
-          <ion-row>
-            <ion-col size="2">
-              <ion-icon class="challenge-icon" [name]="challenge.icon" color="dark"></ion-icon>
-            </ion-col>
-            <ion-col size="9">
-              <p class="card-title">
-                {{challenge.title}}
-              </p>
-              <p class="card-description">
-                {{challenge.description}}
-              </p>
+    <div *ngIf="person !== null">
+      <ion-card class="challenge-card" *ngFor="let challenge of person.challenges | slice:0:3" color="light">
+        <ion-card-content>
+          <ion-grid>
+            <ion-row>
+              <ion-col size="2">
+                <ion-icon class="challenge-icon" [name]="challenge.icon" color="dark"></ion-icon>
+              </ion-col>
+              <ion-col size="9">
+                <p class="card-title">
+                  {{challenge.title}}
+                </p>
+                <p class="card-description">
+                  {{challenge.description}}
+                </p>
 
-            </ion-col>
-            <ion-col size="1" >
-              <ion-icon class="status-icon" (click)="changeStatus(challenge)" [name]="challenge.status" color="light" ></ion-icon>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-card-content>
-    </ion-card>
+              </ion-col>
+              <ion-col size="1" >
+                <ion-icon [ngClass]="{
+                  'checked':challenge.status === 'checkmark-outline'
+                }" class="status-icon" (click)="changeStatus(challenge)" [(name)]="challenge.status" color="light" ></ion-icon>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <p class="more-missions">
+      <ion-button color="primary" fill="" (click)="moreChallenges()">Ver outras missões</ion-button>
+    </p>
     
     
   </div>
