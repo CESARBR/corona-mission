@@ -249,8 +249,8 @@ export class DetailsPage implements OnInit {
       }
   ];
     this.person = null;
-    if (this.route.snapshot.data['special']) {
-      this.data = this.route.snapshot.data['special'];
+    if (this.route.snapshot.data['idContact']) {
+      this.data = this.route.snapshot.data['idContact'];
       this.storage.getPersons().then((val) => {
         this.persons = val;
         if (val === null) {
