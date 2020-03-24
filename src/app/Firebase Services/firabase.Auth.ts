@@ -7,7 +7,7 @@ firebase.initializeApp(environment.firebase);
 export class AuthServices {
     constructor() { }
 
-    doLogin(email, password) {
+    doLoginEmail(email, password) {
         return new Promise<any>((resolve, reject) => {
             firebase.auth().signInWithEmailAndPassword(email, password)
                 .then(
@@ -19,6 +19,41 @@ export class AuthServices {
                         console.log(errorMessage);
                     })
         })
+    }
+
+    doSignOutEmail() {
+        firebase.auth().signOut().then(function () {
+            console.log('signout successuful');
+        }).catch(function (error) {
+            console.log('signout failed');
+        });
+    }
+
+    emailVerification() {
+        var user = firebase.auth().currentUser;
+        var response;
+        user.sendEmailVerification().then(function () {
+            response='';
+            console.log('Email sent.');
+        }).catch(function (error) {
+            console.log('An error happened.');
+            response='An error happened.';
+        });
+        return response;
+    }
+
+    passwordRecovery(emailAddress) {
+        var auth = firebase.auth();
+        
+        var response;
+        auth.sendPasswordResetEmail(emailAddress).then(function () {
+            response='';
+            console.log('Email sent.');
+        }).catch(function (error) {
+            console.log('An error happened.');
+            response='An error happened.';
+        });
+        return response;
     }
 
     doRegister(value) {
