@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 // import { CallNumber } from '@ionic-native/call-number/ngx';
 import { Storage } from '@ionic/storage';
+import { NavController } from '@ionic/angular';
+import { ThrowStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-details',
@@ -15,7 +17,7 @@ export class DetailsPage implements OnInit {
   challenges: any;
   SampleJson: any;
   persons: any;
-  constructor(private route: ActivatedRoute, private storage: Storage) { 
+  constructor(private route: ActivatedRoute, private storage: Storage, private navCtrl: NavController) { 
     
   }
 
@@ -242,23 +244,28 @@ export class DetailsPage implements OnInit {
     this.person = null;
     if (this.route.snapshot.data['special']) {
       this.data = this.route.snapshot.data['special'];
-      console.log("id é " + this.data)
       this.storage.get('persons').then((val) => {
-        console.log('val is', val);
         this.persons = val;
         if (val === null) {
-          console.log(null)
         } else {
-          console.log("not null")
+          let index = 0;
           for (let i = 0; i < this.persons.length; i++) {
             if (this.persons[i].id == this.data) {
               this.person = this.persons[i];
+              index = i;
             }
           }
-          this.challenges = [this.SampleJson[Math.floor((Math.random() * this.SampleJson.length) + 0)],
-          this.SampleJson[Math.floor((Math.random() * this.SampleJson.length) + 0)],
-          this.SampleJson[Math.floor((Math.random() * this.SampleJson.length) + 0)]];
-          this.person.challenges = this.challenges;
+          console.log("a pessoa ahoi")
+          console.log(this.person.challenges)
+          if (this.person.challenges === undefined || this.person.challenges === null) {
+            console.log("é nulo issae")
+            this.challenges = [this.SampleJson[Math.floor((Math.random() * this.SampleJson.length) + 0)],
+            this.SampleJson[Math.floor((Math.random() * this.SampleJson.length) + 0)],
+            this.SampleJson[Math.floor((Math.random() * this.SampleJson.length) + 0)]];
+            this.person.challenges = this.challenges;
+            this.persons[index] = this.person;
+            this.storage.set('persons', this.persons);
+          }
           console.log(this.person.challenges)
         }
       });
@@ -311,6 +318,14 @@ export class DetailsPage implements OnInit {
     }
     this.person.challenges = this.shuffle(this.person.challenges);
     console.log(this.person.challenges.length)
+    for (let i = 0; i < this.persons.length; i++) {
+      if (this.persons[i].id == this.person.id) {
+        console.log("found id " + i)
+        this.persons[i] = this.person;
+        this.storage.set('persons', this.persons);
+      }
+    }
+    
   }
 
   
@@ -322,17 +337,35 @@ export class DetailsPage implements OnInit {
     // .catch(err => console.log('Error launching dialer', err));
   }
 
-  updatePerson() {
-    console.log("TODO");
+  updatePerson(id) {
+    for (let i = 0; i < this.persons.length; i++) {
+      if (this.persons[i].id == id) {
+        console.log("found id " + i)
+        this.persons.splice(i, 1);
+      }
+    }
+    this.storage.set('persons', this.persons);
+
+    this.navCtrl.setDirection("back");
+    this.navCtrl.navigateForward('home');
   }
 
   changeStatus(challenge) {
-    if (challenge.status == "checkmark-outline") {
-      challenge.status = "ellipse-outline";
-    } else {
-      challenge.status = "checkmark-outline";
+    for (let i = 0; i < this.person.challenges.length; i++) {
+      if (this.person.challenges[i].id === challenge.id) {
+        if (challenge.status == "checkmark-outline") {
+          this.person.challenges[i].status = "ellipse-outline";
+
+        } else {
+          this.person.challenges[i].status = "checkmark-outline";
+        }
+      }
     }
+    for (let i = 0; i < this.persons.length; i++) {
+      if (this.persons[i].id == this.person.id) {
+        this.persons[i] = this.person;
+      }
+    }
+    this.storage.set('persons', this.persons);
   }
-
-
 }

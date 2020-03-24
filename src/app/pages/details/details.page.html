@@ -26,7 +26,7 @@
               <p class="relationship">{{person.relationship}}</p>
             </ion-row>
             <ion-row>
-              <ion-button color="dark" fill="outline" (click)="updatePerson()">Editar informações</ion-button>
+              <ion-button color="dark" fill="outline" (click)="updatePerson(person.id)">Remover</ion-button>
             </ion-row>
           </ion-grid>
           
@@ -64,7 +64,9 @@
 
               </ion-col>
               <ion-col size="1" >
-                <ion-icon class="status-icon" (click)="changeStatus(challenge)" [name]="challenge.status" color="light" ></ion-icon>
+                <ion-icon [ngClass]="{
+                  'checked':challenge.status === 'checkmark-outline'
+                }" class="status-icon" (click)="changeStatus(challenge)" [(name)]="challenge.status" color="light" ></ion-icon>
               </ion-col>
             </ion-row>
           </ion-grid>
