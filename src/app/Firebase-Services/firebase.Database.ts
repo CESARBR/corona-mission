@@ -13,7 +13,7 @@ export class DatabaseServices {
     createItem(path: string, item) {
         var modelReference = firebase.database().ref(path);
 
-        modelReference.push(item);
+        return modelReference.push(item).key;
 
     }
 
