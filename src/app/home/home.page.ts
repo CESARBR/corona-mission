@@ -27,25 +27,22 @@ export class HomePage implements OnInit {
   loadPersons(){
       this.storageService.getPersons().then((persons) => {
   
-        this.hasRegistered = !persons || persons.length == 0;
+        this.hasRegistered = Boolean(persons && persons.length > 0);
 
-        if (!this.hasRegistered) {
-          this.hasRegistered = false;
-          return;
+        if (this.hasRegistered) {
+          this.registeredUsers = persons.map(person => {
+    
+            return {
+              id: person.id,
+              name: person.name,
+              relationship: person.relationship,
+              mission: "Realizar primeira missão",
+              mission_color: "dark",
+              mission_label_color: "dark",
+              avatar: "../../assets/img/person_icon.png"
+            }
+          });
         }
-  
-        this.registeredUsers = persons.map(person => {
-  
-          return {
-            id: person.id,
-            name: person.name,
-            relationship: person.relationship,
-            mission: "Realizar primeira missão",
-            mission_color: "dark",
-            mission_label_color: "dark",
-            avatar: "../../assets/img/person_icon.png"
-          }
-        });
       });
   } 
 

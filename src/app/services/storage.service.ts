@@ -20,6 +20,8 @@ export interface Person {
 
 const ITEMS_KEY = 'my-items';
 const PERSON_KEY = 'my-persons';
+const SEEN_SLIDES_KEY = 'seenSlides';
+const LOGGED_USER_KEY = 'logged-user';
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +29,15 @@ const PERSON_KEY = 'my-persons';
 export class StorageService {
 
   constructor(private storage : Storage) { }
+
+
+  isSeenSlides (): Promise<boolean> {
+    return this.storage.get(SEEN_SLIDES_KEY);
+  }
+
+  markSeenSlides (): Promise<any> {
+    return this.storage.set(SEEN_SLIDES_KEY, true);
+  }
 
   //Create user
   addItem(item : Item) : Promise<any> {    
@@ -105,6 +116,10 @@ export class StorageService {
     return this.storage.get(PERSON_KEY);
   }
 
+  setPersons(persons: Person[]): Promise<Person[]>{
+    return this.storage.set(PERSON_KEY, persons);
+  }
+
     //Update person
     updatePerson(person : Person) : Promise<Person> {
       return this.storage.get(PERSON_KEY).then((persons: Person[]) => {
@@ -122,5 +137,13 @@ export class StorageService {
         }  
         return this.storage.set(ITEMS_KEY, newPersons);
       });
+    }
+
+    addLoggedUser (item: Item): Promise<any> {
+      return this.storage.set(LOGGED_USER_KEY, item);
+    }
+
+    removeLoggedUser (): Promise<any> {
+      return this.storage.remove(LOGGED_USER_KEY);
     }
 }
