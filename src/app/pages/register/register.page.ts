@@ -25,11 +25,19 @@ export class RegisterPage implements OnInit {
     });
 }
 
-  ngOnInit() {
-    // set a key/value
-    // this.storage.set('name', 'Max');
+  ionViewWillLeave() {
+    this.storage.ready().then(() => {
+      this.storage.get('persons').then((val) => {
+        console.log('persons is 2 ', val);
+        this.people = val;
+        this.storage.set('persons', this.people).then(() => {
+          console.log("now really leaving")
+        });
+      });
+    });
+  }
 
-    // Or to get a key/value pair
+  ngOnInit() {
     this.storage.get('persons').then((val) => {
       console.log('persons is', val);
       this.people = val;
@@ -60,20 +68,23 @@ export class RegisterPage implements OnInit {
         age: this.ionicForm.value.age,
         phone: this.ionicForm.value.phone,
         relationship: this.ionicForm.value.relationship,
-        mission: "Realizar missões!",
+        mission: "Clique para realizar missões!",
         mission_color: "dark",
         mission_label_color: "dark",
         avatar: "../../assets/img/person_icon.png"
       }
-      if (this.people === null) {
+
+      if (this.people === undefined || this.people === null) {
         this.people = [newPerson]
       } else {
         this.people.push(newPerson)
       }
-      this.storage.set('persons', this.people);
-      this.ionicForm.reset()
-      this.navCtrl.setDirection('forward');
-      this.navCtrl.navigateForward('/home');
+      this.storage.set('persons', this.people).then(() => {
+        this.ionicForm.reset()
+        this.navCtrl.setDirection('forward');
+        this.navCtrl.navigateForward('/home');
+      });
+      
     }
   }
 
