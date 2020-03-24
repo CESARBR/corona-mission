@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { DataService } from '../services/data.service';
 import { StorageService } from '../services/storage.service';
+import {DatabaseServices} from '../Firebase-Services/firebase.Database'
+import {AuthServices} from '../Firebase-Services/firebase.Auth'
+
 
 @Component({
   selector: 'app-home',
@@ -17,7 +20,10 @@ export class HomePage implements OnInit {
     private storageService: StorageService) { 
   }
 
-  ionViewWillEnter() {
+  async ionViewWillEnter() {
+    const databaseCtrl = new DatabaseServices();
+    const authCtrl = new AuthServices();
+    const userItens = await databaseCtrl.readItemByKey('/users/'+authCtrl.getCurrentUserId(),'');
     this.loadPersons();
   }
 
@@ -25,6 +31,7 @@ export class HomePage implements OnInit {
   }
 
   loadPersons(){
+
       this.storageService.getPersons().then((persons) => {
   
         this.hasRegistered = Boolean(persons && persons.length > 0);

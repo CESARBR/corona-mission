@@ -80,4 +80,9 @@ export class AuthServices {
                     );
         })
     }
+
+    getCurrentUserId()
+    {
+        return firebase.auth().currentUser.uid;
+    }
 }
