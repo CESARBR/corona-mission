@@ -9,6 +9,11 @@ const routes: Routes = [
     path: '',
     component: DetailsPage,
     canActivate: [AuthGuardService]
+  },
+  {
+    path: 'edit',
+    loadChildren: () => import('./edit-contact/edit-contact.module').then(m => m.EditContactModule)  ,
+    canActivate: [AuthGuardService]
   }
 ];
 

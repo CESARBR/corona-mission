@@ -144,7 +144,8 @@ export class StorageService {
           return null;
         } 
         let newPersons: Person[] = [];
-  
+        
+      
         for(let i of persons){
           if(i.id === person.id){
             newPersons.push(person);
@@ -152,7 +153,7 @@ export class StorageService {
             newPersons.push(i);
           }
         }  
-        return this.storage.set(ITEMS_KEY, newPersons);
+        return this.storage.set(PERSON_KEY, newPersons);
       });
     }
 

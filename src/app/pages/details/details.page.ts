@@ -354,6 +354,11 @@ export class DetailsPage implements OnInit {
     this.navCtrl.navigateForward('home');
   }
 
+  editPerson(id) {
+    this.navCtrl.setDirection('forward');
+    this.navCtrl.navigateForward('details/'+ id +'/edit')
+  }
+
   changeStatus(challenge) {
     for (let i = 0; i < this.person.challenges.length; i++) {
       if (this.person.challenges[i].id === challenge.id) {
