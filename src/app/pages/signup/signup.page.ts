@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { NavController } from '@ionic/angular';
-import { DatabaseServices } from '../../Firebase Services/firebase.Database'
-import { AngularFirestore } from '@angular/fire/firestore';
-
+import { AuthServices } from '../../Firebase Services/firabase.Auth'
+import * as CryptoJS from 'crypto-js';
 
 
 @Component({
@@ -39,13 +38,14 @@ export class SignupPage implements OnInit {
   }
 
   submitForm() {
-    var databaseCtrl = new DatabaseServices();
+    var authCtrl = new AuthServices();
     this.isSubmitted = true;
     if (!this.ionicForm.valid) {
       console.log('Please provide all the required values!')
       return false;
     } else {
-      databaseCtrl.saveUser(this.ionicForm.value);
+      
+      authCtrl.doRegister(this.ionicForm.value);
       this.navCtrl.setDirection('forward');
       this.navCtrl.navigateForward('/home');
       console.log(this.ionicForm.value)
