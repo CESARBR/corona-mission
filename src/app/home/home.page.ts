@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { DataService } from '../services/data.service';
+<<<<<<< HEAD
 import { AuthFirebaseService } from '../Firebase-Services/firebase.Auth';
 import { DatabaseServices } from '../Firebase-Services/firebase.Database';
+=======
+import { StorageService } from '../services/storage.service';
+import {database, auth} from '../Firebase-Services/firebase.Services'
+>>>>>>> e8d0a0e3e32799b573803f7f56edab02e23fe5cc
 
 
 

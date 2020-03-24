@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { NavController, Platform } from '@ionic/angular';
 import { StorageService, Person } from '../../services/storage.service';
 import { Storage } from '@ionic/storage';
+import {database, auth} from '../../Firebase-Services/firebase.Services'
 
 @Component({
   selector: 'app-register',
@@ -71,6 +72,8 @@ export class RegisterPage implements OnInit {
     this.newPerson.mission_label_color = "dark";
     this.newPerson.avatar = "../../assets/img/person_icon.png";
 
+    const key = database.createItem('/users/'+auth.getCurrentUserId()+'/contacts',this.newPerson);
+    console.log(key)
     this.storageService.addPerson(this.newPerson).then(() => {
       this.ionicForm.reset();
       this.newPerson = <Person>{};
