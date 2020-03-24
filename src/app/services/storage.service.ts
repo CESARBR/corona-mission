@@ -60,6 +60,12 @@ export class StorageService {
     return this.storage.get(ITEMS_KEY);
   }
 
+  getItemById(id: number): Promise<Item> {
+    return this.getItems().then((itens) => {
+      return itens.filter(p => p.id = id)[0];
+    });
+  }
+
   //Update user
   updateItem(item : Item) : Promise<Item> {
     return this.storage.get(ITEMS_KEY).then((items: Item[]) => {
@@ -119,6 +125,12 @@ export class StorageService {
   //Read persons
   getPersons(): Promise<Person[]>{
     return this.storage.get(PERSON_KEY);
+  }
+
+  getPersonById(id: string): Promise<Person> {
+    return this.getPersons().then((persons) => {
+      return persons.filter(p => p.id = id)[0];
+    });
   }
 
   setPersons(persons: Person[]): Promise<Person[]>{
