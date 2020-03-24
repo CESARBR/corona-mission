@@ -44,7 +44,7 @@ export class LoginEmailPage implements OnInit {
       return false;
     } else {
       
-      authCtrl.doLogin(this.ionicForm.value.email,this.ionicForm.value.password);
+      authCtrl.doLoginEmail(this.ionicForm.value.email,this.ionicForm.value.password);
       this.navCtrl.setDirection('forward');
       this.navCtrl.navigateForward('/home');
     }
