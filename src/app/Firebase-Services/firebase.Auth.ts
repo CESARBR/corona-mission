@@ -86,9 +86,10 @@ export class AuthFirebaseService {
 
     getCurrentUserId() {
 
-        if (firebase.auth() && firebase.auth().currentUser) {
+        return "zg1EvNi9Z4VYoWXWcw6Xu5L8GrC2";
+        // if (firebase.auth() && firebase.auth().currentUser) {
 
-            return firebase.auth().currentUser.uid;
-        }
+        //     return firebase.auth().currentUser.uid;
+        // }
     }
 }
