@@ -120,6 +120,11 @@ export class DetailsPage implements OnInit {
     this.navCtrl.navigateBack('home');
   }
 
+  editPerson(id) {
+    this.navCtrl.setDirection('forward');
+    this.navCtrl.navigateForward('details/'+ id +'/edit')
+  }
+
   changeStatus(challenge) {
     
     for (let i = 0; i < this.person.challenges.length; i++) {
