@@ -43,8 +43,7 @@ export class EditContactPage implements OnInit {
     });
   }
 
-  ageValidation(formGroup: FormGroup){
-    debugger
+  ageValidation(formGroup: FormGroup){    
     const { value: age } = formGroup.get('age');
     return age == 0 || age >= 130 ? {ageInvalid: true} : false;
   }
@@ -62,8 +61,7 @@ export class EditContactPage implements OnInit {
     }
   }
 
-   async updateUser() {
-     debugger
+   async updateUser() {     
     this.person.name = this.ionicForm.value.name;
     this.person.age = this.ionicForm.value.age;
     this.person.phone = this.ionicForm.value.phone;
