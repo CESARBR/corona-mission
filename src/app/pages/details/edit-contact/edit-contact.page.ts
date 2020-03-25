@@ -8,6 +8,8 @@ import { ThrowStmt } from '@angular/compiler';
 import { StorageService, Person } from 'src/app/services/storage.service';
 
 import {RegisterPage} from 'src/app/pages/register/register.page'
+import { DatabaseServices } from 'src/app/Firebase-Services/firebase.Database';
+import { AuthFirebaseService } from '../../../Firebase-Services/firebase.Auth';
 
 @Component({
   templateUrl: './edit-contact.page.html',
@@ -15,41 +17,37 @@ import {RegisterPage} from 'src/app/pages/register/register.page'
 })
 export class EditContactPage implements OnInit {
 
+  idContact: string;
   ionicForm: FormGroup;
   persons: Person[] = [];
+  contactsPath: string;
   newPerson: Person = <Person>{};  
 
   constructor(public formBuilder: FormBuilder, private navCtrl: NavController,
-    private storageService: StorageService, private plt:Platform,private storage: Storage, private router: ActivatedRoute) { 
-        this.plt.ready().then(() => {        
-            this.loadPersons();
-        });
+    private storageService: StorageService, private plt:Platform, private firebaseDataService: DatabaseServices, private router: ActivatedRoute, private auth: AuthFirebaseService) { 
+      this.contactsPath = '/users/' + this.auth.getCurrentUserId() + '/contacts';
+
+  }
+
+  async ionViewWillEnter() {
+    
+    this.idContact = this.router.snapshot.params.id;
+    const contact = await this.firebaseDataService.readItemByKey(`${this.contactsPath}/${this.idContact}`);
+    console.log(contact.val());
+    this.newPerson = contact.val();
+    this.ionicForm.controls['name'].setValue(this.newPerson.name);
+    this.ionicForm.controls['age'].setValue(this.newPerson.age);
+    this.ionicForm.controls['phone'].setValue(this.newPerson.phone);
+    this.ionicForm.controls['relationship'].setValue(this.newPerson.relationship);
   }
 
   ngOnInit() {
     this.ionicForm = this.formBuilder.group({
-        name: ['', [Validators.required]],
-        age: ['', [Validators.required]],
-        phone: ['', [Validators.required]],
-        relationship: ['', Validators.required],
-    })
-  }
-
-  loadPersons(){
-    this.storageService.getPersons().then(persons => {
-    
-        persons.map(person => {
-            console.log(person)
-            if ((person).id = this.router.snapshot.params.id) {
-                
-                this.newPerson = person
-                this.ionicForm.controls['name'].setValue(this.newPerson.name)
-                this.ionicForm.controls['age'].setValue(this.newPerson.age)
-                this.ionicForm.controls['phone'].setValue(this.newPerson.phone)
-                this.ionicForm.controls['relationship'].setValue(this.newPerson.relationship)
-            }
-        })     
-    });
+      name: ['', [Validators.required]],
+      age: ['', [Validators.required]],
+      phone: ['', [Validators.required]],
+      relationship: ['', Validators.required],
+    }); 
   }
 
   submitForm() {
