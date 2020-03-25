@@ -26,8 +26,13 @@
             <ion-row>
               <p class="relationship">{{person.relationship}}</p>
             </ion-row>
-            <ion-row>
-              <ion-button color="dark" fill="outline" (click)="removePerson()">Remover</ion-button>
+            <ion-row class="ion-justify-content-start">
+              <ion-col size="auto" class="ion-no-padding">
+                <ion-button color="dark" fill="outline" (click)="editPerson()">Editar</ion-button>
+              </ion-col>
+              <ion-col size="auto" class="ion-padding-horizontal ">
+                <ion-button color="dark" fill="outline" class="ion-no-margin" (click)="removePerson()">Remover</ion-button>
+              </ion-col>
             </ion-row>
           </ion-grid>
           
