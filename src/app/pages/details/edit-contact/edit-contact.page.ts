@@ -16,6 +16,7 @@ export class EditContactPage implements OnInit {
   ionicForm: FormGroup;  
   contactsPath: string;  
   person: any;
+  isSubmitted = false;
 
   constructor(public formBuilder: FormBuilder, private navCtrl: NavController,
     private plt:Platform, private dataService: DataService, private toastCtrl: ToastController,
@@ -53,6 +54,7 @@ export class EditContactPage implements OnInit {
   }
 
   submitForm() {
+    this.isSubmitted = true;
     if (!this.ionicForm.valid) {
       console.log('Please provide all the required values!');
       return false;
@@ -78,6 +80,6 @@ export class EditContactPage implements OnInit {
     // let str = 'details/' + this.idContact;
     this.navCtrl.setDirection('forward');
     this.navCtrl.navigateForward("/home");   
-  }
+   }
 
 }
