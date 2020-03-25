@@ -32,6 +32,7 @@ export class DetailsPage implements OnInit {
   }
 
   ngOnInit() {
+    //CODIGO ASSINCRONO NAO CARREGA AS INFORMAÇÕES PRA TELA NO TEMPO NECESSARIO
     this.SampleJson = this.database.readItemByKey('/challenges').then(res => {
       return res.val();
     });
