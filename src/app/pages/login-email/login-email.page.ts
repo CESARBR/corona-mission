@@ -47,18 +47,4 @@ export class LoginEmailPage implements OnInit {
     }
   }
 
-  // addUser() {        
-  //   this.newItem.id = Date.now();
-  //   this.newItem.created = Date.now();
-  //   this.newItem.email = this.ionicForm.value.email;    
-
-  //   var hashPassword = CryptoJS.SHA256(this.ionicForm.value.password).toString();        
-  //   this.newItem.password = hashPassword;   
-
-  //   this.storageService.addItem(this.newItem).then(item => {
-  //     this.newItem = <Item>{};            
-  //   });
-  //   console.log(this.items);
-  // }
-
 }

@@ -17,6 +17,11 @@ export class DatabaseServices {
 
     }
 
+    bruteUpdateItem(path, itemToReplace) {
+        var modelReference = firebase.database().ref(path);
+        modelReference.set(itemToReplace);
+    }
+
     createManyItem(path: string, item: Array<any>) {
         item.forEach(value => {
             this.createItem(path, value);
