@@ -7,6 +7,7 @@ import { ThrowStmt } from '@angular/compiler';
 import { StorageService } from '../../services/storage.service';
 import { DatabaseServices } from '../../Firebase-Services/firebase.Database';
 import { AuthFirebaseService } from '../../Firebase-Services/firebase.Auth';
+import { DataService } from 'src/app/services/data.service';
 
 @Component({
   selector: 'app-details',
@@ -27,7 +28,7 @@ export class DetailsPage implements OnInit {
   countMissions: number;
   private contactsPath: string;
 
-  constructor(private route: ActivatedRoute, private storage: StorageService, private navCtrl: NavController, private database: DatabaseServices, private auth: AuthFirebaseService) {
+  constructor(private route: ActivatedRoute, private dataService: DataService, private navCtrl: NavController, private database: DatabaseServices, private auth: AuthFirebaseService) {
     this.contactsPath = '/users/' + this.auth.getCurrentUserId() + '/contacts';
   }
 
@@ -102,6 +103,7 @@ export class DetailsPage implements OnInit {
   }
 
   editPerson() {
+    this.dataService.setData(this.idContact, this.idContact);
     this.navCtrl.setDirection('forward');
     this.navCtrl.navigateForward('details/' + this.idContact + '/edit');
   }
