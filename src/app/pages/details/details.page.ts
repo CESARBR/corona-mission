@@ -31,31 +31,40 @@ export class DetailsPage implements OnInit {
     this.contactsPath = '/users/' + this.auth.getCurrentUserId() + '/contacts';
   }
 
+  async ionViewWillEnter() {
+    const contact = await this.database.readItemByKey(`${this.contactsPath}/${this.route.snapshot.data['idContact']}`);
+    this.person = contact.val();
+
+    const challengersDatabase = await this.database.readItemByKey('/challenges');
+    this.challenges = challengersDatabase.val();
+    this.person.challenges = this.challenges;
+    this.updateCountMissions();
+  }
+
   ngOnInit() {
-    //CODIGO ASSINCRONO NAO CARREGA AS INFORMAÇÕES PRA TELA NO TEMPO NECESSARIO
-    this.SampleJson = this.database.readItemByKey('/challenges').then(res => {
-      return res.val();
-    });
-    this.person = null;
-    if (this.route.snapshot.data['idContact']) {
-      this.data = this.route.snapshot.data['idContact'];
+    
 
-      this.person = this.database.readItemByKey(this.contactsPath, this.data).then(res => {
-        return res.val()
-      });
 
-      if (this.person) {
-        if (!this.person.challenges) {
-          this.challenges = [this.SampleJson[Math.floor((Math.random() * this.SampleJson.length) + 0)],
-          this.SampleJson[Math.floor((Math.random() * this.SampleJson.length) + 0)],
-          this.SampleJson[Math.floor((Math.random() * this.SampleJson.length) + 0)]];
-          this.person.challenges = this.challenges;
-          this.updateChallenges();
-        }
-      }
-      this.updateCountMissions();
+    // this.person = null;
+    // if (this.route.snapshot.data['idContact']) {
+    //   this.data = this.route.snapshot.data['idContact'];
 
-    }
+    //   this.person = this.database.readItemByKey(this.contactsPath, this.data).then(res => {
+    //     return res.val()
+    //   });
+
+    //   if (this.person) {
+    //     if (!this.person.challenges) {
+    //       this.challenges = [this.SampleJson[Math.floor((Math.random() * this.SampleJson.length) + 0)],
+    //       this.SampleJson[Math.floor((Math.random() * this.SampleJson.length) + 0)],
+    //       this.SampleJson[Math.floor((Math.random() * this.SampleJson.length) + 0)]];
+    //       this.person.challenges = this.challenges;
+    //       this.updateChallenges();
+    //     }
+    //   }
+    //   this.updateCountMissions();
+
+    // }
   }
 
   updateChallenges() {
