@@ -31,11 +31,13 @@ export class RegisterPage implements OnInit {
   ngOnInit() {
 
     this.ionicForm = this.formBuilder.group({
-      name: ['', [Validators.required]],
-      age: ['', [Validators.required]],
+      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(200)]],
+      age: ['', [Validators.required, Validators.minLength(1),Validators.maxLength(3)]],
       phone: ['', [Validators.required]],
       relationship: ['', Validators.required],
-    })
+    }), {
+      validators: this.ageValidation.bind(this)
+      }
   }
 
   get errorControl() {
@@ -43,7 +45,6 @@ export class RegisterPage implements OnInit {
   }
 
   async submitForm() {
-
     this.isSubmitted = true;
     if (!this.ionicForm.valid) {
       console.log('Please provide all the required values!');
@@ -71,5 +72,10 @@ export class RegisterPage implements OnInit {
     this.navCtrl.navigateForward('/home');
   }
 
+  ageValidation(formGroup: FormGroup){
+    debugger     
+    const { value: age } = formGroup.get('age');
+    return age == 0 || age >= 130 ? {ageInvalid: true} : false;
+  }
 
 }
