@@ -31,7 +31,7 @@
           </span>
           <ion-item lines="full">
             <ion-label position="floating">Idade</ion-label>
-            <ion-input formControlName="age" required="true" type="number" inputmode="number" maxlength="3" required></ion-input>
+            <ion-input formControlName="age" required="true" type="number" pattern="[0-9]*" maxlength="3" inputmode="numeric" required></ion-input>
           </ion-item>
           <span class="error ion-padding" *ngIf="isSubmitted && errorControl.age.errors?.required">
             Informe a idade.
