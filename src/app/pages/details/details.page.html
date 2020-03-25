@@ -6,11 +6,12 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content color="medium">
+<ion-content color="medium"  *ngIf="person">
   <img class="corona-mission-blue" src="../../../assets/img/coronamission-blue.svg" alt="">
 
   <div>
-    <ion-grid class="person-info" *ngIf="person !== null">
+    <ion-grid class="person-info">
+
       <ion-row center center>
         <ion-col size="3">
           <ion-avatar class="avatar">
@@ -46,7 +47,7 @@
 
     
     
-    <div *ngIf="person !== null">
+    <div *ngIf="person.challenges">
       <ion-card class="challenge-card" *ngFor="let challenge of person.challenges | slice:0:3" color="light">
         <ion-card-content>
           <ion-grid>
@@ -79,7 +80,7 @@
     </p>
     
     
-  </div>
+  </div> 
 
   
 
