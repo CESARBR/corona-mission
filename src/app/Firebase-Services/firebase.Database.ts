@@ -2,8 +2,6 @@ import * as firebase from 'firebase/app';
 import 'firebase/database';
 import { Injectable } from '@angular/core';
 
-
-
 @Injectable()
 export class DatabaseServices {
     constructor(
@@ -11,15 +9,15 @@ export class DatabaseServices {
     ) { }
 
     createItem(path: string, item) {
-        var modelReference = firebase.database().ref(path);
+        const modelReference = firebase.database().ref(path);
 
         return modelReference.push(item).key;
 
     }
 
     bruteUpdateItem(path, itemToReplace) {
-        var modelReference = firebase.database().ref(path);
-        modelReference.set(itemToReplace);
+        const modelReference = firebase.database().ref(path);
+        return modelReference.set(itemToReplace);
     }
 
     createManyItem(path: string, item: Array<any>) {
