@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { NavController, Platform, ToastController } from '@ionic/angular';
-import { StorageService, Item } from '../../services/storage.service';
+import { ToastController } from '@ionic/angular';
+import { Item } from '../../services/storage.service';
 import { Router } from '@angular/router';
 import { AuthFirebaseService } from 'src/app/Firebase-Services/firebase.Auth';
 
@@ -18,7 +18,7 @@ export class LoginEmailPage implements OnInit {
   items: Item[] = [];
   newItem: Item = <Item>{};
 
-  constructor(public formBuilder: FormBuilder, private navCtrl: NavController,
+  constructor(public formBuilder: FormBuilder, private toastCtrl: ToastController,
     private authFirebaseService: AuthFirebaseService, private router: Router) {
   }
 
@@ -33,15 +33,21 @@ export class LoginEmailPage implements OnInit {
     return this.ionicForm.controls;
   }
 
-  submitForm() {
+  async submitForm() {
 
     this.isSubmitted = true;
     if (!this.ionicForm.valid) {
-      console.log('Please provide all the required values!');
+      
+      const toast = await this.toastCtrl.create({
+        message: 'Dados inválidos.',
+        duration: 3000,
+        color: "warning"
+      });
+      toast.present();
+
       return false;
     } else {
-
-      this.authFirebaseService.doLoginEmail(this.ionicForm.value.email, this.ionicForm.value.password).then((res) => {
+      await this.authFirebaseService.doLoginEmail(this.ionicForm.value.email, this.ionicForm.value.password).then((res) => {
         this.router.navigateByUrl('/home');
       });
     }
