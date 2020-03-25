@@ -18,7 +18,7 @@ export class DetailsPage implements OnInit {
   private readonly STATUS_UNCHECK = "ellipse-outline";
   private readonly STATUS_CHECK = "checkmark-outline";
 
-  data: any;
+  idContact: string;
   person: any;
   challenges: any;
   SampleJson: any;
@@ -32,44 +32,27 @@ export class DetailsPage implements OnInit {
   }
 
   async ionViewWillEnter() {
-    const contact = await this.database.readItemByKey(`${this.contactsPath}/${this.route.snapshot.data['idContact']}`);
+    this.idContact = this.route.snapshot.data['idContact'];
+    const contact = await this.database.readItemByKey(`${this.contactsPath}/${this.idContact}`);
     this.person = contact.val();
 
     const challengersDatabase = await this.database.readItemByKey('/challenges');
     this.challenges = challengersDatabase.val();
-    this.person.challenges = this.challenges;
+
+    if (!this.person.challenges) {
+      this.person.challenges = this.challenges;
+      this.updateChallenges();
+    }
+    //TODO implement update new/older challengers
+
     this.updateCountMissions();
   }
 
-  ngOnInit() {
-    
-
-
-    // this.person = null;
-    // if (this.route.snapshot.data['idContact']) {
-    //   this.data = this.route.snapshot.data['idContact'];
-
-    //   this.person = this.database.readItemByKey(this.contactsPath, this.data).then(res => {
-    //     return res.val()
-    //   });
-
-    //   if (this.person) {
-    //     if (!this.person.challenges) {
-    //       this.challenges = [this.SampleJson[Math.floor((Math.random() * this.SampleJson.length) + 0)],
-    //       this.SampleJson[Math.floor((Math.random() * this.SampleJson.length) + 0)],
-    //       this.SampleJson[Math.floor((Math.random() * this.SampleJson.length) + 0)]];
-    //       this.person.challenges = this.challenges;
-    //       this.updateChallenges();
-    //     }
-    //   }
-    //   this.updateCountMissions();
-
-    // }
-  }
+  ngOnInit() {}
 
   updateChallenges() {
-    if (this.data) {
-      this.database.bruteUpdateItem(this.contactsPath + '/' + this.data + '/challenges', this.person.challenges ? this.person.challenges : []);
+    if (this.idContact) {
+      this.database.bruteUpdateItem(this.contactsPath + '/' + this.idContact + '/challenges', this.person.challenges ? this.person.challenges : []);
     }
   }
 
@@ -131,14 +114,14 @@ export class DetailsPage implements OnInit {
     // .catch(err => console.log('Error launching dialer', err));
   }
 
-  updatePerson(id) {
-    this.database.bruteUpdateItem(this.contactsPath + id, null);
+  async removePerson() {
+    await this.database.bruteUpdateItem(`${this.contactsPath}/${this.idContact}`, null);
 
-    this.navCtrl.setDirection("back");
-    this.navCtrl.navigateForward('home');
+    this.navCtrl.navigateBack('home');
   }
 
   changeStatus(challenge) {
+    
     for (let i = 0; i < this.person.challenges.length; i++) {
       if (this.person.challenges[i].id === challenge.id) {
         if (challenge.status == this.STATUS_CHECK) {
@@ -147,11 +130,7 @@ export class DetailsPage implements OnInit {
         } else {
           this.person.challenges[i].status = this.STATUS_CHECK;
         }
-      }
-    }
-    for (let i = 0; i < this.persons.length; i++) {
-      if (this.persons[i].id == this.person.id) {
-        this.persons[i] = this.person;
+        break;
       }
     }
 

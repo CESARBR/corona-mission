@@ -42,7 +42,7 @@ export class RegisterPage implements OnInit {
     return this.ionicForm.controls;
   }
 
-  submitForm() {
+  async submitForm() {
 
     this.isSubmitted = true;
     if (!this.ionicForm.valid) {
@@ -50,18 +50,11 @@ export class RegisterPage implements OnInit {
       return false;
     } else {
 
-      this.addUser();
+      await this.addUser();
     }
   }
 
-  //READ ITEMS
-  loadPersons() {
-    this.storageService.getPersons().then(persons => {
-      this.persons = persons;
-    });
-  }
-
-  addUser() {
+  async addUser() {
     this.newPerson.name = this.ionicForm.value.name;
     this.newPerson.age = this.ionicForm.value.age;
     this.newPerson.phone = this.ionicForm.value.phone;
@@ -71,7 +64,7 @@ export class RegisterPage implements OnInit {
     this.newPerson.mission_label_color = "dark";
     this.newPerson.avatar = "../../assets/img/person_icon.png";
 
-    const key = this.database.createItem('/users/' + this.auth.getCurrentUserId() + '/contacts', this.newPerson);
+    const key = await this.database.createItem('/users/' + this.auth.getCurrentUserId() + '/contacts', this.newPerson);
     console.log(key);
 
     this.navCtrl.setDirection('forward');
