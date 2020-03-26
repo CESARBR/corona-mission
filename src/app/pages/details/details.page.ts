@@ -117,6 +117,7 @@ export class DetailsPage implements OnInit {
 
         } else {
           this.person.challenges[i].status = this.STATUS_CHECK;
+          this.person.challenges[i].lastChange = new Date().toISOString();
         }
         break;
       }

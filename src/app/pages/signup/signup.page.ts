@@ -44,11 +44,12 @@ export class SignupPage implements OnInit {
       console.log('Please provide all the required values!')
       return false;
     } else {
-      
-      this.authFirebaseService.doRegister(this.ionicForm.value);
-      this.navCtrl.setDirection('forward');
-      this.navCtrl.navigateForward('/home');
-      console.log(this.ionicForm.value)
+
+      this.authFirebaseService.doRegister(this.ionicForm.value).then(res => {
+        this.navCtrl.setDirection('forward');
+        this.navCtrl.navigateForward('/home');
+        console.log(this.ionicForm.value);
+      });
     }
   }
 

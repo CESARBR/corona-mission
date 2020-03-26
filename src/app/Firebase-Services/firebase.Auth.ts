@@ -67,14 +67,14 @@ export class AuthFirebaseService {
                         res.user.updateProfile({
                             displayName: value.name
                         }).then(function () {
-                            // Update successful.
+                            resolve(true);
                         }).catch(function (error) {
-                            // An error happened.
+                            reject(false);
                         });;
-                        resolve(res)
+                        resolve(res);
                     },
                     err => {
-                        reject(err)
+                        reject(err);
                     }).catch(error => {
                         console.log(error.code);
                         console.log(error.message);
