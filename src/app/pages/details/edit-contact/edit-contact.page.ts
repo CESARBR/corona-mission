@@ -1,57 +1,60 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-// import { CallNumber } from '@ionic-native/call-number/ngx';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { Storage } from '@ionic/storage';
-import { NavController, Platform } from '@ionic/angular';
-import { ThrowStmt } from '@angular/compiler';
-import { StorageService, Person } from 'src/app/services/storage.service';
-
-import {RegisterPage} from 'src/app/pages/register/register.page'
+import { NavController, Platform, ToastController } from '@ionic/angular';
 import { DatabaseServices } from 'src/app/Firebase-Services/firebase.Database';
 import { AuthFirebaseService } from '../../../Firebase-Services/firebase.Auth';
+import { DataService } from 'src/app/services/data.service';
 
 @Component({
   templateUrl: './edit-contact.page.html',
   styleUrls: ['./edit-contact.page.scss'],
 })
-export class EditContactPage implements OnInit {
 
+export class EditContactPage implements OnInit {
   idContact: string;
-  ionicForm: FormGroup;
-  persons: Person[] = [];
-  contactsPath: string;
-  newPerson: Person = <Person>{};  
+  ionicForm: FormGroup;  
+  contactsPath: string;  
+  person: any;
+  isSubmitted = false;
 
   constructor(public formBuilder: FormBuilder, private navCtrl: NavController,
-    private storageService: StorageService, private plt:Platform, private firebaseDataService: DatabaseServices, private router: ActivatedRoute, private auth: AuthFirebaseService) { 
-      this.contactsPath = '/users/' + this.auth.getCurrentUserId() + '/contacts';
-
+    private plt:Platform, private dataService: DataService, private toastCtrl: ToastController,
+    private firebaseDataService: DatabaseServices, private router: ActivatedRoute, private auth: AuthFirebaseService) {
+      this.contactsPath = '/users/' + this.auth.getCurrentUserId() + '/contacts';      
   }
 
   async ionViewWillEnter() {
-    
     this.idContact = this.router.snapshot.params.id;
-    const contact = await this.firebaseDataService.readItemByKey(`${this.contactsPath}/${this.idContact}`);
-    console.log(contact.val());
-    this.newPerson = contact.val();
-    this.ionicForm.controls['name'].setValue(this.newPerson.name);
-    this.ionicForm.controls['age'].setValue(this.newPerson.age);
-    this.ionicForm.controls['phone'].setValue(this.newPerson.phone);
-    this.ionicForm.controls['relationship'].setValue(this.newPerson.relationship);
+    const contact = await this.firebaseDataService.readItemByKey(`${this.contactsPath}/${this.idContact}`);    
+    this.person = contact.val();
+    this.ionicForm.controls['name'].setValue(this.person.name);
+    this.ionicForm.controls['age'].setValue(this.person.age);
+    this.ionicForm.controls['phone'].setValue(this.person.phone);
+    this.ionicForm.controls['relationship'].setValue(this.person.relationship);
   }
-
   ngOnInit() {
     this.ionicForm = this.formBuilder.group({
-      name: ['', [Validators.required]],
-      age: ['', [Validators.required]],
+      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(200)]],
+      age: ['', [Validators.required, Validators.minLength(1),Validators.maxLength(3)]],
       phone: ['', [Validators.required]],
       relationship: ['', Validators.required],
-    }); 
+    }, {
+      validators: this.ageValidation.bind(this)
+    });
+  }
+
+  ageValidation(formGroup: FormGroup){    
+    const { value: age } = formGroup.get('age');
+    return age == 0 || age >= 130 ? {ageInvalid: true} : false;
+  }
+
+  get errorControl() {
+    return this.ionicForm.controls;
   }
 
   submitForm() {
-
+    this.isSubmitted = true;
     if (!this.ionicForm.valid) {
       console.log('Please provide all the required values!');
       return false;
@@ -59,19 +62,24 @@ export class EditContactPage implements OnInit {
       this.updateUser();
     }
   }
-  updateUser() {
-    this.newPerson.name = this.ionicForm.value.name;
-    this.newPerson.age = this.ionicForm.value.age;
-    this.newPerson.phone = this.ionicForm.value.phone;
-    this.newPerson.relationship = this.ionicForm.value.relationship;
-    this.newPerson.mission = "Clique para realizar missões!";
-    this.newPerson.mission_color = "dark";
-    this.newPerson.mission_label_color = "dark";
-    this.newPerson.avatar = "../../assets/img/person_icon.png";
-    
-    this.storageService.updatePerson(this.newPerson).then(() => {
-        this.navCtrl.navigateBack('/home');
-    })
 
-  }
+   async updateUser() {     
+    this.person.name = this.ionicForm.value.name;
+    this.person.age = this.ionicForm.value.age;
+    this.person.phone = this.ionicForm.value.phone;
+    this.person.relationship = this.ionicForm.value.relationship;
+    this.person.mission = "Clique para realizar missões!";
+    this.person.mission_color = "dark";
+    this.person.mission_label_color = "dark";
+    this.person.avatar = "../../assets/img/person_icon.png";
+    
+    const key = await this.firebaseDataService.bruteUpdateItem('/users/' + this.auth.getCurrentUserId() + '/contacts/' + this.idContact, this.person);
+    console.log(key);
+    
+    this.dataService.setData(this.idContact, this.idContact);
+    // let str = 'details/' + this.idContact;
+    this.navCtrl.setDirection('forward');
+    this.navCtrl.navigateForward("/home");   
+   }
+
 }
