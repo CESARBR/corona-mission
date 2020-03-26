@@ -19,7 +19,8 @@ export interface Person {
   avatar: string,
   mission: string,
   mission_color: string,
-  mission_label_color: string
+  mission_label_color: string,
+  register_date:string
 }
 
 const ITEMS_KEY = 'my-items';
