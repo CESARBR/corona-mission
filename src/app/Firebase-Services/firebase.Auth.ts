@@ -1,26 +1,27 @@
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
 import { Injectable } from '@angular/core';
-import { Route } from '@angular/compiler/src/core';
-import { Router } from '@angular/router';
+import { ToastController } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
 
 @Injectable()
 export class AuthFirebaseService {
-    constructor(private nvc: NavController) { }
+    constructor(private nvc: NavController, private toastCtrl: ToastController,) { }
 
-    doLoginEmail(email, password) {
-        return new Promise<any>((resolve, reject) => {
-            firebase.auth().signInWithEmailAndPassword(email, password)
-                .then(
-                    res => resolve(res),
-                    err => reject(err)).catch(error => {
-                        var errorCode = error.code;
-                        var errorMessage = error.message;
-                        console.log(errorCode);
-                        console.log(errorMessage);
-                    })
-        })
+    async doLoginEmail(email, password) {
+        return firebase.auth().signInWithEmailAndPassword(email, password).catch(async (error) => {
+            var errorCode = error.code;
+            var errorMessage = error.message; 
+            console.log(errorCode, errorMessage);
+            const toast = await this.toastCtrl.create({
+                //TODO verificar se é quantidade de tentativas ou email/senha inválidos
+                message: 'Email ou senha inválidos.',
+                duration: 3000,
+                color: "danger"
+              });
+              toast.present();
+            throw error;
+          });
     }
 
     doSignOutEmail() {

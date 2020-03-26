@@ -18,18 +18,34 @@
         <form class="login-form" [formGroup]="ionicForm" (ngSubmit)="submitForm()">
           <ion-item lines="full">
             <ion-label position="floating">Nome ou apelido</ion-label>
-            <ion-input formControlName="name" required="true" type="text" inputmode="text" autofocus="true" required></ion-input>
+            <ion-input formControlName="name" required="true" type="text" inputmode="text" autofocus="true" maxlength="200" required></ion-input>
           </ion-item>
           <span class="error ion-padding" *ngIf="isSubmitted && errorControl.name.errors?.required">
             Informe um nome ou apelido.
           </span>
+          <span class="error ion-padding" *ngIf="isSubmitted && errorControl.name.errors?.minlength">
+            O nome ou apelido deve ter no mínimo 3 letras.
+          </span>
+          <span class="error ion-padding" *ngIf="isSubmitted && errorControl.name.errors?.maxlength">
+            O nome ou apelido deve ter no máximo 200 letras.
+          </span>
           <ion-item lines="full">
             <ion-label position="floating">Idade</ion-label>
-            <ion-input formControlName="age" required="true" type="number" inputmode="number" required></ion-input>
+            <ion-input formControlName="age" required="true" type="number" pattern="[0-9]*" maxlength="3" inputmode="numeric" required></ion-input>
           </ion-item>
           <span class="error ion-padding" *ngIf="isSubmitted && errorControl.age.errors?.required">
             Informe a idade.
           </span>
+          <span class="error ion-padding" *ngIf="isSubmitted && errorControl.age.errors?.minlength">
+            A idade deve ter no mínimo 1 dígito.
+          </span>
+          <span class="error ion-padding" *ngIf="isSubmitted && errorControl.age.errors?.maxlength">
+            A idade deve ter no máximo 3 dígitos.
+          </span>
+          <span class="error ion-padding" *ngIf="isSubmitted && !ionicForm.get('age').errors && ionicForm.hasError('ageInvalid')">
+            Idade inválida, informe uma idade maior que 0 e menor que 130.
+          </span>
+      
           <ion-item lines="full">
             <ion-label position="floating">Número de telefone</ion-label>
             <ion-input formControlName="phone" required="true" type="tel" inputmode="tel" [brmasker]="{phone: true}" required></ion-input>
@@ -57,7 +73,7 @@
       
           <ion-row>
             <ion-col>
-              <ion-button type="submit" class="login-button" size="large" color="dark" expand="block"  (click)="updateUser()">Confirmar</ion-button>
+              <ion-button type="submit" class="login-button" size="large" color="dark" expand="block">Confirmar</ion-button>
             </ion-col>
           </ion-row>
         </form>
