@@ -32,7 +32,7 @@
   
     <ion-card-content>
       <form class="login-form" [formGroup]="ionicForm" (ngSubmit)="submitForm()">
-        <ion-item lines="full">
+        <ion-item lines="full" >
           <ion-label position="floating">Nome ou apelido</ion-label>
           <ion-input formControlName="name" required="true" type="text" inputmode="text" autofocus="true" maxlength="200" required></ion-input>
         </ion-item>
