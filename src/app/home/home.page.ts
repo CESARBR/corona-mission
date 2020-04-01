@@ -4,8 +4,6 @@ import { DataService } from '../services/data.service';
 import { AuthFirebaseService } from '../services/firebase/firebase-auth.service';
 import { FirebaseDatabaseServices } from '../services/firebase/firebase-database.service';
 
-
-
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
