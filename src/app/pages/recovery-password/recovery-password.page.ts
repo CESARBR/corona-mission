@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ToastController, NavController } from '@ionic/angular';
-import { AuthFirebaseService } from '../services/firebase/firebase-auth.service';
+import { AuthFirebaseService } from '../../services/firebase/firebase-auth.service';
 
 @Component({
   selector: 'app-recovery-password',
