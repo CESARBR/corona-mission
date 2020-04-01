@@ -111,10 +111,10 @@ export class DetailsPage implements OnInit {
       if (this.person.challenges[i].id === challenge.id) {
         if (challenge.status == this.STATUS_CHECK) {
           this.person.challenges[i].status = this.STATUS_UNCHECK;
-          this.person.challenges[i].lastChange = new Date().toISOString();
+          this.person.challenges[i].lastChange = new Date((new Date().getTime() - (3 * 3600 * 1000))).toISOString();
         } else {
           this.person.challenges[i].status = this.STATUS_CHECK;
-          this.person.challenges[i].lastChange = new Date().toISOString();
+          this.person.challenges[i].lastChange = new Date((new Date().getTime() - (3 * 3600 * 1000))).toISOString();
         }
         break;
       }
