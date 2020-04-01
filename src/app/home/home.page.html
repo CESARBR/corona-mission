@@ -34,8 +34,8 @@
         <ion-grid>
           <ion-row>
             <ion-col size="3">
-              <ion-avatar class="avatar">
-                <img [src]="person.value.avatar">
+              <ion-avatar class="avatar" >
+                <img [src]="person.value.avatar" [ngStyle]="{'border-color':person.value.color}">
               </ion-avatar>
             </ion-col>
             <ion-col size="8">
