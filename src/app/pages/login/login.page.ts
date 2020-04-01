@@ -34,6 +34,6 @@ export class LoginPage implements OnInit {
     this.navCtrl.navigateForward('/login/login-email');
   }
 
-  
+
 
 }
