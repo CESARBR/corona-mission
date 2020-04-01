@@ -92,4 +92,8 @@ export class AuthFirebaseService {
             return firebase.auth().currentUser.uid;
         }
     }
+
+    sendPasswordResetEmail (email: string): Promise<any> {
+        return firebase.auth().sendPasswordResetEmail(email);
+    }
 }
