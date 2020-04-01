@@ -11,6 +11,9 @@ import { LoadingController } from '@ionic/angular';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
+  private readonly STATUS_UNCHECK = "ellipse-outline";
+  private readonly STATUS_CHECK = "checkmark-outline";
+
   hasRegistered = true;
 
   registeredUsers;
@@ -62,15 +65,15 @@ export class HomePage implements OnInit {
             contactValue.mission_color = "dark";
           }
           else {
-            contactValue.mission = daysAgoMissions.toString() + "Dias sem missão.";
-            contactValue.mission_label_color = "red";
-            contactValue.mission_color = "red";
+            contactValue.mission = daysAgoMissions.toString() + " Dias sem missão.";
+            contactValue.mission_label_color = "danger";
+            contactValue.mission_color = "danger";
           }
         }
         else {
           contactValue.mission = "Você fez " + missionsToday.toString() + " missões hoje.";
-          contactValue.mission_label_color = "dark";
-          contactValue.mission_color = "dark";
+          contactValue.mission_label_color = "secondary";
+          contactValue.mission_color = "secondary";
         }
       }
       else {
@@ -100,6 +103,7 @@ export class HomePage implements OnInit {
   getMissionsToday(challenges) {
     const date = new Date();
     return challenges.filter(challenge => challenge.lastChange &&
+      challenge.status === this.STATUS_CHECK &&
       (new Date(challenge.lastChange).getDate() === date.getDate() &&
         new Date(challenge.lastChange).getMonth() === date.getMonth() &&
         new Date(challenge.lastChange).getFullYear() === date.getFullYear())).length;
