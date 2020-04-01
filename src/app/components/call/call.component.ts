@@ -10,6 +10,7 @@ import { NavParams } from "@ionic/angular";
 export class CallComponent implements OnInit {
 
   private readonly DDI = "+55";
+  private readonly URL_WHATSAPP_API = "https://api.whatsapp.com/send?phone=";
   private phoneNumber;
   private popoverRef: HTMLIonPopoverElement;
 
@@ -31,7 +32,7 @@ export class CallComponent implements OnInit {
   }
 
   whatsapp() {
-    window.open(`https://api.whatsapp.com/send?phone=${this.DDI}${this.phoneNumber}`, "_system");
+    window.open(`${this.URL_WHATSAPP_API}${this.DDI}${this.phoneNumber}`, "_system");
     this.popoverRef.dismiss();
   }
 }
