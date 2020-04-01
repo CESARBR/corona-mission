@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { NavController, Platform, ToastController } from '@ionic/angular';
-import { DatabaseServices } from 'src/app/Firebase-Services/firebase.Database';
-import { AuthFirebaseService } from '../../../Firebase-Services/firebase.Auth';
+import { FirebaseDatabaseServices } from 'src/app/services/firebase/firebase-database.service';
+import { AuthFirebaseService } from '../../../services/firebase/firebase-auth.service';
 import { DataService } from 'src/app/services/data.service';
 
 @Component({
@@ -20,7 +20,7 @@ export class EditContactPage implements OnInit {
 
   constructor(public formBuilder: FormBuilder, private navCtrl: NavController,
     private plt:Platform, private dataService: DataService, private toastCtrl: ToastController,
-    private firebaseDataService: DatabaseServices, private router: ActivatedRoute, private auth: AuthFirebaseService) {
+    private firebaseDataService: FirebaseDatabaseServices, private router: ActivatedRoute, private auth: AuthFirebaseService) {
       this.contactsPath = '/users/' + this.auth.getCurrentUserId() + '/contacts';      
   }
 

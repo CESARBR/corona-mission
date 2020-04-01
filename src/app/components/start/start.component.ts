@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
-import { Storage } from '@ionic/storage';
 import { StorageService } from 'src/app/services/storage.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-start',
