@@ -37,7 +37,7 @@ const routes: Routes = [
   },
   {
     path: 'recovery-password',
-    loadChildren: () => import('./recovery-password/recovery-password.module').then( m => m.RecoveryPasswordPageModule)
+    loadChildren: () => import('./pages/recovery-password/recovery-password.module').then( m => m.RecoveryPasswordPageModule)
   },
 ];
 @NgModule({
