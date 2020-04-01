@@ -1,12 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 // import { CallNumber } from '@ionic-native/call-number/ngx';
-import { Storage } from '@ionic/storage';
 import { NavController } from '@ionic/angular';
-import { ThrowStmt } from '@angular/compiler';
-import { StorageService } from '../../services/storage.service';
-import { DatabaseServices } from '../../Firebase-Services/firebase.Database';
-import { AuthFirebaseService } from '../../Firebase-Services/firebase.Auth';
+import { FirebaseDatabaseServices } from '../../services/firebase/firebase-database.service';
+import { AuthFirebaseService } from '../../services/firebase/firebase-auth.service';
 import { DataService } from 'src/app/services/data.service';
 
 @Component({
@@ -28,7 +25,7 @@ export class DetailsPage implements OnInit {
   countMissions: number;
   private contactsPath: string;
 
-  constructor(private route: ActivatedRoute, private dataService: DataService, private navCtrl: NavController, private database: DatabaseServices, private auth: AuthFirebaseService) {
+  constructor(private route: ActivatedRoute, private dataService: DataService, private navCtrl: NavController, private database: FirebaseDatabaseServices, private auth: AuthFirebaseService) {
     this.contactsPath = '/users/' + this.auth.getCurrentUserId() + '/contacts';
   }
 
