@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { NavController } from '@ionic/angular';
 import * as CryptoJS from 'crypto-js';
-import { AuthFirebaseService } from 'src/app/Firebase-Services/firebase.Auth';
+import { AuthFirebaseService } from 'src/app/services/firebase/firebase-auth.service';
 
 
 @Component({
