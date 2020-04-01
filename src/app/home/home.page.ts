@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { DataService } from '../services/data.service';
-import { AuthFirebaseService } from '../Firebase-Services/firebase.Auth';
-import { DatabaseServices } from '../Firebase-Services/firebase.Database';
+import { AuthFirebaseService } from '../services/firebase/firebase-auth.service';
+import { FirebaseDatabaseServices } from '../services/firebase/firebase-database.service';
 
 
 
@@ -17,7 +17,7 @@ export class HomePage implements OnInit {
   registeredUsers;
 
   constructor(private navCtrl: NavController, private dataService: DataService,
-    private authFirebaseService: AuthFirebaseService, private databaseFirebaseService: DatabaseServices) {
+    private authFirebaseService: AuthFirebaseService, private databaseFirebaseService: FirebaseDatabaseServices) {
   }
 
   ionViewWillEnter() {
@@ -109,9 +109,4 @@ export class HomePage implements OnInit {
     this.navCtrl.setDirection('forward');
     this.navCtrl.navigateForward('/home/register');
   }
-
-  logout() {
-    this.authFirebaseService.doSignOutEmail();
-  }
-
 }
