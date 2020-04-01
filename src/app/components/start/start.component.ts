@@ -15,7 +15,7 @@ export class StartComponent implements OnInit {
 
   navigateToLoginPage() {
     this.storage.markSeenSlides().then(() => {
-      this.navCtrl.navigateForward('/login-email');
+      this.navCtrl.navigateForward('/login');
     });
   }
 }
