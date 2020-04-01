@@ -27,7 +27,7 @@ export class AuthFirebaseService {
     doSignOutEmail() {
         firebase.auth().signOut().then(() => {
             console.log('signout successuful');
-            this.nvc.navigateRoot('/login-email');
+            this.nvc.navigateRoot('');
         }).catch(function (error) {
             console.log('signout failed');
         });
