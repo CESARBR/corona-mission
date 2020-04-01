@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastController, NavController } from '@ionic/angular';
+import { FirebaseGoogleAuthService } from 'src/app/services/firebase/firebase-google-auth.service';
 
 @Component({
   selector: 'app-login',
@@ -8,7 +9,10 @@ import { ToastController, NavController } from '@ionic/angular';
 })
 export class LoginPage implements OnInit {
 
-  constructor(public toastController: ToastController, private navCtrl: NavController) { }
+  constructor(public toastController: ToastController,
+    private navCtrl: NavController,
+    private googleAuth: FirebaseGoogleAuthService
+    ) { }
 
   ngOnInit() {
   }
@@ -22,9 +26,20 @@ export class LoginPage implements OnInit {
   }
 
   async loginGoogle() {
+    this.googleAuth
+    .doAuth()
+    .then(this.goToHome.bind(this))
+    .catch(error =>{
+      console.error(error)
+      this.showErrorToast("Could not perform authetication.");
+    })
+  }
+
+  async showErrorToast(msg: string){
     const toast = await this.toastController.create({
-      message: 'TODO - Login Google',
-      duration: 2000
+      message: msg,
+      duration: 2000,
+      color: "danger"
     });
     toast.present();
   }
@@ -34,6 +49,8 @@ export class LoginPage implements OnInit {
     this.navCtrl.navigateForward('/login/login-email');
   }
 
-
+  private goToHome(){
+    this.navCtrl.navigateForward('/home');
+  }
 
 }
