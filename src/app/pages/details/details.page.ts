@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-// import { CallNumber } from '@ionic-native/call-number/ngx';
-import { NavController } from '@ionic/angular';
+import { CallNumber } from '@ionic-native/call-number/ngx';
+import { NavController, PopoverController } from '@ionic/angular';
 import { FirebaseDatabaseServices } from '../../services/firebase/firebase-database.service';
 import { AuthFirebaseService } from '../../services/firebase/firebase-auth.service';
 import { DataService } from 'src/app/services/data.service';
+import { CallComponent } from 'src/app/components/call/call.component';
 
 @Component({
   selector: 'app-details',
@@ -25,7 +26,9 @@ export class DetailsPage implements OnInit {
   countMissions: number;
   private contactsPath: string;
 
-  constructor(private route: ActivatedRoute, private dataService: DataService, private navCtrl: NavController, private database: FirebaseDatabaseServices, private auth: AuthFirebaseService) {
+  constructor(private route: ActivatedRoute, private dataService: DataService, private navCtrl: NavController, 
+    private database: FirebaseDatabaseServices, private auth: AuthFirebaseService,
+    private popoverController: PopoverController) {
     this.contactsPath = '/users/' + this.auth.getCurrentUserId() + '/contacts';
   }
 
@@ -86,11 +89,17 @@ export class DetailsPage implements OnInit {
 
 
 
-  call() {
-    console.log("TODO");
-    // this.callNumber.callNumber(this.person.phone, true)
-    // .then(res => console.log('Launched dialer!', res))
-    // .catch(err => console.log('Error launching dialer', err));
+  async call(ev: any) {
+    
+    const popover = await this.popoverController.create({
+      component: CallComponent,
+      componentProps: {
+        "phoneNumber": this.person.phone.replace(/[^\d]/g, ""),
+      },
+      event: ev,  
+      translucent: true
+    });
+    return await popover.present();
   }
 
   async removePerson() {
