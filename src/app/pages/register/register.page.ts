@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { NavController, Platform } from '@ionic/angular';
-import { StorageService, Person } from '../../services/storage.service';
-import { Storage } from '@ionic/storage';
-import { DatabaseServices } from '../../Firebase-Services/firebase.Database';
-import { AuthFirebaseService } from '../../Firebase-Services/firebase.Auth';
-//import { database, auth } from '../../Firebase-Services/firebase.Services'
+import { StorageService } from '../../services/storage.service';
+import { Person } from '../../models';
+import { FirebaseDatabaseServices } from '../../services/firebase/firebase-database.service';
+import { AuthFirebaseService } from '../../services/firebase/firebase-auth.service';
 
 @Component({
   selector: 'app-register',
@@ -22,7 +21,7 @@ export class RegisterPage implements OnInit {
   people: any
 
   constructor(public formBuilder: FormBuilder, private navCtrl: NavController,
-    private storageService: StorageService, private database : DatabaseServices, private auth : AuthFirebaseService) {
+    private database : FirebaseDatabaseServices, private auth : AuthFirebaseService) {
   }
 
   ionViewWillLeave() {
@@ -67,7 +66,6 @@ export class RegisterPage implements OnInit {
     this.newPerson.register_date = new Date().toISOString();
 
     const key = await this.database.createItem('/users/' + this.auth.getCurrentUserId() + '/contacts', this.newPerson);
-    console.log(key);
 
     this.navCtrl.setDirection('forward');
     this.navCtrl.navigateForward('/home');

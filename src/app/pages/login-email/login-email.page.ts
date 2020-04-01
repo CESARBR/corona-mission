@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { ToastController } from '@ionic/angular';
-import { Item } from '../../services/storage.service';
-import { Router } from '@angular/router';
-import { AuthFirebaseService } from 'src/app/Firebase-Services/firebase.Auth';
+import { ToastController, NavController } from '@ionic/angular';
+import { Item } from '../../models';
+import { AuthFirebaseService } from 'src/app/services/firebase/firebase-auth.service';
 
 @Component({
   selector: 'app-login-email',
@@ -19,7 +18,7 @@ export class LoginEmailPage implements OnInit {
   newItem: Item = <Item>{};
 
   constructor(public formBuilder: FormBuilder, private toastCtrl: ToastController,
-    private authFirebaseService: AuthFirebaseService, private router: Router) {
+    private authFirebaseService: AuthFirebaseService, private nvc: NavController) {
   }
 
   ngOnInit() {
@@ -48,7 +47,7 @@ export class LoginEmailPage implements OnInit {
       return false;
     } else {
       await this.authFirebaseService.doLoginEmail(this.ionicForm.value.email, this.ionicForm.value.password).then((res) => {
-        this.router.navigateByUrl('/home');
+        this.nvc.navigateForward('/home');
       });
     }
   }
