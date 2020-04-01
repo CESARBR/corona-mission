@@ -15,6 +15,7 @@ export class RecoveryPasswordPage implements OnInit {
 
   ionicForm: FormGroup;
   isSubmitted = false;
+  isCodeSended = false;
 
   constructor(public formBuilder: FormBuilder, private navCtrl: NavController,
     private authFirebaseService: AuthFirebaseService, private toastCtrl: ToastController) { }
@@ -23,6 +24,12 @@ export class RecoveryPasswordPage implements OnInit {
     this.ionicForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
     });
+  }
+
+  ionViewWillEnter() {
+
+    this.isSubmitted = false;
+    this.isCodeSended = false;
   }
 
   get errorControl() {
@@ -42,8 +49,7 @@ export class RecoveryPasswordPage implements OnInit {
         });
 
         toast.present();
-
-        this.navCtrl.navigateRoot('/login-email');
+        this.isCodeSended = true;
       }).catch(async err => {
 
         let msg = "Erro ao enviar código";
@@ -61,6 +67,7 @@ export class RecoveryPasswordPage implements OnInit {
               break;
           }
         }
+        console.error(err);
 
         const toast = await this.toastCtrl.create({
           message: msg,
