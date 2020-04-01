@@ -12,6 +12,10 @@
               <ion-icon [name]="pages.icon" slot="start"></ion-icon>
                 {{pages.title}} 
           </ion-item>
+          <ion-item routerDirection="root" (click)="logout()">
+              <ion-icon name="exit" slot="start"></ion-icon>
+                Sair
+          </ion-item>
         </ion-menu-toggle>
       </ion-list>
     </ion-content>
