@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Item } from './storage.service';
+import { Item } from '../models';
 import { NavController } from '@ionic/angular';
 
 @Injectable({

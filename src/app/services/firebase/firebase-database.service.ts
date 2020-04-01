@@ -3,7 +3,7 @@ import 'firebase/database';
 import { Injectable } from '@angular/core';
 
 @Injectable()
-export class DatabaseServices {
+export class FirebaseDatabaseServices {
     constructor(
 
     ) { }
@@ -30,26 +30,5 @@ export class DatabaseServices {
         const modelReference = firebase.database().ref(path + (key ? '/' + key : ''));
         return modelReference.once("value");
     }
-
-    //readItemByAtribute(path:string, atribute:string ) {
-
-    // }
-
-    // updateItemByKey() {
-
-    // }
-
-    // updateItemByAtribute() {
-
-    // }
-
-    // deleteItemByKey() {
-
-    // }
-
-    // deleteItemByAtribute() {
-
-    // }
-
 
 }
