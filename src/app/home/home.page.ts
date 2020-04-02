@@ -3,6 +3,7 @@ import { NavController } from '@ionic/angular';
 import { DataService } from '../services/data.service';
 import { AuthFirebaseService } from '../services/firebase/firebase-auth.service';
 import { FirebaseDatabaseServices } from '../services/firebase/firebase-database.service';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -13,9 +14,11 @@ export class HomePage implements OnInit {
   hasRegistered = true;
 
   registeredUsers;
+  loading: any;
 
   constructor(private navCtrl: NavController, private dataService: DataService,
-    private authFirebaseService: AuthFirebaseService, private databaseFirebaseService: FirebaseDatabaseServices) {
+    private authFirebaseService: AuthFirebaseService, private databaseFirebaseService: FirebaseDatabaseServices,
+    public loadingController: LoadingController) {
   }
 
   ionViewWillEnter() {
@@ -26,11 +29,18 @@ export class HomePage implements OnInit {
   ngOnInit() {
   }
 
-  loadPersons() {
+  async loadPersons() {
+    this.loading = await this.loadingController.create({
+      message: 'Aguarde...',
+    });
+    
+    await this.loading.present();
+
     this.databaseFirebaseService
       .readItemByKey('/users/' + this.authFirebaseService.getCurrentUserId() + '/contacts', '').then((res) => {
 
         this.hasRegistered = Boolean(res && res.val());
+        this.loading.dismiss();
 
         if (this.hasRegistered) {
           this.registeredUsers = res.val();
