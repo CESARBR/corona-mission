@@ -6,6 +6,7 @@ import { FirebaseDatabaseServices } from '../../services/firebase/firebase-datab
 import { AuthFirebaseService } from '../../services/firebase/firebase-auth.service';
 import { DataService } from 'src/app/services/data.service';
 import { CallComponent } from 'src/app/components/call/call.component';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-details',
@@ -22,17 +23,23 @@ export class DetailsPage implements OnInit {
   challenges: any;
   SampleJson: any;
   persons: any;
+  loading: any;
 
   countMissions: number;
   private contactsPath: string;
 
   constructor(private route: ActivatedRoute, private dataService: DataService, private navCtrl: NavController, 
     private database: FirebaseDatabaseServices, private auth: AuthFirebaseService,
-    private popoverController: PopoverController) {
+    private popoverController: PopoverController, public loadingController: LoadingController) {
     this.contactsPath = '/users/' + this.auth.getCurrentUserId() + '/contacts';
   }
 
   async ionViewWillEnter() {
+    this.loading = await this.loadingController.create({
+      message: 'Aguarde...',
+    });
+    await this.loading.present();
+
     this.idContact = this.route.snapshot.data['idContact'];
     const contact = await this.database.readItemByKey(`${this.contactsPath}/${this.idContact}`);
     this.person = contact.val();
@@ -47,6 +54,7 @@ export class DetailsPage implements OnInit {
     //TODO implement update new/older challengers
 
     this.updateCountMissions();
+    this.loading.dismiss();
   }
 
   ngOnInit() { }
@@ -86,9 +94,6 @@ export class DetailsPage implements OnInit {
     this.updateChallenges();
   }
 
-
-
-
   async call(ev: any) {
     
     const popover = await this.popoverController.create({
@@ -103,8 +108,12 @@ export class DetailsPage implements OnInit {
   }
 
   async removePerson() {
+    this.loading = await this.loadingController.create({
+      message: 'Aguarde...',
+    });
+    await this.loading.present();
     await this.database.bruteUpdateItem(`${this.contactsPath}/${this.idContact}`, null);
-
+    this.loading.dismiss();
     this.navCtrl.navigateBack('home');
   }
 

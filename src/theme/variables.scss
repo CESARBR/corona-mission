@@ -130,6 +130,15 @@
   }
 
 
+  .spinner-bubbles.sc-ion-loading-md, .spinner-circles.sc-ion-loading-md, .spinner-crescent.sc-ion-loading-md, .spinner-dots.sc-ion-loading-md, .spinner-lines.sc-ion-loading-md, .spinner-lines-small.sc-ion-loading-md  {
+  color: white;
+}
+
+.loading-spinner.sc-ion-loading-md + .loading-content.sc-ion-loading-md {
+  color: white;
+  font-weight: 700;
+}
+
 form {
   ion-item {
     --border-color: transparent!important;
