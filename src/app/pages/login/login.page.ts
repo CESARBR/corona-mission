@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastController, NavController } from '@ionic/angular';
 import { FirebaseGoogleAuthService } from 'src/app/services/firebase/firebase-google-auth.service';
+import { CoronaToast } from 'src/app/shared/corona-toast';
 
 @Component({
   selector: 'app-login',
@@ -9,20 +10,17 @@ import { FirebaseGoogleAuthService } from 'src/app/services/firebase/firebase-go
 })
 export class LoginPage implements OnInit {
 
-  constructor(public toastController: ToastController,
+  constructor(
     private navCtrl: NavController,
-    private googleAuth: FirebaseGoogleAuthService
-    ) { }
+    private googleAuth: FirebaseGoogleAuthService,
+    private coronaToast: CoronaToast
+  ) { }
 
   ngOnInit() {
   }
 
   async loginFacebook() {
-    const toast = await this.toastController.create({
-      message: 'TODO - Login Facebook',
-      duration: 2000
-    });
-    toast.present();
+    this.coronaToast.showInfo('TODO - Login Facebook');
   }
 
   async loginGoogle() {
@@ -31,17 +29,8 @@ export class LoginPage implements OnInit {
     .then(this.goToHome.bind(this))
     .catch(error =>{
       console.error(error)
-      this.showErrorToast("Could not perform authetication.");
+      this.coronaToast.showError("Could not perform authetication.");
     })
-  }
-
-  async showErrorToast(msg: string){
-    const toast = await this.toastController.create({
-      message: msg,
-      duration: 2000,
-      color: "danger"
-    });
-    toast.present();
   }
 
   loginEmail() {

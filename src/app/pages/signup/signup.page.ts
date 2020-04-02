@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { NavController } from '@ionic/angular';
 import * as CryptoJS from 'crypto-js';
 import { AuthFirebaseService } from 'src/app/services/firebase/firebase-auth.service';
+import { CoronaToast } from 'src/app/shared/corona-toast';
 
 
 @Component({
@@ -15,7 +16,7 @@ export class SignupPage implements OnInit {
   isSubmitted = false;
 
   constructor(public formBuilder: FormBuilder, private navCtrl: NavController,
-    private authFirebaseService: AuthFirebaseService) { }
+    private authFirebaseService: AuthFirebaseService, private coronaToast: CoronaToast) { }
 
   ngOnInit() {
     this.ionicForm = this.formBuilder.group({
@@ -49,6 +50,10 @@ export class SignupPage implements OnInit {
         this.navCtrl.setDirection('forward');
         this.navCtrl.navigateForward('/home');
         console.log(this.ionicForm.value);
+      }).catch(error =>{
+        console.error(error)
+        let msg = error.code == 'auth/email-already-in-use' ? 'The email address is already in use' : error.message
+        this.coronaToast.showError(msg);
       });
     }
   }

@@ -16,6 +16,8 @@ import * as firebase from 'firebase/app';
 import { FirebaseDatabaseServices } from './services/firebase/firebase-database.service';
 import { AuthFirebaseService } from './services/firebase/firebase-auth.service';
 import { FirebaseGoogleAuthService } from './services/firebase/firebase-google-auth.service';
+import { CoronaToast } from './shared/corona-toast';
+
 firebase.initializeApp(environment.firebase);
 
 @NgModule({
@@ -31,7 +33,8 @@ firebase.initializeApp(environment.firebase);
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    FirebaseDatabaseServices, AuthFirebaseService, FirebaseGoogleAuthService
+    FirebaseDatabaseServices, AuthFirebaseService, FirebaseGoogleAuthService,
+    CoronaToast
   ],
   bootstrap: [AppComponent]
 })
