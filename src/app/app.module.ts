@@ -17,6 +17,7 @@ import { FirebaseDatabaseServices } from './services/firebase/firebase-database.
 import { AuthFirebaseService } from './services/firebase/firebase-auth.service';
 import { FirebaseGoogleAuthService } from './services/firebase/firebase-google-auth.service';
 import { CoronaToast } from './shared/corona-toast';
+import { FirebaseFacebookAuthService } from './services/firebase/firebase-facebook-auth.service';
 
 firebase.initializeApp(environment.firebase);
 
@@ -24,18 +25,21 @@ firebase.initializeApp(environment.firebase);
   declarations: [AppComponent],
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,
-  IonicStorageModule.forRoot({
-    name: '__db_corona_mission',
-    driverOrder: ['localstorage']
-  })
+    IonicStorageModule.forRoot({
+      name: '__db_corona_mission',
+      driverOrder: ['localstorage']
+    })
   ],
   providers: [
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    FirebaseDatabaseServices, AuthFirebaseService, FirebaseGoogleAuthService,
+    FirebaseDatabaseServices,
+    AuthFirebaseService, 
+    FirebaseGoogleAuthService, 
+    FirebaseFacebookAuthService,
     CoronaToast
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }
