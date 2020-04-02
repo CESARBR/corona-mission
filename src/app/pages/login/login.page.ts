@@ -29,7 +29,7 @@ export class LoginPage implements OnInit {
     .then(this.goToHome.bind(this))
     .catch(error =>{
       console.error(error)
-      this.coronaToast.showError("Could not perform authetication.");
+      this.coronaToast.showError("Não foi possível fazer o login.");
     })
   }
 
