@@ -52,7 +52,7 @@ export class SignupPage implements OnInit {
         console.log(this.ionicForm.value);
       }).catch(error =>{
         console.error(error)
-        let msg = error.code == 'auth/email-already-in-use' ? 'The email address is already in use' : error.message
+        let msg = error.code == 'auth/email-already-in-use' ? 'O email já está sendo usado.' : error.message
         this.coronaToast.showError(msg);
       });
     }
