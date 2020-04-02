@@ -14,13 +14,13 @@ export class IndexPage implements OnInit {
   ionViewWillEnter() {
     this.storage.isSeenSlides().then((val) => {
       if (val) {
-        this.navCtrl.navigateForward('/login-email');
+        this.navCtrl.navigateForward('/login');
       }
     });
   }
 
   ngOnInit() {
-    
+
   }
 
 }

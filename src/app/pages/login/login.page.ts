@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastController, NavController } from '@ionic/angular';
+import { FirebaseGoogleAuthService } from 'src/app/services/firebase/firebase-google-auth.service';
+import { CoronaToast } from 'src/app/shared/corona-toast';
 
 @Component({
   selector: 'app-login',
@@ -8,25 +10,27 @@ import { ToastController, NavController } from '@ionic/angular';
 })
 export class LoginPage implements OnInit {
 
-  constructor(public toastController: ToastController, private navCtrl: NavController) { }
+  constructor(
+    private navCtrl: NavController,
+    private googleAuth: FirebaseGoogleAuthService,
+    private coronaToast: CoronaToast
+  ) { }
 
   ngOnInit() {
   }
 
   async loginFacebook() {
-    const toast = await this.toastController.create({
-      message: 'TODO - Login Facebook',
-      duration: 2000
-    });
-    toast.present();
+    this.coronaToast.showInfo('TODO - Login Facebook');
   }
 
   async loginGoogle() {
-    const toast = await this.toastController.create({
-      message: 'TODO - Login Google',
-      duration: 2000
-    });
-    toast.present();
+    this.googleAuth
+    .doAuth()
+    .then(this.goToHome.bind(this))
+    .catch(error =>{
+      console.error(error)
+      this.coronaToast.showError("Não foi possível fazer o login.");
+    })
   }
 
   loginEmail() {
@@ -34,6 +38,8 @@ export class LoginPage implements OnInit {
     this.navCtrl.navigateForward('/login/login-email');
   }
 
-  
+  private goToHome(){
+    this.navCtrl.navigateForward('/home');
+  }
 
 }
