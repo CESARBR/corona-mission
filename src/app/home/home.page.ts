@@ -3,6 +3,7 @@ import { NavController } from '@ionic/angular';
 import { DataService } from '../services/data.service';
 import { AuthFirebaseService } from '../services/firebase/firebase-auth.service';
 import { FirebaseDatabaseServices } from '../services/firebase/firebase-database.service';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -10,12 +11,17 @@ import { FirebaseDatabaseServices } from '../services/firebase/firebase-database
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
+  private readonly STATUS_UNCHECK = "ellipse-outline";
+  private readonly STATUS_CHECK = "checkmark-outline";
+
   hasRegistered = true;
 
   registeredUsers;
+  loading: any;
 
   constructor(private navCtrl: NavController, private dataService: DataService,
-    private authFirebaseService: AuthFirebaseService, private databaseFirebaseService: FirebaseDatabaseServices) {
+    private authFirebaseService: AuthFirebaseService, private databaseFirebaseService: FirebaseDatabaseServices,
+    public loadingController: LoadingController) {
   }
 
   ionViewWillEnter() {
@@ -26,11 +32,18 @@ export class HomePage implements OnInit {
   ngOnInit() {
   }
 
-  loadPersons() {
+  async loadPersons() {
+    this.loading = await this.loadingController.create({
+      message: 'Aguarde...',
+    });
+    
+    await this.loading.present();
+
     this.databaseFirebaseService
       .readItemByKey('/users/' + this.authFirebaseService.getCurrentUserId() + '/contacts', '').then((res) => {
 
         this.hasRegistered = Boolean(res && res.val());
+        this.loading.dismiss();
 
         if (this.hasRegistered) {
           this.registeredUsers = res.val();
@@ -47,26 +60,30 @@ export class HomePage implements OnInit {
         if (missionsToday === 0) {
           const daysAgoMissions = this.getLastUpdateChallenge(contactValue.challenges);
           if (daysAgoMissions < 3) {
-            contactValue.mission = "Você fez " + missionsToday.toString() + " missões hoje.";
+            contactValue.mission = "Você fez " + missionsToday.toString() + " missões hoje!";
             contactValue.mission_label_color = "dark";
             contactValue.mission_color = "dark";
+            contactValue.color = '';
           }
           else {
-            contactValue.mission = daysAgoMissions.toString() + "Dias sem missão.";
-            contactValue.mission_label_color = "red";
-            contactValue.mission_color = "red";
+            contactValue.mission = daysAgoMissions.toString() + " dias sem missão.";
+            contactValue.mission_label_color = "danger";
+            contactValue.mission_color = "danger";
+            contactValue.color = '#eb445a';
           }
         }
         else {
           contactValue.mission = "Você fez " + missionsToday.toString() + " missões hoje.";
-          contactValue.mission_label_color = "dark";
-          contactValue.mission_color = "dark";
+          contactValue.mission_label_color = "secondary";
+          contactValue.mission_color = "secondary";
+          contactValue.color = '#3dc2ff';
         }
       }
       else {
         contactValue.mission = "Realize sua primeira missão";
         contactValue.mission_label_color = "dark";
         contactValue.mission_color = "dark";
+        contactValue.color = '';
       }
     }
 
@@ -90,6 +107,7 @@ export class HomePage implements OnInit {
   getMissionsToday(challenges) {
     const date = new Date();
     return challenges.filter(challenge => challenge.lastChange &&
+      challenge.status === this.STATUS_CHECK &&
       (new Date(challenge.lastChange).getDate() === date.getDate() &&
         new Date(challenge.lastChange).getMonth() === date.getMonth() &&
         new Date(challenge.lastChange).getFullYear() === date.getFullYear())).length;
