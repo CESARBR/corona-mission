@@ -26,11 +26,17 @@ export class LoginPage implements OnInit {
   ngOnInit() {
   }
 
-  loginFacebook() {
+  async loginFacebook() {
+    this.loading = await this.loadingController.create({
+      message: 'Aguarde...',
+    });
+    
+    await this.loading.present();
     this.facebookAuth
     .doAuth()
     .then(this.goToHome.bind(this))
     .catch(error =>{
+      this.loading.dismiss();
       console.error(error)
       this.coronaToast.showError("Não foi possível fazer o login.");
     });

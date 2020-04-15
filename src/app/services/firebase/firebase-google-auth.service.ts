@@ -12,6 +12,6 @@ export class FirebaseGoogleAuthService {
 
   doAuth(){
     var provider = new firebase.auth.GoogleAuthProvider();
-    return firebase.auth().signInWithPopup(provider)
+    return firebase.auth().signInWithPopup(provider);
   }
 }

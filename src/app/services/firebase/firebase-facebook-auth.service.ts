@@ -12,6 +12,6 @@ export class FirebaseFacebookAuthService {
 
   doAuth(){
     var provider = new firebase.auth.FacebookAuthProvider();
-    return firebase.auth().signInWithPopup(provider)
+    return firebase.auth().signInWithPopup(provider);
   }
 }
