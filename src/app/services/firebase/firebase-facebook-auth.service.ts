@@ -6,12 +6,12 @@ import * as firebase from 'firebase/app';
 @Injectable({
   providedIn: 'root'
 })
-export class FirebaseGoogleAuthService {
+export class FirebaseFacebookAuthService {
 
   constructor(private nvc: NavController) { }
 
   doAuth(){
-    var provider = new firebase.auth.GoogleAuthProvider();
+    var provider = new firebase.auth.FacebookAuthProvider();
     return firebase.auth().signInWithPopup(provider);
   }
 }

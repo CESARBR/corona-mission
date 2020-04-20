@@ -73,14 +73,14 @@ export class HomePage implements OnInit {
           }
         }
         else {
-          contactValue.mission = "Você fez " + missionsToday.toString() + " missões hoje.";
+          contactValue.mission = "Você fez " + missionsToday.toString() + " missões hoje!";
           contactValue.mission_label_color = "secondary";
           contactValue.mission_color = "secondary";
           contactValue.color = '#3dc2ff';
         }
       }
       else {
-        contactValue.mission = "Realize sua primeira missão";
+        contactValue.mission = "Realize sua primeira missão!";
         contactValue.mission_label_color = "dark";
         contactValue.mission_color = "dark";
         contactValue.color = '';
