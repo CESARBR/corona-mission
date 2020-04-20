@@ -63,3 +63,14 @@ ion-card-subtitle {
     text-align: start;
     padding-left: 7vw;
 }
+
+ion-avatar {
+    width: 18vw !important;
+    height: 18vw !important;
+    border: 20px;
+    img {
+        border: 6px solid #A7A7A7;
+        padding: 3px;
+    }
+    align-items: center;
+}

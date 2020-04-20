@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { NavController, Platform, ToastController } from '@ionic/angular';
+import { NavController, Platform, ToastController, LoadingController } from '@ionic/angular';
 import { FirebaseDatabaseServices } from 'src/app/services/firebase/firebase-database.service';
 import { AuthFirebaseService } from '../../../services/firebase/firebase-auth.service';
 import { DataService } from 'src/app/services/data.service';
@@ -17,14 +17,22 @@ export class EditContactPage implements OnInit {
   contactsPath: string;  
   person: any;
   isSubmitted = false;
+  loading: any;
 
   constructor(public formBuilder: FormBuilder, private navCtrl: NavController,
     private plt:Platform, private dataService: DataService, private toastCtrl: ToastController,
-    private firebaseDataService: FirebaseDatabaseServices, private router: ActivatedRoute, private auth: AuthFirebaseService) {
+    private firebaseDataService: FirebaseDatabaseServices, private router: ActivatedRoute, private auth: AuthFirebaseService,
+    public loadingController: LoadingController) {
       this.contactsPath = '/users/' + this.auth.getCurrentUserId() + '/contacts';      
   }
 
   async ionViewWillEnter() {
+    debugger
+    this.loading = await this.loadingController.create({
+      message: 'Aguarde...',
+    });
+    await this.loading.present();
+
     this.idContact = this.router.snapshot.params.id;
     const contact = await this.firebaseDataService.readItemByKey(`${this.contactsPath}/${this.idContact}`);    
     this.person = contact.val();
@@ -32,6 +40,10 @@ export class EditContactPage implements OnInit {
     this.ionicForm.controls['age'].setValue(this.person.age);
     this.ionicForm.controls['phone'].setValue(this.person.phone);
     this.ionicForm.controls['relationship'].setValue(this.person.relationship);
+
+    var pathBack = "../";
+    this.person.avatar = pathBack.concat(this.person.avatar);    
+    this.loading.dismiss();
   }
   ngOnInit() {
     this.ionicForm = this.formBuilder.group({
