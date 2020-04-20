@@ -36,6 +36,7 @@
     "core-js": "^2.5.4",
     "crypto-js": "^4.0.0",
     "firebase": "^7.12.0",
+    "mx.ferreyra.callnumber": "0.0.2",
     "rxjs": "~6.5.1",
     "tslib": "^1.9.0",
     "zone.js": "~0.9.1"
@@ -87,7 +88,8 @@
       },
       "cordova-plugin-ionic-keyboard": {},
       "cordova-sqlite-storage": {},
-      "mx.ferreyra.callnumber": {}
+      "mx.ferreyra.callnumber": {},
+      "call-number": {}
     },
     "platforms": [
       "android"
