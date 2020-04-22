@@ -65,7 +65,7 @@ export class RegisterPage implements OnInit {
     this.newPerson.avatar = "../../assets/img/person_icon.png";
     this.newPerson.register_date = new Date((new Date().getTime() - (3*3600*1000))).toISOString();
 
-    const key = await this.database.createItem('/users/' + this.auth.getCurrentUserId() + '/contacts', this.newPerson);
+    const key = await this.database.createItem('/users/' + await this.auth.getCurrentUserId() + '/contacts', this.newPerson);
 
     this.navCtrl.setDirection('forward');
     this.navCtrl.navigateForward('/home');

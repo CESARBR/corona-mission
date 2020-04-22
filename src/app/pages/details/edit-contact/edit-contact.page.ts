@@ -5,6 +5,8 @@ import { NavController, Platform, ToastController, LoadingController } from '@io
 import { FirebaseDatabaseServices } from 'src/app/services/firebase/firebase-database.service';
 import { AuthFirebaseService } from '../../../services/firebase/firebase-auth.service';
 import { DataService } from 'src/app/services/data.service';
+import { Camera } from '@ionic-native/camera/ngx';
+import { File } from '@ionic-native/file/ngx';
 
 @Component({
   templateUrl: './edit-contact.page.html',
@@ -18,16 +20,21 @@ export class EditContactPage implements OnInit {
   person: any;
   isSubmitted = false;
   loading: any;
+  imageSrc: string;
 
   constructor(public formBuilder: FormBuilder, private navCtrl: NavController,
     private plt:Platform, private dataService: DataService, private toastCtrl: ToastController,
-    private firebaseDataService: FirebaseDatabaseServices, private router: ActivatedRoute, private auth: AuthFirebaseService,
-    public loadingController: LoadingController) {
-      this.contactsPath = '/users/' + this.auth.getCurrentUserId() + '/contacts';      
+    private firebaseDataService: FirebaseDatabaseServices, private router: ActivatedRoute, 
+    private auth: AuthFirebaseService, public loadingController: LoadingController,
+    private camera: Camera, private file: File) {
+
+      this.auth.getCurrentUserId().then((id) => {
+
+        this.contactsPath = '/users/' + id + '/contacts';
+      })
   }
 
   async ionViewWillEnter() {
-    debugger
     this.loading = await this.loadingController.create({
       message: 'Aguarde...',
     });
@@ -76,6 +83,7 @@ export class EditContactPage implements OnInit {
   }
 
    async updateUser() {     
+     debugger
     this.person.name = this.ionicForm.value.name;
     this.person.age = this.ionicForm.value.age;
     this.person.phone = this.ionicForm.value.phone;
@@ -83,15 +91,41 @@ export class EditContactPage implements OnInit {
     this.person.mission = "Clique para realizar missões!";
     this.person.mission_color = "dark";
     this.person.mission_label_color = "dark";
-    this.person.avatar = "../../assets/img/person_icon.png";
     
-    const key = await this.firebaseDataService.bruteUpdateItem('/users/' + this.auth.getCurrentUserId() + '/contacts/' + this.idContact, this.person);
+    if(this.imageSrc){
+      this.person.avatar = this.imageSrc;
+    } else {
+      this.person.avatar = "../../assets/img/person_icon.png";
+    }       
+    
+    const key = await this.firebaseDataService.bruteUpdateItem('/users/' + await this.auth.getCurrentUserId() + '/contacts/' + this.idContact, this.person);    
     console.log(key);
     
     this.dataService.setData(this.idContact, this.idContact);
     // let str = 'details/' + this.idContact;
     this.navCtrl.setDirection('forward');
     this.navCtrl.navigateForward("/home");   
+   }
+
+   openGalleryPhotos() {     
+
+
+    // let cameraOptions = {
+    //   sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
+    //   destinationType: this.camera.DestinationType.NATIVE_URI,      
+    //   quality: 100,      
+    //   encodingType: this.camera.EncodingType.JPEG,      
+    //   mediaType: this.camera.MediaType.PICTURE,
+    //   correctOrientation: true,
+    //   saveToPhotoAlbum: true
+    // }
+  
+    // this.camera.getPicture(cameraOptions).then((imageData) => {
+    //   console.log(imageData);
+    //   this.imageSrc = imageData;
+    // }, (err) => {
+    //   console.log(err);
+    // });
    }
 
 }

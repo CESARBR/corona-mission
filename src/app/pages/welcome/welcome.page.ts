@@ -16,7 +16,7 @@ export class WelcomePage implements OnInit {
 
   navigateToLoginPage() {
     this.storage.markSeenSlides().then(() => {
-      this.navCtrl.navigateForward('/login');
+      this.navCtrl.navigateRoot('/login');
     });
   }
 
