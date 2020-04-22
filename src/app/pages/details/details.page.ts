@@ -31,7 +31,11 @@ export class DetailsPage implements OnInit {
   constructor(private route: ActivatedRoute, private dataService: DataService, private navCtrl: NavController, 
     private database: FirebaseDatabaseServices, private auth: AuthFirebaseService,
     private popoverController: PopoverController, public loadingController: LoadingController) {
-    this.contactsPath = '/users/' + this.auth.getCurrentUserId() + '/contacts';
+
+      this.auth.getCurrentUserId().then((id) => {
+
+        this.contactsPath = '/users/' + id + '/contacts';
+      });
   }
 
   async ionViewWillEnter() {

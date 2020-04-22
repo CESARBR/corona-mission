@@ -14,7 +14,14 @@ export class IndexPage implements OnInit {
   ionViewWillEnter() {
     this.storage.isSeenSlides().then((val) => {
       if (val) {
-        this.navCtrl.navigateForward('/login');
+
+        this.storage.getLoggedUser().then((user) => {
+          if (user) {
+            this.navCtrl.navigateRoot('/home');
+          } else {
+            this.navCtrl.navigateRoot('/login');
+          }
+        })
       }
     });
   }

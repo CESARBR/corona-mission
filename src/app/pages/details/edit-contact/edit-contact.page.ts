@@ -21,7 +21,12 @@ export class EditContactPage implements OnInit {
   constructor(public formBuilder: FormBuilder, private navCtrl: NavController,
     private plt:Platform, private dataService: DataService, private toastCtrl: ToastController,
     private firebaseDataService: FirebaseDatabaseServices, private router: ActivatedRoute, private auth: AuthFirebaseService) {
-      this.contactsPath = '/users/' + this.auth.getCurrentUserId() + '/contacts';      
+
+
+      this.auth.getCurrentUserId().then((id) => {
+
+        this.contactsPath = '/users/' + id + '/contacts';
+      })
   }
 
   async ionViewWillEnter() {
