@@ -45,13 +45,12 @@ export class LoginPage implements OnInit {
   }
 
   loginEmail() {
-    this.navCtrl.setDirection('forward');
-    this.navCtrl.navigateForward('/login/login-email');
+    this.navCtrl.navigateRoot('/login-email');
   }
 
   private goToHome(){
     this.loading.dismiss();
-    this.navCtrl.navigateForward('/home');
+    this.navCtrl.navigateRoot('/home');
   }
 
 }
