@@ -11,11 +11,10 @@
       <ion-card-header>
         <ion-card-title>Editar contato</ion-card-title>
       </ion-card-header>
-  
-      <hr color="light">
-    
+      
       <ion-card-content>
         <form class="login-form" [formGroup]="ionicForm" (ngSubmit)="submitForm()">
+          <h3 class="subtitle">informações pessoais</h3>
           <ion-item lines="full">
             <ion-label position="floating">Nome ou apelido</ion-label>
             <ion-input formControlName="name" required="true" type="text" inputmode="text" autofocus="true" maxlength="200" required></ion-input>

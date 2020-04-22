@@ -13,25 +13,11 @@
   <ion-card color="medium">
     <ion-card-header>
       <ion-card-title>Criar contato</ion-card-title>
-      <ion-card-subtitle>
-        <ion-grid>
-          <ion-row>
-            <ion-col size="8">
-              Informações pessoais do amigo ou familiar
-            </ion-col>
-            <ion-col size="4">
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-        
-      </ion-card-subtitle>
-      
     </ion-card-header>
 
-    <hr color="light">
-  
     <ion-card-content>
       <form class="login-form" [formGroup]="ionicForm" (ngSubmit)="submitForm()">
+        <h3 class="subtitle">informações pessoais do amigo ou familiar</h3>
         <ion-item lines="full" >
           <ion-label position="floating">Nome ou apelido</ion-label>
           <ion-input formControlName="name" required="true" type="text" inputmode="text" autofocus="true" maxlength="200" required></ion-input>
