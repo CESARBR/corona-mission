@@ -14,12 +14,12 @@ const routes: Routes = [
           m => m.WelcomePageModule
         )
       },
-      {
-        path: 'login',
-        loadChildren:() => import('../pages/login/login.module').then(
-          m => m.LoginPageModule
-        )
-      }
+      // {
+      //   path: 'login',
+      //   loadChildren:() => import('../pages/login/login.module').then(
+      //     m => m.LoginPageModule
+      //   )
+      // }
     ]
   }
 ];

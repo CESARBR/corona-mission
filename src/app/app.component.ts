@@ -11,7 +11,9 @@ import { AuthFirebaseService } from './services/firebase/firebase-auth.service';
   styleUrls: ['app.component.scss']
 })
 export class AppComponent {
+  
   navigate : any;
+
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,

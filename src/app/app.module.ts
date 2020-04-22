@@ -23,7 +23,9 @@ firebase.initializeApp(environment.firebase);
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,
+  imports: [BrowserModule, IonicModule.forRoot({
+    backButtonText: 'Voltar'
+  }), AppRoutingModule,
   IonicStorageModule.forRoot({
     name: '__db_corona_mission',
     driverOrder: ['localstorage']
