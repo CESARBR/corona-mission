@@ -6,6 +6,8 @@ import { FirebaseDatabaseServices } from 'src/app/services/firebase/firebase-dat
 import { AuthFirebaseService } from '../../../services/firebase/firebase-auth.service';
 import { DataService } from 'src/app/services/data.service';
 import { Camera } from '@ionic-native/camera/ngx';
+import { AngularFireStorage } from '@angular/fire/storage';
+import { File } from '@ionic-native/file/ngx';
 
 @Component({
   templateUrl: './edit-contact.page.html',
@@ -20,12 +22,14 @@ export class EditContactPage implements OnInit {
   isSubmitted = false;
   loading: any;
   imageSrc: string;
+  cameraOptions: {}
 
   constructor(public formBuilder: FormBuilder, private navCtrl: NavController,
     private plt:Platform, private dataService: DataService, private toastCtrl: ToastController,
     private firebaseDataService: FirebaseDatabaseServices, private router: ActivatedRoute, 
     private auth: AuthFirebaseService, public loadingController: LoadingController,
-    private camera: Camera) {
+    private camera: Camera, private fireStorage: AngularFireStorage,
+    private file: File) {
 
       this.auth.getCurrentUserId().then((id) => {
 
@@ -48,7 +52,8 @@ export class EditContactPage implements OnInit {
     this.ionicForm.controls['relationship'].setValue(this.person.relationship);
 
     var pathBack = "../";
-    this.person.avatar = pathBack.concat(this.person.avatar);    
+    this.person.avatar = pathBack.concat(this.person.avatar);
+
     this.loading.dismiss();
   }
   ngOnInit() {
@@ -106,23 +111,52 @@ export class EditContactPage implements OnInit {
     this.navCtrl.navigateForward("/home");   
    }
 
-   openGalleryPhotos() {     
-    let cameraOptions = {
+   defineCameraOptions(){
+    this.cameraOptions = {
       sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
-      destinationType: this.camera.DestinationType.NATIVE_URI,      
-      quality: 100,      
-      encodingType: this.camera.EncodingType.JPEG,      
-      mediaType: this.camera.MediaType.PICTURE,
-      correctOrientation: true,
-      saveToPhotoAlbum: true
-    }
-  
-    this.camera.getPicture(cameraOptions).then((imageData) => {
-      console.log(imageData);
-      this.imageSrc = imageData;
-    }, (err) => {
-      console.log(err);
+      destinationType: this.camera.DestinationType.FILE_URI,
+      quality: 100,
+      correctOrientation: true
+    };
+   }
+
+   async openGalleryPhotos() {  
+     debugger   
+    this.defineCameraOptions();
+    
+    try {
+      const fileUri: string = await this.camera.getPicture(this.cameraOptions);
+
+      let file: string;
+
+      if(this.plt.is('ios')){
+        file = fileUri.split('/').pop();
+      } else {
+        file = fileUri.substring(fileUri.lastIndexOf('/') + 1, fileUri.indexOf("?"));
+      }
+
+      const path: string = fileUri.substring(0, fileUri.lastIndexOf('/'));
+
+      const buffer: ArrayBuffer = await this.file.readAsArrayBuffer(path, file);
+      const blob: Blob = new Blob([buffer], { type: 'image/jpeg'});
+
+      this.uploadPictureFirebaseStorage(blob);
+
+    } catch (error) {
+      console.log(error);
+    }    
+   }
+   
+   uploadPictureFirebaseStorage(blob: Blob){
+     debugger
+    this.fireStorage.ref('images/ionic.jpg').put(blob);
+   }
+
+   async showWaitLoading(){
+    this.loading = await this.loadingController.create({
+      message: 'Aguarde...',
     });
+    await this.loading.present();   
    }
 
 }
