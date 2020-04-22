@@ -3,10 +3,16 @@ import 'firebase/auth';
 import { Injectable } from '@angular/core';
 import { ToastController } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
+import { StorageService } from '../storage.service';
 
 @Injectable()
 export class AuthFirebaseService {
-    constructor(private nvc: NavController, private toastCtrl: ToastController,) { }
+    
+    constructor(private nvc: NavController, private toastCtrl: ToastController, private storage: StorageService) { 
+        firebase.auth().onAuthStateChanged(async (user) => {
+           await storage.setLoggedUser(user);
+        });
+    }
 
     async doLoginEmail(email, password) {
         return firebase.auth().signInWithEmailAndPassword(email, password).catch(async (error) => {
@@ -85,12 +91,18 @@ export class AuthFirebaseService {
         })
     }
 
-    getCurrentUserId() {
+    async getCurrentUserId() {
 
-        if (firebase.auth() && firebase.auth().currentUser) {
+        const user = await this.storage.getLoggedUser();
 
-            return firebase.auth().currentUser.uid;
+        if (user) {
+
+            return user.uid;
         }
+    }
+
+    async isLogged () {
+        return Boolean(await this.storage.getLoggedUser());
     }
 
     sendPasswordResetEmail (email: string): Promise<any> {

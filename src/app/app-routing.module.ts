@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { DataResolverService } from './resolver/data-resolver.service';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { LoggedGuardService } from './services/logged-guard.service';
 
 const routes: Routes = [
   {
@@ -17,7 +18,8 @@ const routes: Routes = [
   },
   {
     path: 'login-email',
-    loadChildren: () => import('./pages/login-email/login-email.module').then( m => m.LoginEmailPageModule)
+    loadChildren: () => import('./pages/login-email/login-email.module').then( m => m.LoginEmailPageModule),
+    canActivate: [LoggedGuardService]
   },
   {
     path: 'details/:id',
@@ -26,11 +28,10 @@ const routes: Routes = [
     },
     loadChildren: () => import('./pages/details/details.module').then( m => m.DetailsPageModule)
   },
-  // ,
-  // {
-  //   path: 'login',
-  //   loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
-  // },
+  {
+    path: 'login',
+    loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
+  },
   {
     path: 'signup',
     loadChildren: () => import('./pages/signup/signup.module').then( m => m.SignupPageModule)
