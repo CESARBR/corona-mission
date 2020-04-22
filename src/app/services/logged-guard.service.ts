@@ -7,13 +7,15 @@ import { NavController } from '@ionic/angular';
 @Injectable({
   providedIn: "root"
 })
-export class AuthGuardService implements CanActivate {
+export class LoggedGuardService implements CanActivate {
   constructor(private nvc: NavController, private authFirebaseService: AuthFirebaseService) {}
 
   canActivate(route: ActivatedRouteSnapshot): Promise<boolean> {
+
     return this.authFirebaseService.isLogged().then((val) => {
-      if (!val) {
-        this.nvc.navigateRoot(["login"]);
+    
+      if (val) {
+        this.nvc.navigateRoot(["home"]);
         return false;
       }
   
