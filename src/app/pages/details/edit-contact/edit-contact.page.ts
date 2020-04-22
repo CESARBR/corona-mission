@@ -41,7 +41,7 @@ export class EditContactPage implements OnInit {
   ngOnInit() {
     this.ionicForm = this.formBuilder.group({
       name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(200)]],
-      age: ['', [Validators.required, Validators.minLength(1),Validators.maxLength(3)]],
+      age: ['', [Validators.required, Validators.pattern('[1-9]{1}[0-9]{0,2}')]],
       phone: ['', [Validators.required]],
       relationship: ['', Validators.required],
     }, {
