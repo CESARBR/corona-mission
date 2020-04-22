@@ -6,7 +6,6 @@ import { FirebaseDatabaseServices } from 'src/app/services/firebase/firebase-dat
 import { AuthFirebaseService } from '../../../services/firebase/firebase-auth.service';
 import { DataService } from 'src/app/services/data.service';
 import { Camera } from '@ionic-native/camera/ngx';
-import { File } from '@ionic-native/file/ngx';
 
 @Component({
   templateUrl: './edit-contact.page.html',
@@ -26,7 +25,7 @@ export class EditContactPage implements OnInit {
     private plt:Platform, private dataService: DataService, private toastCtrl: ToastController,
     private firebaseDataService: FirebaseDatabaseServices, private router: ActivatedRoute, 
     private auth: AuthFirebaseService, public loadingController: LoadingController,
-    private camera: Camera, private file: File) {
+    private camera: Camera) {
 
       this.auth.getCurrentUserId().then((id) => {
 
@@ -108,24 +107,22 @@ export class EditContactPage implements OnInit {
    }
 
    openGalleryPhotos() {     
-
-
-    // let cameraOptions = {
-    //   sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
-    //   destinationType: this.camera.DestinationType.NATIVE_URI,      
-    //   quality: 100,      
-    //   encodingType: this.camera.EncodingType.JPEG,      
-    //   mediaType: this.camera.MediaType.PICTURE,
-    //   correctOrientation: true,
-    //   saveToPhotoAlbum: true
-    // }
+    let cameraOptions = {
+      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
+      destinationType: this.camera.DestinationType.NATIVE_URI,      
+      quality: 100,      
+      encodingType: this.camera.EncodingType.JPEG,      
+      mediaType: this.camera.MediaType.PICTURE,
+      correctOrientation: true,
+      saveToPhotoAlbum: true
+    }
   
-    // this.camera.getPicture(cameraOptions).then((imageData) => {
-    //   console.log(imageData);
-    //   this.imageSrc = imageData;
-    // }, (err) => {
-    //   console.log(err);
-    // });
+    this.camera.getPicture(cameraOptions).then((imageData) => {
+      console.log(imageData);
+      this.imageSrc = imageData;
+    }, (err) => {
+      console.log(err);
+    });
    }
 
 }

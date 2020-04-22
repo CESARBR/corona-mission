@@ -18,7 +18,6 @@ import { AuthFirebaseService } from './services/firebase/firebase-auth.service';
 import { FirebaseGoogleAuthService } from './services/firebase/firebase-google-auth.service';
 import { CoronaToast } from './shared/corona-toast';
 import { Camera } from '@ionic-native/camera/ngx';
-import { File } from '@ionic-native/file/ngx';
 
 firebase.initializeApp(environment.firebase);
 
@@ -38,7 +37,7 @@ firebase.initializeApp(environment.firebase);
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     FirebaseDatabaseServices, AuthFirebaseService, FirebaseGoogleAuthService,
-    CoronaToast, Camera, File
+    CoronaToast, Camera
   ],
   bootstrap: [AppComponent]
 })
