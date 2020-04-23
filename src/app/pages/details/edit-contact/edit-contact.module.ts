@@ -8,6 +8,7 @@ import { EditContactRoutingModule } from './edit-contact-routing.module';
 
 import { EditContactPage } from './edit-contact.page';
 import { BrMaskerModule } from 'br-mask';
+import { WebView } from '@ionic-native/ionic-webview/ngx';
 
 @NgModule({
   imports: [
@@ -18,6 +19,7 @@ import { BrMaskerModule } from 'br-mask';
     ReactiveFormsModule,
     EditContactRoutingModule
   ],
-  declarations: [EditContactPage]
+  declarations: [EditContactPage],
+  providers: [WebView]
 })
 export class EditContactModule {}
