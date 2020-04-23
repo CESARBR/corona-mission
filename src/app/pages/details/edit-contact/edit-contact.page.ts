@@ -59,7 +59,7 @@ export class EditContactPage implements OnInit {
   ngOnInit() {
     this.ionicForm = this.formBuilder.group({
       name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(200)]],
-      age: ['', [Validators.required, Validators.minLength(1),Validators.maxLength(3)]],
+      age: ['', [Validators.required, Validators.pattern('[1-9]{1}[0-9]{0,2}')]],
       phone: ['', [Validators.required]],
       relationship: ['', Validators.required],
     }, {
@@ -79,7 +79,6 @@ export class EditContactPage implements OnInit {
   submitForm() {
     this.isSubmitted = true;
     if (!this.ionicForm.valid) {
-      console.log('Please provide all the required values!');
       return false;
     } else {
       this.updateUser();
@@ -96,14 +95,7 @@ export class EditContactPage implements OnInit {
     this.person.mission_color = "dark";
     this.person.mission_label_color = "dark";
     
-    if(this.imageSrc){
-      this.person.avatar = this.imageSrc;
-    } else {
-      this.person.avatar = "../../assets/img/person_icon.png";
-    }       
-    
-    const key = await this.firebaseDataService.bruteUpdateItem('/users/' + await this.auth.getCurrentUserId() + '/contacts/' + this.idContact, this.person);    
-    console.log(key);
+    const key = await this.firebaseDataService.bruteUpdateItem('/users/' + await this.auth.getCurrentUserId() + '/contacts/' + this.idContact, this.person);
     
     this.dataService.setData(this.idContact, this.idContact);
     // let str = 'details/' + this.idContact;

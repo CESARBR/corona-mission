@@ -55,12 +55,12 @@ hr {
     margin-right: 7vw;
 }
 
-ion-card-subtitle {
+.subtitle {
     color: var(--ion-color-primary) !important;
-    font-size: 2.8vh;
+    font-size: 1.9vh;
     font-weight: 600;
-    text-align: start;
-    padding-left: 7vw;
+    text-align: start;    
+    text-transform: lowercase;
 }
 
 ion-avatar {
@@ -75,5 +75,9 @@ ion-avatar {
 }
 
 .underline {
-    text-decoration: underline;
+    text-decoration: underline;    
+}
+
+ion-card-title {
+    font-size: 2.8vh;
 }

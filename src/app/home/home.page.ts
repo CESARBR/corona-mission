@@ -16,7 +16,7 @@ export class HomePage implements OnInit {
   items: any[] = [];
   hasRegistered = true;
 
-  registeredUsers;
+  registeredUsers = [];
   loading: any;
 
   constructor(private navCtrl: NavController, private dataService: DataService,
@@ -33,7 +33,7 @@ export class HomePage implements OnInit {
   }
 
   ionViewWillEnter() {
-
+    this.registeredUsers = [];
     this.loadPersons();
   }
 
@@ -54,15 +54,30 @@ export class HomePage implements OnInit {
         this.loading.dismiss();
 
         if (this.hasRegistered) {
-          this.registeredUsers = res.val();
+
+          const responseVal = res.val();
+
+          Object.keys(responseVal).forEach((key) => {
+            this.registeredUsers.push({
+              id: key,
+              ...responseVal[key]
+            });
+          });
         }
+
+        this.registeredUsers.sort(function (x, y) {
+          let a = x.name.toUpperCase(),
+              b = y.name.toUpperCase();
+          return a == b ? 0 : a > b ? 1 : -1;
+        });
+
         this.checkColorAndMessage();
       });
   }
 
   checkColorAndMessage() {
-    for (var key in this.registeredUsers) {
-      var contactValue = this.registeredUsers[key];
+    for (const contactValue of this.registeredUsers) {
+      
       if (contactValue.challenges) {
         const missionsToday = this.getMissionsToday(contactValue.challenges);
         if (missionsToday === 0) {
@@ -126,7 +141,6 @@ export class HomePage implements OnInit {
   }
 
   openDetail(id) {
-    console.log("Opening ... " + id)
     this.dataService.setData(id, id);
     let str = 'details/' + id;
     this.navCtrl.setDirection('forward');

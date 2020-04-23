@@ -39,7 +39,6 @@ export class LoginPage implements OnInit {
     .then(this.goToHome.bind(this))
     .catch(error =>{
       this.loading.dismiss();
-      console.error(error)
       this.coronaToast.showError("Não foi possível fazer o login.");
     })
   }
