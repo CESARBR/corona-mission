@@ -30,7 +30,7 @@ export class EditContactPage implements OnInit {
     private firebaseDataService: FirebaseDatabaseServices, private router: ActivatedRoute, 
     private auth: AuthFirebaseService, public loadingController: LoadingController,
     private camera: Camera, private fireStorage: AngularFireStorage,
-    private webview: WebView,
+    private webView: WebView,
     private file: File) {
 
       this.auth.getCurrentUserId().then((id) => {
@@ -53,7 +53,11 @@ export class EditContactPage implements OnInit {
     this.ionicForm.controls['phone'].setValue(this.person.phone);
     this.ionicForm.controls['relationship'].setValue(this.person.relationship);
 
-    this.imageSrc = this.webview.convertFileSrc(this.file.dataDirectory + this.person.avatar);
+    const iconFileName: string = "person_icon.png";
+    let avatarName: string = this.person.avatar;
+    
+    this.imageSrc = !avatarName.endsWith(iconFileName) ? 
+      this.webView.convertFileSrc(this.file.dataDirectory + this.person.avatar) :this.person.avatar;
 
     this.loading.dismiss();
   }
@@ -112,7 +116,7 @@ export class EditContactPage implements OnInit {
     };
    }
 
-   async openGalleryPhotos() {         
+   async openGalleryPhotos() {           
     this.defineCameraOptions();
     
     try {
@@ -129,12 +133,11 @@ export class EditContactPage implements OnInit {
 
       const tempBaseFilesystemPath = tempImage.substr(0, tempImage.lastIndexOf('/') + 1);
       const newBaseFilesystemPath = this.file.dataDirectory;
-      const createdFile = await this.file.copyFile(tempBaseFilesystemPath, fileName, 
-                              newBaseFilesystemPath, fileName);
-      
-      const storedPhoto = newBaseFilesystemPath + fileName;
+      await this.file.copyFile(tempBaseFilesystemPath, fileName, newBaseFilesystemPath, fileName);     
       this.person.avatar = fileName;
+      this.imageSrc = this.webView.convertFileSrc(this.file.dataDirectory + this.person.avatar);
 
+      await this.firebaseDataService.bruteUpdateItem('/users/' + await this.auth.getCurrentUserId() + '/contacts/' + this.idContact, this.person);
 
       //await this.uploadPictureFirebaseStorage(blob, fileName);
 
@@ -147,22 +150,5 @@ export class EditContactPage implements OnInit {
     let pathImage = "images" + this.contactsPath + "/" + this.idContact + "/" + fileName;
 
     await this.fireStorage.ref(pathImage).put(blob);
-   }
-
-   async showWaitLoading(){
-    this.loading = await this.loadingController.create({
-      message: 'Aguarde...',
-    });
-    await this.loading.present();
-   }
-
-   storePictureInfoToDatabase(metaInfo) {
-     let toSave = {
-       created: metaInfo.timeCreated,
-       url: metaInfo.downloadURLs[0],
-       fullPath: metaInfo.fullPath,
-       contentType: metaInfo.contentType
-     }
-   }
-
+   }   
 }
