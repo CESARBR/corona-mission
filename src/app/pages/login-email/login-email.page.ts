@@ -53,10 +53,13 @@ export class LoginEmailPage implements OnInit {
         message: 'Aguarde...',
       });
       await this.loading.present();
-      await this.authFirebaseService.doLoginEmail(this.ionicForm.value.email, this.ionicForm.value.password).then((res) => {
+      try {
+        await this.authFirebaseService.doLoginEmail(this.ionicForm.value.email, this.ionicForm.value.password).then((res) => {
+          this.nvc.navigateForward('/home');
+        });
+      } finally {
         this.loading.dismiss();
-        this.nvc.navigateForward('/home');
-      });
+      }
     }
   }
 
