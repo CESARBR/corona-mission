@@ -67,7 +67,6 @@ export class RecoveryPasswordPage implements OnInit {
               break;
           }
         }
-        console.error(err);
 
         const toast = await this.toastCtrl.create({
           message: msg,

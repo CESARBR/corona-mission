@@ -24,3 +24,9 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+.error-label {
+    display: block;
+    margin-top: 7px;
+    -webkit-text-stroke: 0.2px red;
+}
