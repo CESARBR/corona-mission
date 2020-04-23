@@ -59,8 +59,23 @@ hr {
     color: var(--ion-color-primary) !important;
     font-size: 1.9vh;
     font-weight: 600;
-    text-align: start;
+    text-align: start;    
     text-transform: lowercase;
+}
+
+ion-avatar {
+    width: 18vw !important;
+    height: 18vw !important;
+    border: 20px;
+    img {
+        border: 6px solid #A7A7A7;
+        padding: 3px;
+    }
+    align-items: center; 
+}
+
+.underline {
+    text-decoration: underline;    
 }
 
 ion-card-title {
