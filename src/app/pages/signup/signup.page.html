@@ -18,54 +18,54 @@
       <ion-label position="floating">Nome Completo</ion-label>
       <ion-input formControlName="name" type="text" required="true" inputmode="text" autofocus="true" autocomplete="on" required></ion-input>
     </ion-item>
-    <span class="error ion-padding" *ngIf="isSubmitted && errorControl.name.errors?.required">
+    <ion-label color="danger" class=" error-label"  *ngIf="isSubmitted && errorControl.name.errors?.required">
       Informe seu nome.
-    </span>
-    <span class="error ion-padding" *ngIf="isSubmitted && errorControl.name.errors?.minlength">
+    </ion-label >
+    <ion-label color="danger" class=" error-label"  *ngIf="isSubmitted && errorControl.name.errors?.minlength">
       Seu nome deve conter no mínimo 6 dígitos.
-    </span>
+    </ion-label >
 
     <ion-item lines="full">
       <ion-label position="floating">Email</ion-label>
       <ion-input formControlName="email" required="true" type="email" inputmode="email" autofocus="true" autocomplete="on" required></ion-input>
     </ion-item>
-    <span class="error ion-padding" *ngIf="isSubmitted && errorControl.email.errors?.required">
+    <ion-label color="danger" class=" error-label"  *ngIf="isSubmitted && errorControl.email.errors?.required">
       Informe seu email.
-    </span>
-    <span class="error ion-padding" *ngIf="isSubmitted && errorControl.email.errors?.pattern">
+    </ion-label >
+    <ion-label color="danger" class=" error-label"  *ngIf="isSubmitted && errorControl.email.errors?.pattern">
       Informe um email válido.
-    </span>
+    </ion-label >
 
     <ion-item lines="full">
       <ion-label position="floating">Senha</ion-label>
       <ion-input formControlName="password" required="true" type="password" inputmode="password" required></ion-input>
     </ion-item>
-    <span class="error ion-padding" *ngIf="isSubmitted && errorControl.password.errors?.required">
+    <ion-label color="danger" class=" error-label"  *ngIf="isSubmitted && errorControl.password.errors?.required">
       Informe uma senha.
-    </span>
-    <span class="error ion-padding" *ngIf="isSubmitted && errorControl.password.errors?.minlength">
+    </ion-label >
+    <ion-label color="danger" class=" error-label"  *ngIf="isSubmitted && errorControl.password.errors?.minlength">
       Sua senha deve ter ao menos 6 dígitos.
-    </span>
-    <span class="error ion-padding" *ngIf="isSubmitted && errorControl.password.errors?.maxlength">
+    </ion-label >
+    <ion-label color="danger" class=" error-label"  *ngIf="isSubmitted && errorControl.password.errors?.maxlength">
       Sua senha deve ter no máximo 30 dígitos.
-    </span>
+    </ion-label >
 
     <ion-item lines="full">
       <ion-label position="floating">Repetir Senha</ion-label>
       <ion-input formControlName="passwordConfirmation" required="true" type="password" inputmode="password" required></ion-input>
     </ion-item>
-    <span class="error ion-padding" *ngIf="isSubmitted && errorControl.password.errors?.required">
+    <ion-label color="danger" class=" error-label"  *ngIf="isSubmitted && errorControl.password.errors?.required">
       Informe uma senha.
-    </span>
-    <span class="error ion-padding" *ngIf="isSubmitted && errorControl.password.errors?.minlength">
+    </ion-label >
+    <ion-label color="danger" class=" error-label"  *ngIf="isSubmitted && errorControl.password.errors?.minlength">
       Sua senha deve ter ao menos 6 dígitos.
-    </span>
-    <span class="error ion-padding" *ngIf="isSubmitted && errorControl.password.errors?.maxlength">
+    </ion-label >
+    <ion-label color="danger" class=" error-label"  *ngIf="isSubmitted && errorControl.password.errors?.maxlength">
       Sua senha deve ter no máximo 30 dígitos.
-    </span>
-    <span class="error ion-padding" *ngIf="isSubmitted && !ionicForm.get('passwordConfirmation').errors && ionicForm.hasError('passwordNotMatch')">
+    </ion-label >
+    <ion-label color="danger" class=" error-label"  *ngIf="isSubmitted && !ionicForm.get('passwordConfirmation').errors && ionicForm.hasError('passwordNotMatch')">
       As senhas digitadas diferem.
-    </span>
+    </ion-label >
 
     <ion-row>
       <ion-col>

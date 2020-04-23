@@ -19,39 +19,35 @@
           </ion-avatar>
         </ion-col>
         <ion-col size="7">
-          <ion-grid>
-            <ion-row>
-              <p class="name">{{person.name}}</p>
-            </ion-row>
-            <ion-row>
-              <p class="relationship">{{person.relationship}}</p>
-            </ion-row>
-            <ion-row class="ion-justify-content-start">
-              <ion-col size="auto" class="ion-no-padding">
-                <ion-button color="dark" fill="outline" (click)="editPerson()">Editar</ion-button>
-              </ion-col>
-              <ion-col size="auto" class="ion-padding-horizontal ">
-                <ion-button color="dark" fill="outline" class="ion-no-margin" (click)="removePerson()">Remover</ion-button>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-          
+          <ion-row>
+            <p class="name">{{person.name}}</p>
+          </ion-row>
+          <ion-row>
+            <p class="relationship">{{person.relationship}}</p>
+          </ion-row>
         </ion-col>
         <ion-col size="2" center center>
           <ion-icon color="primary" name="call" (click)="call($event)"></ion-icon>
         </ion-col>
       </ion-row>
+      <ion-row class="ion-justify-content-start">
+        <ion-col size="auto" class="ion-no-padding">
+          <ion-button color="dark" fill="outline" (click)="editPerson()">Editar</ion-button>
+        </ion-col>
+        <ion-col size="auto" class="ion-padding-horizontal ">
+          <ion-button color="dark" fill="outline" class="ion-no-margin" (click)="removePerson()">Remover</ion-button>
+        </ion-col>
+      </ion-row>
+      <br />
       <ion-row>
         <ion-col class="ion-text-start">
           <p>Total de missões realizadas: <span>{{countMissions}}</span></p>
         </ion-col>
       </ion-row>
     </ion-grid>
-    <hr color="light">
+    <hr />
     <p class="suggestion-text">Sugestões de missões para hoje</p>
 
-    
-    
     <div *ngIf="person.challenges">
       <ion-card class="challenge-card" *ngFor="let challenge of person.challenges | slice:0:3" color="light">
         <ion-card-content>
