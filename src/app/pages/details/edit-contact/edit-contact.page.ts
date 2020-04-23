@@ -120,43 +120,53 @@ export class EditContactPage implements OnInit {
     };
    }
 
-   async openGalleryPhotos() {  
-     debugger   
+   async openGalleryPhotos() {         
     this.defineCameraOptions();
     
     try {
       const fileUri: string = await this.camera.getPicture(this.cameraOptions);
 
-      let file: string;
+      let fileName: string;
 
       if(this.plt.is('ios')){
-        file = fileUri.split('/').pop();
+        fileName = fileUri.split('/').pop();
       } else {
-        file = fileUri.substring(fileUri.lastIndexOf('/') + 1, fileUri.indexOf("?"));
+        fileName = fileUri.substring(fileUri.lastIndexOf('/') + 1, fileUri.indexOf("?"));
       }
 
       const path: string = fileUri.substring(0, fileUri.lastIndexOf('/'));
 
-      const buffer: ArrayBuffer = await this.file.readAsArrayBuffer(path, file);
+      const buffer: ArrayBuffer = await this.file.readAsArrayBuffer(path, fileName);
       const blob: Blob = new Blob([buffer], { type: 'image/jpeg'});
 
-      this.uploadPictureFirebaseStorage(blob);
+      this.uploadPictureFirebaseStorage(blob, fileName);
 
     } catch (error) {
       console.log(error);
     }    
    }
    
-   uploadPictureFirebaseStorage(blob: Blob){
+   async uploadPictureFirebaseStorage(blob: Blob, fileName: string){
      debugger
-    this.fireStorage.ref('images/ionic.jpg').put(blob);
+    let pathImage = "images" + this.contactsPath + "/" + this.idContact + "/" + fileName;
+
+    await this.fireStorage.ref(pathImage).put(blob);
    }
 
    async showWaitLoading(){
     this.loading = await this.loadingController.create({
       message: 'Aguarde...',
     });
-    await this.loading.present();   
+    await this.loading.present();
+   }
+
+   storePictureInfoToDatabase(metaInfo) {
+     let toSave = {
+       created: metaInfo.timeCreated,
+       url: metaInfo.downloadURLs[0],
+       fullPath: metaInfo.fullPath,
+       contentType: metaInfo.contentType
+     }
    }
 
 }
