@@ -1,0 +1,17 @@
+$width: 100vw !important;
+$height: 90vh !important;
+
+.slide-container{
+    width:$width;
+    height:$height;
+
+    .slide-wraper{
+        width:$width;
+        height:$height;
+
+        img{
+            width:$width;
+            height:$height;
+        }
+    }
+}

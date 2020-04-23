@@ -5,7 +5,7 @@
       </ion-buttons>
     </ion-toolbar>
 </ion-header>
-<ion-content>
+<ion-content *ngIf="person">
     <img class="corona-mission-login" src="../../../assets/img/corona-mission-inline.svg" alt="">
     <ion-card color="medium">
       <ion-card-header>
@@ -14,9 +14,15 @@
       
       <ion-card-content>
         <form class="login-form" [formGroup]="ionicForm" (ngSubmit)="submitForm()">
+          <div *ngIf="person.avatar">
+            <ion-avatar class="avatar">
+              <img [src]="imageSrc">
+            </ion-avatar>
+            <a class="underline" [routerLink]="" (click)="openGalleryPhotos()">Alterar foto</a>
+          </div>
           <h3 class="subtitle">informações pessoais</h3>
           <ion-item lines="full">
-            <ion-label position="floating">Nome ou apelido</ion-label>
+            <ion-label position="floatithis.ionicForm.controls['avatar'].setValue(this.person.avatar);">Nome ou apelido</ion-label>
             <ion-input formControlName="name" required="true" type="text" inputmode="text" autofocus="true" maxlength="200" required></ion-input>
           </ion-item>
           <ion-label color="danger" class=" error-label"  class=" error-label" *ngIf="isSubmitted && errorControl.name.errors?.required">
