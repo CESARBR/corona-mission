@@ -4,6 +4,8 @@ import { DataService } from '../services/data.service';
 import { AuthFirebaseService } from '../services/firebase/firebase-auth.service';
 import { FirebaseDatabaseServices } from '../services/firebase/firebase-database.service';
 import { LoadingController } from '@ionic/angular';
+import { File } from '@ionic-native/file/ngx';
+import { WebView } from '@ionic-native/ionic-webview/ngx';
 
 @Component({
   selector: 'app-home',
@@ -18,10 +20,12 @@ export class HomePage implements OnInit {
 
   registeredUsers = [];
   loading: any;
+  imageSrc: string;
 
   constructor(private navCtrl: NavController, private dataService: DataService,
     private authFirebaseService: AuthFirebaseService, private databaseFirebaseService: FirebaseDatabaseServices,
-    public loadingController: LoadingController) {
+    public loadingController: LoadingController, 
+    private webView: WebView, private file: File) {
 
       for (let i = 0; i < 1000; i++) {
         this.items.push({
@@ -56,10 +60,15 @@ export class HomePage implements OnInit {
         if (this.hasRegistered) {
 
           const responseVal = res.val();
+          const iconFileName: string = "person_icon.png";
 
           Object.keys(responseVal).forEach((key) => {
+            let avatarName: string = responseVal[key].avatar;
+            const imageSrc = !avatarName.endsWith(iconFileName) ? 
+              this.webView.convertFileSrc(this.file.dataDirectory + avatarName) : avatarName;            
             this.registeredUsers.push({
               id: key,
+              imageSrc,
               ...responseVal[key]
             });
           });

@@ -21,6 +21,7 @@ import { Camera } from '@ionic-native/camera/ngx';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { File } from '@ionic-native/file/ngx';
+import { WebView } from '@ionic-native/ionic-webview/ngx';
 
 firebase.initializeApp(environment.firebase);
 
@@ -41,7 +42,7 @@ firebase.initializeApp(environment.firebase);
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     FirebaseDatabaseServices, AuthFirebaseService, FirebaseGoogleAuthService,
-    CoronaToast, Camera, File
+    CoronaToast, Camera, File, WebView
   ],
   bootstrap: [AppComponent]
 })
