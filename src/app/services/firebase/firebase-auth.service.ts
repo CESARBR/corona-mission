@@ -18,7 +18,6 @@ export class AuthFirebaseService {
         return firebase.auth().signInWithEmailAndPassword(email, password).catch(async (error) => {
             var errorCode = error.code;
             var errorMessage = error.message; 
-            console.log(errorCode, errorMessage);
             const toast = await this.toastCtrl.create({
                 //TODO verificar se é quantidade de tentativas ou email/senha inválidos
                 message: 'Email ou senha inválidos.',
@@ -32,10 +31,8 @@ export class AuthFirebaseService {
 
     doSignOutEmail() {
         firebase.auth().signOut().then(() => {
-            console.log('signout successuful');
             this.nvc.navigateRoot('');
         }).catch(function (error) {
-            console.log('signout failed');
         });
     }
 
@@ -44,9 +41,7 @@ export class AuthFirebaseService {
         var response;
         user.sendEmailVerification().then(function () {
             response='';
-            console.log('Email sent.');
         }).catch(function (error) {
-            console.log('An error happened.');
             response='An error happened.';
         });
         return response;
@@ -58,9 +53,7 @@ export class AuthFirebaseService {
         var response;
         auth.sendPasswordResetEmail(emailAddress).then(function () {
             response='';
-            console.log('Email sent.');
         }).catch(function (error) {
-            console.log('An error happened.');
             response='An error happened.';
         });
         return response;
@@ -83,8 +76,6 @@ export class AuthFirebaseService {
                     err => {
                         reject(err);
                     }).catch(error => {
-                        console.log(error.code);
-                        console.log(error.message);
                         reject(error);
                     }
                     );

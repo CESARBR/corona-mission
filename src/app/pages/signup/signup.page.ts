@@ -42,16 +42,13 @@ export class SignupPage implements OnInit {
   submitForm() {
     this.isSubmitted = true;
     if (!this.ionicForm.valid) {
-      console.log('Please provide all the required values!')
       return false;
     } else {
 
       this.authFirebaseService.doRegister(this.ionicForm.value).then(res => {
         this.navCtrl.setDirection('forward');
         this.navCtrl.navigateForward('/home');
-        console.log(this.ionicForm.value);
       }).catch(error =>{
-        console.error(error)
         let msg = error.code == 'auth/email-already-in-use' ? 'O email já está sendo usado.' : error.message
         this.coronaToast.showError(msg);
       });

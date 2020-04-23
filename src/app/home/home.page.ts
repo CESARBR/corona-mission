@@ -126,7 +126,6 @@ export class HomePage implements OnInit {
   }
 
   openDetail(id) {
-    console.log("Opening ... " + id)
     this.dataService.setData(id, id);
     let str = 'details/' + id;
     this.navCtrl.setDirection('forward');
