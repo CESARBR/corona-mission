@@ -8,6 +8,7 @@ import { DataService } from 'src/app/services/data.service';
 import { Camera } from '@ionic-native/camera/ngx';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { File } from '@ionic-native/file/ngx';
+import { WebView } from '@ionic-native/ionic-webview/ngx';
 
 @Component({
   templateUrl: './edit-contact.page.html',
@@ -29,6 +30,7 @@ export class EditContactPage implements OnInit {
     private firebaseDataService: FirebaseDatabaseServices, private router: ActivatedRoute, 
     private auth: AuthFirebaseService, public loadingController: LoadingController,
     private camera: Camera, private fireStorage: AngularFireStorage,
+    private webview: WebView,
     private file: File) {
 
       this.auth.getCurrentUserId().then((id) => {
@@ -51,8 +53,7 @@ export class EditContactPage implements OnInit {
     this.ionicForm.controls['phone'].setValue(this.person.phone);
     this.ionicForm.controls['relationship'].setValue(this.person.relationship);
 
-    var pathBack = "../";
-    this.person.avatar = pathBack.concat(this.person.avatar);
+    this.imageSrc = this.webview.convertFileSrc(this.file.dataDirectory + this.person.avatar);
 
     this.loading.dismiss();
   }
@@ -86,7 +87,6 @@ export class EditContactPage implements OnInit {
   }
 
    async updateUser() {     
-     debugger
     this.person.name = this.ionicForm.value.name;
     this.person.age = this.ionicForm.value.age;
     this.person.phone = this.ionicForm.value.phone;
@@ -107,7 +107,7 @@ export class EditContactPage implements OnInit {
     this.cameraOptions = {
       sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
       destinationType: this.camera.DestinationType.FILE_URI,
-      quality: 100,
+      quality: 50,
       correctOrientation: true
     };
    }
@@ -117,6 +117,7 @@ export class EditContactPage implements OnInit {
     
     try {
       const fileUri: string = await this.camera.getPicture(this.cameraOptions);
+      const tempImage = fileUri;
 
       let fileName: string;
 
@@ -126,12 +127,16 @@ export class EditContactPage implements OnInit {
         fileName = fileUri.substring(fileUri.lastIndexOf('/') + 1, fileUri.indexOf("?"));
       }
 
-      const path: string = fileUri.substring(0, fileUri.lastIndexOf('/'));
+      const tempBaseFilesystemPath = tempImage.substr(0, tempImage.lastIndexOf('/') + 1);
+      const newBaseFilesystemPath = this.file.dataDirectory;
+      const createdFile = await this.file.copyFile(tempBaseFilesystemPath, fileName, 
+                              newBaseFilesystemPath, fileName);
+      
+      const storedPhoto = newBaseFilesystemPath + fileName;
+      this.person.avatar = fileName;
 
-      const buffer: ArrayBuffer = await this.file.readAsArrayBuffer(path, fileName);
-      const blob: Blob = new Blob([buffer], { type: 'image/jpeg'});
 
-      this.uploadPictureFirebaseStorage(blob, fileName);
+      //await this.uploadPictureFirebaseStorage(blob, fileName);
 
     } catch (error) {
       console.log(error);
@@ -139,7 +144,6 @@ export class EditContactPage implements OnInit {
    }
    
    async uploadPictureFirebaseStorage(blob: Blob, fileName: string){
-     debugger
     let pathImage = "images" + this.contactsPath + "/" + this.idContact + "/" + fileName;
 
     await this.fireStorage.ref(pathImage).put(blob);
