@@ -46,7 +46,6 @@ export class RegisterPage implements OnInit {
   async submitForm() {
     this.isSubmitted = true;
     if (!this.ionicForm.valid) {
-      console.log('Please provide all the required values!');
       return false;
     } else {
 

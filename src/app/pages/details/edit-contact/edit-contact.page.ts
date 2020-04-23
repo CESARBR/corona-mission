@@ -61,7 +61,6 @@ export class EditContactPage implements OnInit {
   submitForm() {
     this.isSubmitted = true;
     if (!this.ionicForm.valid) {
-      console.log('Please provide all the required values!');
       return false;
     } else {
       this.updateUser();
@@ -78,8 +77,7 @@ export class EditContactPage implements OnInit {
     this.person.mission_label_color = "dark";
     this.person.avatar = "../../assets/img/person_icon.png";
     
-    const key = await this.firebaseDataService.bruteUpdateItem('/users/' + this.auth.getCurrentUserId() + '/contacts/' + this.idContact, this.person);
-    console.log(key);
+    const key = await this.firebaseDataService.bruteUpdateItem('/users/' + await this.auth.getCurrentUserId() + '/contacts/' + this.idContact, this.person);
     
     this.dataService.setData(this.idContact, this.idContact);
     // let str = 'details/' + this.idContact;
