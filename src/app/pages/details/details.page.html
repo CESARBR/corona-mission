@@ -45,11 +45,9 @@
         </ion-col>
       </ion-row>
     </ion-grid>
-    <hr color="light">
+    <hr />
     <p class="suggestion-text">Sugestões de missões para hoje</p>
 
-    
-    
     <div *ngIf="person.challenges">
       <ion-card class="challenge-card" *ngFor="let challenge of person.challenges | slice:0:3" color="light">
         <ion-card-content>
