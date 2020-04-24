@@ -1,4 +1,4 @@
-# Corona Mission App
+# Grandpa Mission App
 This app is developed in [Ionic](https://ionicframework.com/) with Angular.
 
 # Installation
