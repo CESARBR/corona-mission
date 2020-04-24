@@ -22,8 +22,6 @@ export class DetailsPage implements OnInit {
 
   idContact: string;
   person: any;
-  challenges: any;
-  SampleJson: any;
   persons: any;
   loading: any;
   imageSrc: string;  
@@ -46,30 +44,26 @@ export class DetailsPage implements OnInit {
     this.loading = await this.loadingController.create({
       message: 'Aguarde...',
     });
-    await this.loading.present();
-
-    this.idContact = this.route.snapshot.data['idContact'];
-    const contact = await this.database.readItemByKey(`${this.contactsPath}/${this.idContact}`);
-    this.person = contact.val();
-
-    const challengersDatabase = await this.database.readItemByKey('/challenges');
-    this.challenges = challengersDatabase.val();
-
-    if (!this.person.challenges) {
-      this.person.challenges = this.challenges;
-      this.updateChallenges();
-    }
-
-    const iconFileName: string = "person_icon.png";
-    let avatarName: string = this.person.avatar;
     
-    this.imageSrc = !avatarName.endsWith(iconFileName) ? 
+    try {
+      await this.loading.present();
+
+      this.idContact = this.route.snapshot.data['idContact'];
+      const contact = await this.database.readItemByKey(`${this.contactsPath}/${this.idContact}`);
+      this.person = contact.val();
+
+      const iconFileName: string = "person_icon.png";
+      let avatarName: string = this.person.avatar;
+      
+      this.imageSrc = !avatarName.endsWith(iconFileName) ? 
       this.webView.convertFileSrc(this.file.dataDirectory + this.person.avatar) :this.person.avatar;    
 
-    //TODO implement update new/older challengers
+      //TODO implement update new/older challengers
 
-    this.updateCountMissions();
-    this.loading.dismiss();
+      this.updateCountMissions();
+    } finally {
+      this.loading.dismiss();
+    }
   }
 
   ngOnInit() { }
@@ -80,17 +74,11 @@ export class DetailsPage implements OnInit {
     }
   }
 
-  getThreeChallenges() {
-    return [this.SampleJson[Math.floor((Math.random() * this.SampleJson.length) + 0)],
-    this.SampleJson[Math.floor((Math.random() * this.SampleJson.length) + 0)],
-    this.SampleJson[Math.floor((Math.random() * this.SampleJson.length) + 0)]];
-  }
-
   shuffle(array) {
     let temporaryValue, randomIndex;
 
     // While there remain elements to shuffle...
-    for (var i = 0; i < 3; i++) {
+    for (let i = 0; i < 3; i++) {
       // Pick a remaining element...
       randomIndex = Math.floor(Math.random() * (array.length - 4)) + 3;
 

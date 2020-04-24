@@ -17,4 +17,5 @@ export interface Person {
   mission_color: string;
   mission_label_color: string;
   register_date: string;
+  challenges: Array<any>;
 }

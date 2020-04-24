@@ -48,40 +48,41 @@ export class HomePage implements OnInit {
     this.loading = await this.loadingController.create({
       message: 'Aguarde...',
     });
-    
-    await this.loading.present();
+    try {
+      await this.loading.present();
 
-    this.databaseFirebaseService
-      .readItemByKey('/users/' + await this.authFirebaseService.getCurrentUserId() + '/contacts', '').then((res) => {
-
-        this.hasRegistered = Boolean(res && res.val());
-        this.loading.dismiss();
-
-        if (this.hasRegistered) {
-
-          const responseVal = res.val();
-          const iconFileName: string = "person_icon.png";
-
-          Object.keys(responseVal).forEach((key) => {
-            let avatarName: string = responseVal[key].avatar;
-            const imageSrc = !avatarName.endsWith(iconFileName) ? 
-              this.webView.convertFileSrc(this.file.dataDirectory + avatarName) : avatarName;            
-            this.registeredUsers.push({
-              id: key,
-              imageSrc,
-              ...responseVal[key]
+      this.databaseFirebaseService
+        .readItemByKey('/users/' + await this.authFirebaseService.getCurrentUserId() + '/contacts', '').then((res) => {
+  
+          this.hasRegistered = Boolean(res && res.val());
+  
+          if (this.hasRegistered) {
+  
+            const responseVal = res.val();
+            const iconFileName: string = "person_icon.png";
+            Object.keys(responseVal).forEach((key) => {
+              let avatarName: string = responseVal[key].avatar;
+              const imageSrc = !avatarName.endsWith(iconFileName) ? 
+                this.webView.convertFileSrc(this.file.dataDirectory + avatarName) : avatarName;            
+              this.registeredUsers.push({
+                id: key,
+                imageSrc,
+                ...responseVal[key]
+              });
             });
+          }
+  
+          this.registeredUsers.sort(function (x, y) {
+            let a = x.name.toUpperCase(),
+                b = y.name.toUpperCase();
+            return a == b ? 0 : a > b ? 1 : -1;
           });
-        }
-
-        this.registeredUsers.sort(function (x, y) {
-          let a = x.name.toUpperCase(),
-              b = y.name.toUpperCase();
-          return a == b ? 0 : a > b ? 1 : -1;
+  
+          this.checkColorAndMessage();
         });
-
-        this.checkColorAndMessage();
-      });
+    } finally {
+      this.loading.dismiss();
+    }
   }
 
   checkColorAndMessage() {
