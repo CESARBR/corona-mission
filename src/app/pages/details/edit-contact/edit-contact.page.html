@@ -1,86 +1,166 @@
 <ion-header class="ion-no-border" color="medium">
-    <ion-toolbar color="medium">
-      <ion-buttons slot="start">
-        <ion-back-button defaultHref="home"></ion-back-button>
-      </ion-buttons>
-    </ion-toolbar>
+  <ion-toolbar color="medium">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="home"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
 </ion-header>
 <ion-content *ngIf="person">
-    <img class="corona-mission-login" src="../../../assets/img/corona-mission-inline.svg" alt="">
-    <ion-card color="medium">
-      <ion-card-header>
-        <ion-card-title>Editar contato</ion-card-title>
-      </ion-card-header>
-      
-      <ion-card-content>
-        <form class="login-form" [formGroup]="ionicForm" (ngSubmit)="submitForm()">
-          <div *ngIf="person.avatar">
-            <ion-avatar class="avatar">
-              <img [src]="imageSrc">
-            </ion-avatar>
-            <a class="underline" [routerLink]="" (click)="openGalleryPhotos()">Alterar foto</a>
-          </div>
-          <h3 class="subtitle">informações pessoais</h3>
-          <ion-item lines="full">
-            <ion-label position="floatithis.ionicForm.controls['avatar'].setValue(this.person.avatar);">Nome ou apelido</ion-label>
-            <ion-input formControlName="name" required="true" type="text" inputmode="text" autofocus="true" maxlength="200" required></ion-input>
-          </ion-item>
-          <ion-label color="danger" class=" error-label"  class=" error-label" *ngIf="isSubmitted && errorControl.name.errors?.required">
-            Informe um nome ou apelido.
-          </ion-label>
-          <ion-label color="danger" class=" error-label"  class=" error-label" *ngIf="isSubmitted && errorControl.name.errors?.minlength">
-            O nome ou apelido deve ter no mínimo 3 letras.
-          </ion-label>
-          <ion-label color="danger" class=" error-label"  class=" error-label" *ngIf="isSubmitted && errorControl.name.errors?.maxlength">
-            O nome ou apelido deve ter no máximo 200 letras.
-          </ion-label>
-          <ion-item lines="full">
-            <ion-label position="floating">Idade</ion-label>
-            <ion-input formControlName="age" type="number" inputmode="numeric" maxlength="3" required></ion-input>
-          </ion-item>
-          <ion-label color="danger" class=" error-label"  class=" error-label" *ngIf="isSubmitted && errorControl.age.errors?.required">
-            Informe a idade.
-          </ion-label>
-          <ion-label color="danger" class=" error-label"  class=" error-label" *ngIf="isSubmitted && errorControl.age.errors?.pattern">
-            Formato incorreto para idade.
-          </ion-label>
-          <ion-label color="danger" class=" error-label"  *ngIf="isSubmitted && !ionicForm.get('age').errors && ionicForm.hasError('ageInvalid')">
-            Idade inválida, informe uma idade maior que 0 e menor que 130.
-          </ion-label>
-      
-          <ion-item lines="full">
-            <ion-label position="floating">Número de telefone</ion-label>
-            <ion-input formControlName="phone" required="true" type="tel" inputmode="tel" [brmasker]="{phone: true}" required></ion-input>
-          </ion-item>
-          <ion-label color="danger" class=" error-label"  class=" error-label" *ngIf="isSubmitted && errorControl.phone.errors?.required">
-            Informe o telefone.
-          </ion-label>
-  
-          <ion-item>
-            <ion-label position="floating">Parentesco</ion-label>
-            <ion-select formControlName="relationship" placeholder="Selecione" okText="Selecionar" cancelText="Cancelar">
-              <ion-select-option value="Mãe">Mãe</ion-select-option>
-              <ion-select-option value="Pai">Pai</ion-select-option>
-              <ion-select-option value="Tia">Tia</ion-select-option>
-              <ion-select-option value="Tio">Tio</ion-select-option>
-              <ion-select-option value="Avó">Avó</ion-select-option>
-              <ion-select-option value="Avô">Avô</ion-select-option>
-              <ion-select-option value="Amiga">Amiga</ion-select-option>
-              <ion-select-option value="Amigo">Amigo</ion-select-option>
-            </ion-select>
-          </ion-item>
-          <ion-label color="danger" class=" error-label"  class=" error-label" *ngIf="isSubmitted && errorControl.relationship.errors?.required">
-            Selecione o parentesco.
-          </ion-label>
-      
-          <ion-row>
-            <ion-col>
-              <ion-button type="submit" class="login-button" size="large" color="dark" expand="block">Confirmar</ion-button>
-            </ion-col>
-          </ion-row>
-        </form>
-      </ion-card-content>
-    </ion-card>
-  
-  </ion-content>
-  
+  <img
+    class="corona-mission-login"
+    src="../../../assets/img/corona-mission-inline.svg"
+    alt=""
+  />
+  <ion-card color="medium">
+    <ion-card-header>
+      <ion-card-title>Editar contato</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <form
+        class="login-form"
+        [formGroup]="ionicForm"
+        (ngSubmit)="submitForm()"
+      >
+        <div *ngIf="person.avatar">
+          <ion-avatar class="avatar">
+            <img [src]="imageSrc" />
+          </ion-avatar>
+          <a class="underline" [routerLink]="" (click)="openGalleryPhotos()"
+            >Alterar foto</a
+          >
+        </div>
+        <h3 class="subtitle">informações pessoais</h3>
+        <ion-item lines="full">
+          <ion-label position="floating">Nome ou apelido</ion-label>
+          <ion-input
+            formControlName="name"
+            required="true"
+            type="text"
+            inputmode="text"
+            autofocus="true"
+            maxlength="200"
+            required
+          ></ion-input>
+        </ion-item>
+        <ion-label
+          color="danger"
+          class="error-label"
+          class="error-label"
+          *ngIf="isSubmitted && errorControl.name.errors?.required"
+        >
+          Informe um nome ou apelido.
+        </ion-label>
+        <ion-label
+          color="danger"
+          class="error-label"
+          class="error-label"
+          *ngIf="isSubmitted && errorControl.name.errors?.minlength"
+        >
+          O nome ou apelido deve ter no mínimo 3 letras.
+        </ion-label>
+        <ion-label
+          color="danger"
+          class="error-label"
+          class="error-label"
+          *ngIf="isSubmitted && errorControl.name.errors?.maxlength"
+        >
+          O nome ou apelido deve ter no máximo 200 letras.
+        </ion-label>
+        <ion-item lines="full">
+          <ion-label position="floating">Idade</ion-label>
+          <ion-input
+            formControlName="age"
+            type="number"
+            inputmode="numeric"
+            maxlength="3"
+            required
+          ></ion-input>
+        </ion-item>
+        <ion-label
+          color="danger"
+          class="error-label"
+          class="error-label"
+          *ngIf="isSubmitted && errorControl.age.errors?.required"
+        >
+          Informe a idade.
+        </ion-label>
+        <ion-label
+          color="danger"
+          class="error-label"
+          class="error-label"
+          *ngIf="isSubmitted && errorControl.age.errors?.pattern"
+        >
+          Formato incorreto para idade.
+        </ion-label>
+        <ion-label
+          color="danger"
+          class="error-label"
+          *ngIf="isSubmitted && !ionicForm.get('age').errors && ionicForm.hasError('ageInvalid')"
+        >
+          Idade inválida, informe uma idade maior que 0 e menor que 130.
+        </ion-label>
+
+        <ion-item lines="full">
+          <ion-label position="floating">Número de telefone</ion-label>
+          <ion-input
+            formControlName="phone"
+            required="true"
+            type="tel"
+            inputmode="tel"
+            [brmasker]="{phone: true}"
+            required
+          ></ion-input>
+        </ion-item>
+        <ion-label
+          color="danger"
+          class="error-label"
+          class="error-label"
+          *ngIf="isSubmitted && errorControl.phone.errors?.required"
+        >
+          Informe o telefone.
+        </ion-label>
+
+        <ion-item>
+          <ion-label position="floating">Parentesco</ion-label>
+          <ion-select
+            formControlName="relationship"
+            placeholder="Selecione"
+            okText="Selecionar"
+            cancelText="Cancelar"
+          >
+            <ion-select-option value="Mãe">Mãe</ion-select-option>
+            <ion-select-option value="Pai">Pai</ion-select-option>
+            <ion-select-option value="Tia">Tia</ion-select-option>
+            <ion-select-option value="Tio">Tio</ion-select-option>
+            <ion-select-option value="Avó">Avó</ion-select-option>
+            <ion-select-option value="Avô">Avô</ion-select-option>
+            <ion-select-option value="Amiga">Amiga</ion-select-option>
+            <ion-select-option value="Amigo">Amigo</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-label
+          color="danger"
+          class="error-label"
+          class="error-label"
+          *ngIf="isSubmitted && errorControl.relationship.errors?.required"
+        >
+          Selecione o parentesco.
+        </ion-label>
+
+        <ion-row>
+          <ion-col>
+            <ion-button
+              type="submit"
+              class="login-button"
+              size="large"
+              color="dark"
+              expand="block"
+              >Confirmar</ion-button
+            >
+          </ion-col>
+        </ion-row>
+      </form>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
