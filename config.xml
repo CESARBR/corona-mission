@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="corona.mission.app" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>Corona Mission</name>
-    <description>Lutando COVID-19.</description>
+<widget id="grandpa.mission.app" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Grandpa Mission</name>
+    <description>Encurtando distâncias.</description>
     <author email="corona.mission@cesar.org.br" href="http://cesar.org.br">CESAR</author>
     <content src="index.html" />
     <access origin="*" />
