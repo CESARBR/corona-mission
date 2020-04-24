@@ -91,7 +91,6 @@ export class EditContactPage implements OnInit {
   }
 
    async updateUser() {     
-     debugger
     this.person.name = this.ionicForm.value.name;
     this.person.age = this.ionicForm.value.age;
     this.person.phone = this.ionicForm.value.phone;
