@@ -7,6 +7,8 @@ import { AuthFirebaseService } from '../../services/firebase/firebase-auth.servi
 import { DataService } from 'src/app/services/data.service';
 import { CallComponent } from 'src/app/components/call/call.component';
 import { LoadingController } from '@ionic/angular';
+import { File } from '@ionic-native/file/ngx';
+import { WebView } from '@ionic-native/ionic-webview/ngx';
 
 @Component({
   selector: 'app-details',
@@ -24,13 +26,15 @@ export class DetailsPage implements OnInit {
   SampleJson: any;
   persons: any;
   loading: any;
+  imageSrc: string;  
 
   countMissions: number;
   private contactsPath: string;
 
   constructor(private route: ActivatedRoute, private dataService: DataService, private navCtrl: NavController, 
     private database: FirebaseDatabaseServices, private auth: AuthFirebaseService,
-    private popoverController: PopoverController, public loadingController: LoadingController) {
+    private popoverController: PopoverController, public loadingController: LoadingController,
+    private webView: WebView, private file: File) {
 
       this.auth.getCurrentUserId().then((id) => {
 
@@ -38,7 +42,7 @@ export class DetailsPage implements OnInit {
       });
   }
 
-  async ionViewWillEnter() {
+  async ionViewWillEnter() {    
     this.loading = await this.loadingController.create({
       message: 'Aguarde...',
     });
@@ -55,6 +59,13 @@ export class DetailsPage implements OnInit {
       this.person.challenges = this.challenges;
       this.updateChallenges();
     }
+
+    const iconFileName: string = "person_icon.png";
+    let avatarName: string = this.person.avatar;
+    
+    this.imageSrc = !avatarName.endsWith(iconFileName) ? 
+      this.webView.convertFileSrc(this.file.dataDirectory + this.person.avatar) :this.person.avatar;    
+
     //TODO implement update new/older challengers
 
     this.updateCountMissions();
