@@ -26,11 +26,13 @@ ion-chip {
     font-weight: 700;
     font-size: 3.6vw;
     color: var(--ion-text-color);
+    margin-left: 1vw;
 }
 
 .relationship {
     font-size: 3vw;
     color: var(--ion-text-color);
+    margin-left: 1vw;
 }
 
 .person-info {
@@ -85,10 +87,12 @@ hr {
         font-size: 3vw;
         text-align: left;
         padding-left: 3vw;
+        margin-left: 1vw;
     }
     .card-description {
         padding-left: 3vw;
         text-align: left;
+        margin-left: 1vw;
     }
     .status-icon {
         font-size: 6vw;
