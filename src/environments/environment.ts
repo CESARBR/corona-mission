@@ -5,14 +5,14 @@
 export const environment = {
   production: false,
   firebase: {
-    apiKey: "AIzaSyD_ptmDUNmoBZRWwIGWB3yOm0sRRZXZ-sI",
-    authDomain: "coronamission-dev.firebaseapp.com",
-    databaseURL: "https://coronamission-dev.firebaseio.com",
-    projectId: "coronamission-dev",
-    storageBucket: "coronamission-dev.appspot.com",
-    messagingSenderId: "874703078872",
-    appId: "1:874703078872:web:f9ed58a591d66eea371ead",
-    measurementId: "G-87WR47M41P"
+    apiKey: "AIzaSyAa9_a2cLtfE8ACPlgl3r2McCgJi7quAK8",
+    authDomain: "corona-mission.firebaseapp.com",
+    databaseURL: "https://corona-mission.firebaseio.com",
+    projectId: "corona-mission",
+    storageBucket: "corona-mission.appspot.com",
+    messagingSenderId: "738720377175",
+    appId: "1:738720377175:web:67dba7dd09f974a3183612",
+    measurementId: "G-7FFNK447DD"
   }
 };
 
