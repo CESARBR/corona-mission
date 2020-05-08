@@ -15,8 +15,6 @@ export class ContactDatabaseService {
 
     const db = await this.dbProvider.getDB();
 
-        //await db.executeSql("DELETE FROM contacts", []);
-
     return db.executeSql("select * from contacts order by name asc", []);
   }
 
