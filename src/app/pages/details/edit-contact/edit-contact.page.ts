@@ -2,21 +2,19 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { NavController, Platform, LoadingController } from "@ionic/angular";
-import { FirebaseDatabaseServices } from "src/app/services/firebase/firebase-database.service";
-import { AuthFirebaseService } from "../../../services/firebase/firebase-auth.service";
 import { DataService } from "src/app/services/data.service";
 import { Camera } from "@ionic-native/camera/ngx";
-import { AngularFireStorage } from "@angular/fire/storage";
 import { File } from "@ionic-native/file/ngx";
 import { UtilService } from "../../../services/util.service";
 import { SafeUrl } from "@angular/platform-browser";
+import { ContactDatabaseService } from 'src/app/services/sqlite/contact-database.service';
 
 @Component({
   templateUrl: "./edit-contact.page.html",
   styleUrls: ["./edit-contact.page.scss"],
 })
 export class EditContactPage implements OnInit {
-  idContact: string;
+  idContact: number;
   ionicForm: FormGroup;
   contactsPath: string;
   person: any;
@@ -30,18 +28,13 @@ export class EditContactPage implements OnInit {
     private navCtrl: NavController,
     private plt: Platform,
     private dataService: DataService,
-    private firebaseDataService: FirebaseDatabaseServices,
+    private contactDatabaseService: ContactDatabaseService,
     private router: ActivatedRoute,
-    private auth: AuthFirebaseService,
     public loadingController: LoadingController,
     private camera: Camera,
-    private fireStorage: AngularFireStorage,
     private utilService: UtilService,
     private file: File
   ) {
-    this.auth.getCurrentUserId().then((id) => {
-      this.contactsPath = "/users/" + id + "/contacts";
-    });
   }
 
   async ionViewWillEnter() {
@@ -51,10 +44,8 @@ export class EditContactPage implements OnInit {
     await this.loading.present();
 
     this.idContact = this.router.snapshot.params.id;
-    const contact = await this.firebaseDataService.readItemByKey(
-      `${this.contactsPath}/${this.idContact}`
-    );
-    this.person = contact.val();
+    const contact = await this.contactDatabaseService.getById(this.idContact);
+      this.person = contact.rows.item(0);
     this.ionicForm.controls["name"].setValue(this.person.name);
     this.ionicForm.controls["age"].setValue(this.person.age);
     this.ionicForm.controls["phone"].setValue(this.person.phone);
@@ -120,13 +111,7 @@ export class EditContactPage implements OnInit {
     this.person.mission_color = "dark";
     this.person.mission_label_color = "dark";
 
-    const key = await this.firebaseDataService.bruteUpdateItem(
-      "/users/" +
-        (await this.auth.getCurrentUserId()) +
-        "/contacts/" +
-        this.idContact,
-      this.person
-    );
+    await this.contactDatabaseService.updateContactInfo(this.person);
 
     this.dataService.setData(this.idContact, this.idContact);
     // let str = 'details/' + this.idContact;
@@ -175,24 +160,10 @@ export class EditContactPage implements OnInit {
       this.person.avatar = fileName;
       this.imageSrc = this.utilService.getCorrectImageUrl(this.person.avatar);
 
-      await this.firebaseDataService.bruteUpdateItem(
-        "/users/" +
-          (await this.auth.getCurrentUserId()) +
-          "/contacts/" +
-          this.idContact,
-        this.person
-      );
-
-      //await this.uploadPictureFirebaseStorage(blob, fileName);
+      await this.contactDatabaseService.updateContactAvatar(this.idContact, this.person.avatar);
     } catch (error) {
       console.log(error);
     }
   }
 
-  async uploadPictureFirebaseStorage(blob: Blob, fileName: string) {
-    let pathImage =
-      "images" + this.contactsPath + "/" + this.idContact + "/" + fileName;
-
-    await this.fireStorage.ref(pathImage).put(blob);
-  }
 }

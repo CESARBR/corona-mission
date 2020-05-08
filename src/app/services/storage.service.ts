@@ -18,11 +18,4 @@ export class StorageService {
     return this.storage.set(SEEN_SLIDES_KEY, true);
   }
 
-  async setLoggedUser (user: firebase.User) {
-    await this.storage.set(LOGGED_USER_KEY, user);
-  }
-
-  async getLoggedUser () {
-    return await this.storage.get(LOGGED_USER_KEY);
-  }
 }

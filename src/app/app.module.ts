@@ -12,19 +12,16 @@ import { AppComponent } from "./app.component";
 import { IonicStorageModule } from "@ionic/storage";
 import { environment } from "src/environments/environment";
 
-import * as firebase from "firebase/app";
-import { FirebaseDatabaseServices } from "./services/firebase/firebase-database.service";
-import { AuthFirebaseService } from "./services/firebase/firebase-auth.service";
-import { FirebaseGoogleAuthService } from "./services/firebase/firebase-google-auth.service";
 import { CoronaToast } from "./shared/corona-toast";
 import { Camera } from "@ionic-native/camera/ngx";
-import { AngularFireModule } from "@angular/fire";
-import { AngularFireStorageModule } from "@angular/fire/storage";
 import { File } from "@ionic-native/file/ngx";
 import { WebView } from "@ionic-native/ionic-webview/ngx";
 import { UtilService } from "./services/util.service";
-
-firebase.initializeApp(environment.firebase);
+import { DatabaseProvider } from './services/sqlite/database.service';
+import { SQLite } from '@ionic-native/sqlite/ngx';
+import { ContactDatabaseService } from './services/sqlite/contact-database.service';
+import { ChallengeDatabaseService } from './services/sqlite/challenge-database.service';
+import { ContactChallengesDatabaseService } from './services/sqlite/contact-challenges-database.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -39,16 +36,16 @@ firebase.initializeApp(environment.firebase);
       name: "__db_corona_mission",
       driverOrder: ["localstorage"],
     }),
-    AngularFireModule.initializeApp(environment.firebase),
-    AngularFireStorageModule,
   ],
   providers: [
+    SQLite,
+    DatabaseProvider,
+    ContactDatabaseService,
+    ChallengeDatabaseService,
+    ContactChallengesDatabaseService,
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    FirebaseDatabaseServices,
-    AuthFirebaseService,
-    FirebaseGoogleAuthService,
     CoronaToast,
     Camera,
     File,
