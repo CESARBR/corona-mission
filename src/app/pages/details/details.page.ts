@@ -1,16 +1,14 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { CallNumber } from "@ionic-native/call-number/ngx";
 import { NavController, PopoverController } from "@ionic/angular";
-import { FirebaseDatabaseServices } from "../../services/firebase/firebase-database.service";
-import { AuthFirebaseService } from "../../services/firebase/firebase-auth.service";
 import { DataService } from "src/app/services/data.service";
 import { CallComponent } from "src/app/components/call/call.component";
 import { LoadingController } from "@ionic/angular";
-import { File } from "@ionic-native/file/ngx";
-import { WebView } from "@ionic-native/ionic-webview/ngx";
 import { SafeUrl } from "@angular/platform-browser";
 import { UtilService } from "../../services/util.service";
+import { ContactDatabaseService } from 'src/app/services/sqlite/contact-database.service';
+import { ContactChallengesDatabaseService } from 'src/app/services/sqlite/contact-challenges-database.service';
+import { ContactChallenge } from 'src/app/models';
 
 @Component({
   selector: "app-details",
@@ -21,28 +19,25 @@ export class DetailsPage implements OnInit {
   private readonly STATUS_UNCHECK = "ellipse-outline";
   private readonly STATUS_CHECK = "checkmark-outline";
 
-  idContact: string;
+  private idContact: number;
   person: any;
   persons: any;
   loading: any;
   imageSrc: SafeUrl;
 
   countMissions: number;
-  private contactsPath: string;
 
   constructor(
     private route: ActivatedRoute,
     private dataService: DataService,
     private navCtrl: NavController,
-    private database: FirebaseDatabaseServices,
-    private auth: AuthFirebaseService,
+    private contactDatabaseService: ContactDatabaseService,
+    private contactChallengesDatabaseService: ContactChallengesDatabaseService,
     private popoverController: PopoverController,
     public loadingController: LoadingController,
     private utilService: UtilService
   ) {
-    this.auth.getCurrentUserId().then((id) => {
-      this.contactsPath = "/users/" + id + "/contacts";
-    });
+    
   }
 
   async ionViewWillEnter() {
@@ -54,10 +49,9 @@ export class DetailsPage implements OnInit {
       await this.loading.present();
 
       this.idContact = this.route.snapshot.data["idContact"];
-      const contact = await this.database.readItemByKey(
-        `${this.contactsPath}/${this.idContact}`
-      );
-      this.person = contact.val();
+      const contact = await this.contactDatabaseService.getById(this.idContact);
+      this.person = contact.rows.item(0);
+      this.person.challenges = [];
 
       const iconFileName: string = "person_icon.png";
       let avatarName: string = this.person.avatar;
@@ -66,8 +60,12 @@ export class DetailsPage implements OnInit {
         ? this.utilService.getCorrectImageUrl(this.person.avatar)
         : this.person.avatar;
 
-      //TODO implement update new/older challengers
+      const resultChallenges = await this.contactChallengesDatabaseService.getAllByContact(this.idContact);
 
+      for (let i =0; i < resultChallenges.rows.length; i++) {
+        this.person.challenges.push(resultChallenges.rows.item(i)); 
+      }
+ 
       this.updateCountMissions();
     } finally {
       this.loading.dismiss();
@@ -75,15 +73,6 @@ export class DetailsPage implements OnInit {
   }
 
   ngOnInit() {}
-
-  updateChallenges() {
-    if (this.idContact) {
-      this.database.bruteUpdateItem(
-        this.contactsPath + "/" + this.idContact + "/challenges",
-        this.person.challenges ? this.person.challenges : []
-      );
-    }
-  }
 
   shuffle(array) {
     let temporaryValue, randomIndex;
@@ -104,7 +93,6 @@ export class DetailsPage implements OnInit {
 
   moreChallenges() {
     this.person.challenges = this.shuffle(this.person.challenges);
-    this.updateChallenges();
   }
 
   async call(ev: any) {
@@ -124,10 +112,8 @@ export class DetailsPage implements OnInit {
       message: "Aguarde...",
     });
     await this.loading.present();
-    await this.database.bruteUpdateItem(
-      `${this.contactsPath}/${this.idContact}`,
-      null
-    );
+    await this.contactChallengesDatabaseService.deleteByContact(this.idContact);
+    await this.contactDatabaseService.deleteById(this.idContact);
     this.loading.dismiss();
     this.navCtrl.navigateBack("home");
   }
@@ -138,32 +124,26 @@ export class DetailsPage implements OnInit {
     this.navCtrl.navigateForward("details/" + this.idContact + "/edit");
   }
 
-  changeStatus(challenge) {
+  async changeStatus(challenge) {
+    const updatedChallenge = challenge;
+
     for (let i = 0; i < this.person.challenges.length; i++) {
       if (this.person.challenges[i].id === challenge.id) {
-        if (challenge.status == this.STATUS_CHECK) {
-          this.person.challenges[i].status = this.STATUS_UNCHECK;
-          this.person.challenges[i].lastChange = new Date(
-            new Date().getTime() - 3 * 3600 * 1000
-          ).toISOString();
-        } else {
-          this.person.challenges[i].status = this.STATUS_CHECK;
-          this.person.challenges[i].lastChange = new Date(
-            new Date().getTime() - 3 * 3600 * 1000
-          ).toISOString();
-        }
+
+        updatedChallenge.status = updatedChallenge.status == this.STATUS_CHECK ? this.STATUS_UNCHECK : this.STATUS_CHECK;
+        this.person.challenges[i].status = updatedChallenge.status;
         break;
       }
     }
 
-    this.updateCountMissions();
+    await this.contactChallengesDatabaseService.updateStatus(this.idContact, updatedChallenge.id, updatedChallenge.status);
 
-    this.updateChallenges();
+    this.updateCountMissions();
   }
 
   private updateCountMissions() {
     this.countMissions = this.person.challenges.filter(
-      (c) => c.status === this.STATUS_CHECK
+      (c: ContactChallenge) => c.status === this.STATUS_CHECK
     ).length;
   }
 }

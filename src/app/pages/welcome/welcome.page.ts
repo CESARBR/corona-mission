@@ -14,9 +14,9 @@ export class WelcomePage implements OnInit {
   ngOnInit() {
   }
 
-  navigateToLoginPage() {
+  navigateToHomePage() {
     this.storage.markSeenSlides().then(() => {
-      this.navCtrl.navigateRoot('/login');
+      this.navCtrl.navigateRoot('/home');
     });
   }
 
