@@ -28,7 +28,7 @@ export class DatabaseProvider {
   }
 
   private createTables(db: SQLiteObject) {
-    // Criando as tabelas
+    
     db.sqlBatch([
       ['CREATE TABLE IF NOT EXISTS challenges (id integer primary key NOT NULL, title varchar(200) NOT NULL, description TEXT NOT NULL, icon varchar(200) NOT NULL)'],
       [`CREATE TABLE IF NOT EXISTS contacts (id integer primary key AUTOINCREMENT  NOT NULL, name varchar(250), age integer, 
