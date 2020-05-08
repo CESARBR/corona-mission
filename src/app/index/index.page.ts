@@ -20,7 +20,6 @@ export class IndexPage implements OnInit {
           this.navCtrl.navigateRoot('/home');
         }).catch((err) => {
           console.log(err);
-          console.log("enviar msg de erro");
         })
       }
     });
