@@ -20,12 +20,12 @@ export class DetailsPage implements OnInit {
   private readonly STATUS_CHECK = "checkmark-outline";
 
   private idContact: number;
-  private person: any;
-  private persons: any;
-  private loading: any;
-  private imageSrc: SafeUrl;
+  person: any;
+  persons: any;
+  loading: any;
+  imageSrc: SafeUrl;
 
-  private countMissions: number;
+  countMissions: number;
 
   constructor(
     private route: ActivatedRoute,

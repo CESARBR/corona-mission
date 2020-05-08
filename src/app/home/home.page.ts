@@ -16,11 +16,11 @@ import { ContactChallengesDatabaseService } from '../services/sqlite/contact-cha
 export class HomePage implements OnInit {
   private readonly STATUS_UNCHECK = "ellipse-outline";
   private readonly STATUS_CHECK = "checkmark-outline";
-  private hasRegistered = true;
+  hasRegistered = true;
 
-  private registeredUsers: Array<Person> = [];
+  registeredUsers: Array<Person> = [];
   private loading: any;
-  private imageSrc: SafeUrl;
+  imageSrc: SafeUrl;
 
   constructor(
     private navCtrl: NavController,
