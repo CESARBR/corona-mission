@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { NavController, Platform } from '@ionic/angular';
-import { StorageService } from '../../services/storage.service';
-import { Person } from '../../models';
-import { FirebaseDatabaseServices } from '../../services/firebase/firebase-database.service';
-import { AuthFirebaseService } from '../../services/firebase/firebase-auth.service';
+import { NavController } from '@ionic/angular';
+import { Person, Challenge } from '../../models';
+import { ContactDatabaseService } from 'src/app/services/sqlite/contact-database.service';
+import { ChallengeDatabaseService } from 'src/app/services/sqlite/challenge-database.service';
+import { ContactChallengesDatabaseService } from 'src/app/services/sqlite/contact-challenges-database.service';
 
 @Component({
   selector: 'app-register',
@@ -21,7 +21,7 @@ export class RegisterPage implements OnInit {
   people: any
 
   constructor(public formBuilder: FormBuilder, private navCtrl: NavController,
-    private database : FirebaseDatabaseServices, private auth : AuthFirebaseService) {
+    private contactDatabaseService : ContactDatabaseService, private contactChallengesDatabaseService: ContactChallengesDatabaseService) {
   }
 
   ionViewWillLeave() {
@@ -64,12 +64,8 @@ export class RegisterPage implements OnInit {
     this.newPerson.avatar = "../../assets/img/person_icon.png";
     this.newPerson.register_date = new Date((new Date().getTime() - (3*3600*1000))).toISOString();
 
-    const challengersDatabase = await this.database.readItemByKey('/challenges');
-    this.newPerson.challenges = challengersDatabase.val();
-    
-    const contactsPath = '/users/' + await this.auth.getCurrentUserId() + '/contacts';
-    const key = await this.database.createItem(contactsPath, this.newPerson);
-
+    const resultInsert = await this.contactDatabaseService.insert(this.newPerson);
+    await this.contactChallengesDatabaseService.configureNewContactChallenges(resultInsert.insertId);
 
     this.navCtrl.setDirection('forward');
     this.navCtrl.navigateForward('/home');

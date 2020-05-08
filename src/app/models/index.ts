@@ -16,6 +16,21 @@ export interface Person {
   mission: string;
   mission_color: string;
   mission_label_color: string;
+  color: string;
   register_date: string;
-  challenges: Array<any>;
+  challenges: Array<ContactChallenge>;
+}
+
+export interface Challenge {
+  id: number;
+  title: string;
+  description: string;
+  icon: string;
+}
+
+export interface ContactChallenge {
+  id_contact: number;
+  id_challenge: number;
+  status: string;
+  last_change: Date;
 }

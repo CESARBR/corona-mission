@@ -1,13 +1,12 @@
 import { Component, OnInit } from "@angular/core";
 import { NavController } from "@ionic/angular";
 import { DataService } from "../services/data.service";
-import { AuthFirebaseService } from "../services/firebase/firebase-auth.service";
-import { FirebaseDatabaseServices } from "../services/firebase/firebase-database.service";
 import { LoadingController } from "@ionic/angular";
-import { File } from "@ionic-native/file/ngx";
-import { WebView } from "@ionic-native/ionic-webview/ngx";
-import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
+import { SafeUrl } from "@angular/platform-browser";
 import { UtilService } from "../services/util.service";
+import { ContactDatabaseService } from '../services/sqlite/contact-database.service';
+import { Person, ContactChallenge } from '../models';
+import { ContactChallengesDatabaseService } from '../services/sqlite/contact-challenges-database.service';
 
 @Component({
   selector: "app-home",
@@ -17,27 +16,20 @@ import { UtilService } from "../services/util.service";
 export class HomePage implements OnInit {
   private readonly STATUS_UNCHECK = "ellipse-outline";
   private readonly STATUS_CHECK = "checkmark-outline";
-  items: any[] = [];
-  hasRegistered = true;
+  private hasRegistered = true;
 
-  registeredUsers = [];
-  loading: any;
-  imageSrc: SafeUrl;
+  private registeredUsers: Array<Person> = [];
+  private loading: any;
+  private imageSrc: SafeUrl;
 
   constructor(
     private navCtrl: NavController,
     private dataService: DataService,
-    private authFirebaseService: AuthFirebaseService,
-    private databaseFirebaseService: FirebaseDatabaseServices,
+    private contactDatabaseService: ContactDatabaseService,
+    private contactChallengesDatabaseService: ContactChallengesDatabaseService,
     public loadingController: LoadingController,
     private utilService: UtilService
   ) {
-    for (let i = 0; i < 1000; i++) {
-      this.items.push({
-        name: i,
-        imgHeight: Math.floor(Math.random() * 50 + 150),
-      });
-    }
   }
 
   ionViewWillEnter() {
@@ -54,41 +46,39 @@ export class HomePage implements OnInit {
     try {
       await this.loading.present();
 
-      this.databaseFirebaseService
-        .readItemByKey(
-          "/users/" +
-            (await this.authFirebaseService.getCurrentUserId()) +
-            "/contacts",
-          ""
-        )
-        .then((res) => {
-          this.hasRegistered = Boolean(res && res.val());
+      const contacts = await this.contactDatabaseService.getAll();
 
-          if (this.hasRegistered) {
-            const responseVal = res.val();
-            const iconFileName: string = "person_icon.png";
-            Object.keys(responseVal).forEach((key) => {
-              let avatarName: string = responseVal[key].avatar;
-              let imageSrc = !avatarName.endsWith(iconFileName)
-                ? this.utilService.getCorrectImageUrl(avatarName)
-                : avatarName;
+      this.hasRegistered = contacts.rows.length > 0;
 
-              this.registeredUsers.push({
-                id: key,
-                imageSrc,
-                ...responseVal[key],
-              });
-            });
-          }
+      for (let i = 0; i < contacts.rows.length; i++) {
+        const contact = contacts.rows.item(i);
+        
+        const iconFileName: string = "person_icon.png";
+          let avatarName: string = contact.avatar;
+          let imageSrc = !avatarName.endsWith(iconFileName)
+            ? this.utilService.getCorrectImageUrl(avatarName)
+            : avatarName;
 
-          this.registeredUsers.sort(function (x, y) {
-            let a = x.name.toUpperCase(),
-              b = y.name.toUpperCase();
-            return a == b ? 0 : a > b ? 1 : -1;
+          this.registeredUsers.push({
+            imageSrc,
+            ...contact,
           });
+      }
 
-          this.checkColorAndMessage();
-        });
+      const resultChallenges = await this.contactChallengesDatabaseService.getAll();
+      const challenges = [];
+
+      for (let i =0; i < resultChallenges.rows.length; i++) {
+        challenges.push(resultChallenges.rows.item(i)); 
+      }
+
+      this.registeredUsers.forEach(registeredUser => {
+
+        registeredUser.challenges = challenges.filter(c => registeredUser.id === c.id_contact);
+      });
+
+      this.checkColorAndMessage();
+      
     } finally {
       this.loading.dismiss();
     }
@@ -136,28 +126,28 @@ export class HomePage implements OnInit {
 
   getLastUpdateChallenge(challenges) {
     var mostRecentChallenge = challenges.sort((challenge1, challenge2) => {
-      if (!challenge1.lastChange) {
+      if (!challenge1.last_change) {
         return -1;
       } else {
-        const chaDate1 = new Date(challenge1.lastChange);
-        const chaDate2 = new Date(challenge2.lastChange);
+        const chaDate1 = new Date(challenge1.last_change);
+        const chaDate2 = new Date(challenge2.last_change);
         return chaDate1.getTime() - chaDate2.getTime();
       }
     })[challenges.length - 1];
     var daysInMiliseconds =
-      new Date().getTime() - new Date(mostRecentChallenge.lastChange).getTime();
+      new Date().getTime() - new Date(mostRecentChallenge.last_change).getTime();
     var days = Math.floor(daysInMiliseconds / (1000 * 3600 * 24));
     return days;
   }
   getMissionsToday(challenges) {
     const date = new Date();
     return challenges.filter(
-      (challenge) =>
-        challenge.lastChange &&
+      (challenge: ContactChallenge) =>
+        challenge.last_change &&
         challenge.status === this.STATUS_CHECK &&
-        new Date(challenge.lastChange).getDate() === date.getDate() &&
-        new Date(challenge.lastChange).getMonth() === date.getMonth() &&
-        new Date(challenge.lastChange).getFullYear() === date.getFullYear()
+        new Date(challenge.last_change).getDate() === date.getDate() &&
+        new Date(challenge.last_change).getMonth() === date.getMonth() &&
+        new Date(challenge.last_change).getFullYear() === date.getFullYear()
     ).length;
   }
 

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { StorageService } from '../services/storage.service';
+import { DatabaseProvider } from '../services/sqlite/database.service';
 
 @Component({
   selector: 'app-index',
@@ -9,18 +10,17 @@ import { StorageService } from '../services/storage.service';
 })
 export class IndexPage implements OnInit {
 
-  constructor(private storage: StorageService, private navCtrl: NavController) { }
+  constructor(private storage: StorageService, private navCtrl: NavController, private database: DatabaseProvider) { }
 
   ionViewWillEnter() {
-    this.storage.isSeenSlides().then((val) => {
+    this.storage.isSeenSlides().then((val) => { 
       if (val) {
 
-        this.storage.getLoggedUser().then((user) => {
-          if (user) {
-            this.navCtrl.navigateRoot('/home');
-          } else {
-            this.navCtrl.navigateRoot('/login');
-          }
+        this.database.createDatabase().then(() => {
+          this.navCtrl.navigateRoot('/home');
+        }).catch((err) => {
+          console.log(err);
+          console.log("enviar msg de erro");
         })
       }
     });
