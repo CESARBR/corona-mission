@@ -16,7 +16,7 @@ import { ContactChallengesDatabaseService } from '../services/sqlite/contact-cha
 export class HomePage implements OnInit {
   private readonly STATUS_UNCHECK = "ellipse-outline";
   private readonly STATUS_CHECK = "checkmark-outline";
-  hasRegistered = true;
+  hasRegistered = false;
 
   registeredUsers: Array<Person> = [];
   private loading: any;
@@ -44,7 +44,7 @@ export class HomePage implements OnInit {
       message: "Aguarde...",
     });
     try {
-      await this.loading.present();
+      await this.loading.present(); 
 
       const contacts = await this.contactDatabaseService.getAll();
 

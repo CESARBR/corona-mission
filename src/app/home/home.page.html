@@ -64,7 +64,7 @@
 
   </div>
 
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="hasRegistered">
     <ion-fab-button color="dark" (click)="addPerson()">
       <ion-icon name="add" color="light"></ion-icon>
     </ion-fab-button>

@@ -23,42 +23,37 @@ export class DatabaseProvider {
   public async createDatabase() {
 
     const db = await this.getDB();
-    this.createTables(db);
-    this.insertDefaultItems(db);
+    await this.createTables(db);
+    await this.insertDefaultItems(db);
   }
 
-  private createTables(db: SQLiteObject) {
+  private async createTables(db: SQLiteObject) {
     
-    db.sqlBatch([
+    await db.sqlBatch([
       ['CREATE TABLE IF NOT EXISTS challenges (id integer primary key NOT NULL, title varchar(200) NOT NULL, description TEXT NOT NULL, icon varchar(200) NOT NULL)'],
       [`CREATE TABLE IF NOT EXISTS contacts (id integer primary key AUTOINCREMENT  NOT NULL, name varchar(250), age integer, 
       register_date DATE, avatar TEXT, phone varchar(20), relationship varchar(20), mission varchar(200), mission_color varchar(30), mission_label_color varchar(30))`],
       [`CREATE TABLE IF NOT EXISTS contact_challenges (id_contact integer NOT NULL, id_challenge integer NOT NULL, 
         status varchar(150) NOT NULL, last_change DATE, FOREIGN KEY(id_contact) REFERENCES contacts(id), FOREIGN KEY(id_challenge) REFERENCES challenges(id),
         PRIMARY KEY (id_contact, id_challenge) )`],
-    ])
-      .then(() => console.log('Tabelas criadas'))
-      .catch(e => console.error('Erro ao criar as tabelas', e));
+    ]);
   }
 
-  private insertDefaultItems(db: SQLiteObject) {
-    db.executeSql('select COUNT(id) as qtd from challenges', [])
-    .then((data: any) => {
-      if (data.rows.item(0).qtd == 0) {
+  private async insertDefaultItems(db: SQLiteObject) {
 
-        const insertChallenges: Array<any> = [];
+    const data = await db.executeSql('select COUNT(id) as qtd from challenges', []);
 
-        challenges.forEach((challenge) => {
-            insertChallenges.push(['insert into challenges (id, title, description, icon) values (?, ?, ?, ?)', 
-            [challenge.id, challenge.title, challenge.description, challenge.icon]]);
-        });
+    if (data.rows.item(0).qtd == 0) {
 
-        db.sqlBatch(insertChallenges)
-          .then(() => console.log('Challenges incluídos'))
-          .catch(e => console.error('Erro ao incluir challenges', e));
+      const insertChallenges: Array<any> = [];
 
-      }
-    })
-    .catch(e => console.error('Erro ao consultar a qtd de challenges', e));
+      challenges.forEach((challenge) => {
+          insertChallenges.push(['insert into challenges (id, title, description, icon) values (?, ?, ?, ?)', 
+          [challenge.id, challenge.title, challenge.description, challenge.icon]]);
+      });
+
+      await db.sqlBatch(insertChallenges);
+      console.log('Challenges incluídos');
+    }
   }
 }
