@@ -16,11 +16,8 @@ export class IndexPage implements OnInit {
     this.storage.isSeenSlides().then((val) => { 
       if (val) {
 
-        this.database.createDatabase().then(() => {
-          this.navCtrl.navigateRoot('/home');
-        }).catch((err) => {
-          console.log(err);
-        })
+        this.databaseVerify();
+        
       }
     });
   }
@@ -29,4 +26,13 @@ export class IndexPage implements OnInit {
 
   }
 
+  async databaseVerify () {
+
+    try {
+      await this.database.createDatabase();
+      this.navCtrl.navigateRoot('/home');
+    } catch (err) {
+      console.error(err);
+    }
+  }
 }
